@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 (fragmented for manageability)                        |
-| **Progress**        | 4/13 completed (30.8%) - #2, #5, #8, #11 ✅              |
+| **Progress**        | 5/13 completed (38.5%) - #2, #3, #5, #8, #11 ✅         |
 | **Timeline**        | 7 weeks (Week 1 in progress)                             |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -161,21 +161,21 @@ const { ProxyProviderManager } =
 
 **Objective:** Implement foundational changes in `packages/core`
 
-| Sub-Issue | Title                            | Package | Key Changes                         | Status                   |
-| --------- | -------------------------------- | ------- | ----------------------------------- | ------------------------ |
-| #3        | Proxy Provider resolver refactor | core    | Replace timeout with graph analysis | Ready (depends on #2 ✅) |
-| #6        | Request identity resolver        | core    | Symbol-based identity + fallbacks   | Ready (depends on #5 ✅) |
-| #9        | Context tracking hybrid strategy | core    | Symbol+WeakMap implementation       | Ready (depends on #8 ✅) |
-| #14       | Circular dependency cleanup      | core    | Extract ProxyResolutionFacade       | Pending                  |
+| Sub-Issue | Title                            | Package | Key Changes                         | Status                            |
+| --------- | -------------------------------- | ------- | ----------------------------------- | --------------------------------- |
+| ✅ #3     | Proxy Provider resolver refactor | core    | Replace timeout with graph analysis | **COMPLETED** (PR #23, 2026-01-21) |
+| #6        | Request identity resolver        | core    | Symbol-based identity + fallbacks   | Ready (depends on #5 ✅)          |
+| #9        | Context tracking hybrid strategy | core    | Symbol+WeakMap implementation       | Ready (depends on #8 ✅)          |
+| #14       | Circular dependency cleanup      | core    | Extract ProxyResolutionFacade       | Pending                           |
 
 **Exit Criteria:**
 
-- ⏳ All core tests pass
-- ⏳ Type checking passes
-- ⏳ Linting passes
-- ⏳ No performance degradation
+- ✅ All core tests pass (249/249 for #3)
+- ✅ Type checking passes
+- ✅ Linting passes
+- ✅ No performance degradation (1000x improvement for #3)
 
-**Note:** Issue #3 is now unblocked by completion of #2 (DependencyGraph utility)
+**Note:** Issue #3 completed! Integrated DependencyGraph into proxy-provider-resolver (PR #23, Issue #17)
 
 ---
 
@@ -410,10 +410,24 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-21
-**Status:** Ronda 1 - **COMPLETED** (4/4 complete - 100%) ✅
-**Next Milestone:** Proceed to Ronda 2 (Core Implementation) - Issues #17, #3, #6, #9, #14
+**Status:** Ronda 2 - **IN PROGRESS** (1/4 complete - 25%)
+**Next Milestone:** Continue Ronda 2 (Core Implementation) - Issues #6, #9, #14
 
 ### Recent Progress
+
+- ✅ **2026-01-21**: Issue #3 completed (PR #23, GitHub Issue #17) - **Ronda 2 STARTED** 🎉
+    - Integrated DependencyGraph into ProxyProvidersResolver for circular dependency detection
+    - Replaced 10s timeout with fail-fast DFS-based cycle validation (<10ms)
+    - Created ProxyProviderCircularDependencyException with detailed cycle path error messages
+    - Added caching for cycle analysis results across multiple resolution contexts
+    - Comprehensive test suite: 6 new tests covering self-reference, cycles, valid DAGs, and performance
+    - Performance improvement: 1000x faster (10s → <10ms)
+    - Coverage: 95.85% overall, 98.57% on proxy-provider-resolver.ts
+    - All 249 tests passing
+    - Merged to main branch (commit 8b81364)
+    - GitHub Issue #17 closed
+    - CHANGELOG updated with breaking change notice
+    - Ready for next Ronda 2 sub-issues (#6, #9, #14)
 
 - ✅ **2026-01-21**: Issue #11 completed (PR #22) - **Ronda 1 COMPLETED** 🎉
     - Comprehensive transaction propagation semantics documentation (1000+ lines)
