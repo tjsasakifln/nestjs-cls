@@ -1,0 +1,43 @@
+name: Coverage Report
+
+permissions:
+  contents: read
+  pull-requests: write
+
+on:
+  pull_request:
+    branches:
+      - main
+      - release/*
+      - feat/*
+
+concurrency:
+  cancel-in-progress: true
+  group: coverage-${{ github.ref }}
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22.x
+          cache: yarn
+      - run: yarn
+      - run: yarn build
+      - run: yarn workspace nestjs-cls test:cov
+        continue-on-error: true
+      - name: Coverage Summary
+        run: |
+          echo "## Test Coverage Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "Coverage targets:" >> $GITHUB_STEP_SUMMARY
+          echo "- Core package: >85%" >> $GITHUB_STEP_SUMMARY
+          echo "- Transactional package: >80%" >> $GITHUB_STEP_SUMMARY
+          echo "- Adapters: >75%" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          if [ -f packages/core/coverage/coverage-summary.json ]; then
+            echo "### Core Package Coverage" >> $GITHUB_STEP_SUMMARY
+            cat packages/core/coverage/coverage-summary.json | jq -r '.total | "- Statements: \(.statements.pct)%\n- Branches: \(.branches.pct)%\n- Functions: \(.functions.pct)%\n- Lines: \(.lines.pct)%"' >> $GITHUB_STEP_SUMMARY
+          fi

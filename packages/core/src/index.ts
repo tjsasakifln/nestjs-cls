@@ -16,3 +16,4 @@ export * from './lib/proxy-provider/proxy-provider.exceptions';
 export * from './lib/proxy-provider/proxy-provider.interfaces';
 export { Terminal } from './types/terminal.type';
 export * from './utils/copy-method-metadata';
+export * from './utils/dependency-graph';
