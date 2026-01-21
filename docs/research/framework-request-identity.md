@@ -49,6 +49,7 @@ private static getContextByType(context: ExecutionContext): any {
 ### 1. Express (4.x & 5.x)
 
 **Structure:**
+
 ```typescript
 // Express decorates the Node.js http.IncomingMessage directly
 interface ExpressRequest extends http.IncomingMessage {
@@ -64,6 +65,7 @@ interface ExpressRequest extends http.IncomingMessage {
 ```
 
 **Identity:**
+
 - **Same Object**: Express always provides the same decorated request object
 - **No `.raw` property**: Request is the native object + decorations
 - **Stable Identity**: WeakMap works perfectly
@@ -75,13 +77,14 @@ interface ExpressRequest extends http.IncomingMessage {
 ### 2. Fastify (4.x & 5.x)
 
 **Structure:**
+
 ```typescript
 interface FastifyRequest {
     body: any;
     query: Record<string, any>;
     params: Record<string, any>;
     headers: http.IncomingHttpHeaders;
-    raw: http.IncomingMessage;  // ⚠️ Key difference
+    raw: http.IncomingMessage; // ⚠️ Key difference
     server: FastifyInstance;
     id: string | number;
     log: Logger;
@@ -90,10 +93,11 @@ interface FastifyRequest {
 ```
 
 **Identity:**
+
 - **Two Objects**: `request` (decorated) and `request.raw` (native http.IncomingMessage)
 - **Enhancer Inconsistency**:
-  - **ClsMiddleware**: Receives `request` (decorated), but NestJS may pass `request.raw` internally
-  - **ClsGuard/ClsInterceptor**: Receive `request` (decorated)
+    - **ClsMiddleware**: Receives `request` (decorated), but NestJS may pass `request.raw` internally
+    - **ClsGuard/ClsInterceptor**: Receive `request` (decorated)
 - **Identity Problem**: Comparing decorated request to raw request fails with WeakMap
 
 **Source:** [Fastify Request Documentation](https://fastify.dev/docs/latest/Reference/Request)
@@ -103,11 +107,12 @@ interface FastifyRequest {
 ### 3. Koa (2.x)
 
 **Structure:**
+
 ```typescript
 interface KoaContext {
-    req: http.IncomingMessage;      // ⚠️ Node.js native
+    req: http.IncomingMessage; // ⚠️ Node.js native
     res: http.ServerResponse;
-    request: KoaRequest;             // ⚠️ Koa decorated
+    request: KoaRequest; // ⚠️ Koa decorated
     response: KoaResponse;
     // ... many more properties
 }
@@ -122,6 +127,7 @@ interface KoaRequest {
 ```
 
 **Identity:**
+
 - **Two Objects**: `ctx.req` (native) and `ctx.request` (decorated)
 - **Similar to Fastify**: Same dual-object pattern
 - **Potential Issue**: If NestJS Koa adapter isn't consistent, same identity problem occurs
@@ -133,6 +139,7 @@ interface KoaRequest {
 ### 4. Hapi
 
 **Structure:**
+
 ```typescript
 interface HapiRequest {
     payload: any;
@@ -140,7 +147,7 @@ interface HapiRequest {
     params: Record<string, any>;
     headers: http.IncomingHttpHeaders;
     raw: {
-        req: http.IncomingMessage;  // Native request
+        req: http.IncomingMessage; // Native request
         res: http.ServerResponse;
     };
     // ... many more properties
@@ -148,6 +155,7 @@ interface HapiRequest {
 ```
 
 **Identity:**
+
 - **Decorated Request**: Hapi provides its own decorated request
 - **`.raw.req` property**: Access to native http.IncomingMessage
 - **Similar Pattern**: Like Fastify, has potential for identity mismatch
@@ -156,12 +164,12 @@ interface HapiRequest {
 
 ## Framework Comparison Matrix
 
-| Framework | Native Object | Decorated Object | Identity Issue | Current Support |
-|-----------|--------------|------------------|----------------|-----------------|
-| **Express** | `request` (same object) | `request` | ❌ None | ✅ Works |
-| **Fastify** | `request.raw` | `request` | ✅ Yes | ⚠️ Hack in place |
-| **Koa** | `ctx.req` | `ctx.request` | ✅ Potential | ❓ Unknown |
-| **Hapi** | `request.raw.req` | `request` | ✅ Potential | ❓ Unknown |
+| Framework   | Native Object           | Decorated Object | Identity Issue | Current Support  |
+| ----------- | ----------------------- | ---------------- | -------------- | ---------------- |
+| **Express** | `request` (same object) | `request`        | ❌ None        | ✅ Works         |
+| **Fastify** | `request.raw`           | `request`        | ✅ Yes         | ⚠️ Hack in place |
+| **Koa**     | `ctx.req`               | `ctx.request`    | ✅ Potential   | ❓ Unknown       |
+| **Hapi**    | `request.raw.req`       | `request`        | ✅ Potential   | ❓ Unknown       |
 
 **Conclusion:** 3 out of 4 major frameworks have dual-object patterns that could cause identity issues.
 
@@ -174,6 +182,7 @@ interface HapiRequest {
 **Concept:** Tag request objects with a unique Symbol on first access, use that Symbol for identity.
 
 **Implementation:**
+
 ```typescript
 // Create a non-registered symbol (NOT Symbol.for())
 const REQUEST_IDENTITY_SYMBOL = Symbol('nestjs-cls-request-identity');
@@ -213,6 +222,7 @@ class RequestIdentityResolver {
 ```
 
 **Pros:**
+
 - ✅ Framework-agnostic (works with any object)
 - ✅ Stable identity (Symbol is unique per request)
 - ✅ Non-registered Symbols work as WeakMap keys (ES2023)
@@ -221,10 +231,12 @@ class RequestIdentityResolver {
 - ✅ Debuggable (Symbol.description shows origin)
 
 **Cons:**
+
 - ⚠️ Mutates request object (adds hidden property)
 - ⚠️ Requires fallback for frozen/sealed objects
 
 **References:**
+
 - [ECMAScript 2023: Symbols as WeakMap keys](https://2ality.com/2024/05/proposal-symbols-as-weakmap-keys.html)
 - [TC39 Proposal: Symbols as WeakMap keys](https://github.com/tc39/proposal-symbols-as-weakmap-keys)
 - [MDN: WeakMap](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/WeakMap)
@@ -236,6 +248,7 @@ class RequestIdentityResolver {
 **Concept:** Extract stable properties from request (method, url, timestamp) and create a composite key.
 
 **Implementation:**
+
 ```typescript
 class RequestIdentityResolver {
     private static requestMap = new WeakMap<any, symbol>();
@@ -266,11 +279,13 @@ class RequestIdentityResolver {
 ```
 
 **Pros:**
+
 - ✅ Framework-agnostic
 - ✅ No object mutation
 - ✅ Handles dual-object pattern explicitly
 
 **Cons:**
+
 - ⚠️ Relies on heuristic (`request.raw ?? request.req`)
 - ⚠️ Still framework-aware logic (checking for `.raw`, `.req`)
 - ⚠️ Potential edge cases with custom frameworks
@@ -282,6 +297,7 @@ class RequestIdentityResolver {
 **Concept:** Create a registry of framework-specific identity resolvers.
 
 **Implementation:**
+
 ```typescript
 interface FrameworkAdapter {
     getName(): string;
@@ -289,12 +305,18 @@ interface FrameworkAdapter {
 }
 
 class ExpressAdapter implements FrameworkAdapter {
-    getName() { return 'express'; }
-    getRequestIdentity(request: any) { return request; }
+    getName() {
+        return 'express';
+    }
+    getRequestIdentity(request: any) {
+        return request;
+    }
 }
 
 class FastifyAdapter implements FrameworkAdapter {
-    getName() { return 'fastify'; }
+    getName() {
+        return 'fastify';
+    }
     getRequestIdentity(request: any) {
         // Fastify-specific logic
         return request.raw ?? request;
@@ -302,7 +324,9 @@ class FastifyAdapter implements FrameworkAdapter {
 }
 
 class KoaAdapter implements FrameworkAdapter {
-    getName() { return 'koa'; }
+    getName() {
+        return 'koa';
+    }
     getRequestIdentity(request: any) {
         // Koa context has both ctx.req and ctx.request
         return request.req ?? request;
@@ -322,7 +346,11 @@ class RequestIdentityResolver {
             if (adapter.getName() === 'fastify' && 'raw' in request) {
                 return adapter.getRequestIdentity(request);
             }
-            if (adapter.getName() === 'koa' && 'req' in request && 'request' in request) {
+            if (
+                adapter.getName() === 'koa' &&
+                'req' in request &&
+                'request' in request
+            ) {
                 return adapter.getRequestIdentity(request);
             }
         }
@@ -333,11 +361,13 @@ class RequestIdentityResolver {
 ```
 
 **Pros:**
+
 - ✅ Explicit framework support
 - ✅ Easy to extend for new frameworks
 - ✅ Clear separation of concerns
 
 **Cons:**
+
 - ⚠️ Requires framework detection heuristics
 - ⚠️ More code to maintain
 - ⚠️ Auto-detection could fail with edge cases
@@ -348,22 +378,23 @@ class RequestIdentityResolver {
 
 ### NestJS Version Compatibility
 
-| NestJS Version | Express Support | Fastify Support | Koa Support | Hapi Support |
-|----------------|-----------------|-----------------|-------------|--------------|
-| **10.x** | ✅ 4.x | ✅ 4.x | ❓ (via adapter) | ❓ (via adapter) |
-| **11.x** | ✅ 4.x, 5.x | ✅ 4.x, 5.x | ❓ (via adapter) | ❓ (via adapter) |
+| NestJS Version | Express Support | Fastify Support | Koa Support      | Hapi Support     |
+| -------------- | --------------- | --------------- | ---------------- | ---------------- |
+| **10.x**       | ✅ 4.x          | ✅ 4.x          | ❓ (via adapter) | ❓ (via adapter) |
+| **11.x**       | ✅ 4.x, 5.x     | ✅ 4.x, 5.x     | ❓ (via adapter) | ❓ (via adapter) |
 
 ### Framework Version Testing Matrix
 
-| Framework | Version | Test Strategy 1 | Test Strategy 2 | Test Strategy 3 |
-|-----------|---------|----------------|----------------|----------------|
-| Express | 4.x | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (fallback) |
-| Express | 5.x | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (fallback) |
-| Fastify | 4.x | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
-| Fastify | 5.x | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
-| Koa | 2.x | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
+| Framework | Version | Test Strategy 1   | Test Strategy 2  | Test Strategy 3       |
+| --------- | ------- | ----------------- | ---------------- | --------------------- |
+| Express   | 4.x     | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (fallback) |
+| Express   | 5.x     | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (fallback) |
+| Fastify   | 4.x     | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
+| Fastify   | 5.x     | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
+| Koa       | 2.x     | ✅ Symbol tagging | ✅ Composite key | ✅ Adapter (explicit) |
 
 **Legend:**
+
 - ✅ Supported and tested
 - ⚠️ Partially supported
 - ❓ Untested / Unknown
@@ -376,6 +407,7 @@ class RequestIdentityResolver {
 ### Primary: Strategy 1 (Non-Registered Symbol Tagging)
 
 **Rationale:**
+
 1. **Framework-Agnostic**: No framework-specific knowledge required
 2. **Future-Proof**: Doesn't depend on internal framework structures
 3. **Performance**: O(1) lookup after initial tagging
@@ -397,22 +429,27 @@ class RequestIdentityResolver {
 ## Edge Cases to Consider
 
 ### 1. Frozen/Sealed Objects
+
 **Problem:** Cannot add Symbol property to frozen objects
 **Solution:** Fallback to WeakMap with composite key
 
 ### 2. Request Transformation Middleware
+
 **Problem:** Middleware may wrap/proxy request objects
 **Solution:** Symbol property is inherited by Proxy targets
 
 ### 3. Multiple ClsModule Instances
+
 **Problem:** Different modules may use different identity resolvers
 **Solution:** Use singleton pattern with Symbol.for() for the resolver itself
 
 ### 4. Testing/Mocking Libraries (jest.mock, sinon)
+
 **Problem:** Mocked requests may not have expected properties
 **Solution:** Symbol tagging works with plain objects
 
 ### 5. Request Cloning (Object.create, spread)
+
 **Problem:** Cloned objects lose Symbol property
 **Solution:** Rare in production, but fallback handles it
 
