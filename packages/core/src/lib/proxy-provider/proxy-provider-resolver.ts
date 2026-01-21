@@ -18,7 +18,10 @@ import {
     Promise_withResolvers,
     PromiseWithResolvers,
 } from '../../utils/promise-with-resolvers.polyfill';
-import { DependencyGraph, CycleDetectionResult } from '../../utils/dependency-graph';
+import {
+    DependencyGraph,
+    CycleDetectionResult,
+} from '../../utils/dependency-graph';
 
 /**
  * see {@link ProxyProvidersResolver.getOrCreateCurrentProxyPromisesMap}
@@ -58,7 +61,9 @@ export class ProxyProvidersResolver {
     private validateNoCycles(): void {
         // Use cached analysis if available
         if (!this.cachedCycleAnalysis) {
-            const graph = new DependencyGraph(this.proxyProviderDependenciesMap);
+            const graph = new DependencyGraph(
+                this.proxyProviderDependenciesMap,
+            );
             this.cachedCycleAnalysis = graph.detectCycles();
         }
 
