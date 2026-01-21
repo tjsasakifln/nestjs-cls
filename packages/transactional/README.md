@@ -27,6 +27,7 @@ async createUser(user: User) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Creates a new transaction
 - **Transaction exists:** Participates in the existing transaction (shares the same physical transaction)
 - **Commit:** Controlled by outermost transaction
@@ -48,6 +49,7 @@ async sendNotification(userId: string) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Creates a new transaction
 - **Transaction exists:** Suspends parent transaction, creates new independent transaction
 - **Commit:** Commits independently of parent transaction
@@ -68,12 +70,14 @@ async processPayment(order: Order) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Creates a new transaction (behaves like REQUIRED)
 - **Transaction exists:** Creates a **savepoint** (if supported by adapter)
 - **Commit:** Releases savepoint; committed with parent transaction
 - **Rollback:** Rolls back to savepoint; parent transaction can continue
 
 **Limitations:**
+
 - Requires adapter support (check adapter documentation)
 - Uses database savepoints (e.g., `SAVEPOINT nested_transaction;`)
 - Parent rollback undoes nested transactions
@@ -91,6 +95,7 @@ async performReadOnlyQuery() {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Runs without transaction
 - **Transaction exists:** Suspends transaction, runs without transaction
 - **Commit/Rollback:** Not applicable (no transaction)
@@ -110,6 +115,7 @@ async updateAccount(accountId: string) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Throws `TransactionNotActiveError`
 - **Transaction exists:** Participates in existing transaction
 
@@ -128,6 +134,7 @@ async sendEmail(email: string) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Runs without transaction
 - **Transaction exists:** Throws `TransactionAlreadyActiveError`
 
@@ -146,6 +153,7 @@ async findUser(userId: string) {
 ```
 
 **Semantics:**
+
 - **No transaction exists:** Runs without transaction
 - **Transaction exists:** Participates in existing transaction
 
@@ -178,6 +186,7 @@ async childTransaction() {
 ```
 
 **Why it fails:**
+
 1. Parent transaction starts
 2. Child transaction starts (shares same transaction with `Propagation.Required`)
 3. Parent finishes and commits transaction
@@ -229,6 +238,7 @@ async parentTransaction() {
 ### Future Improvements
 
 In v7.1+, the library will detect non-awaited child transactions and:
+
 - **v7.0:** Emit warnings in development mode
 - **v7.1:** Throw errors at commit time (breaking change)
 - **v8.0:** Introduce `Propagation.RequiredIsolated` for legitimate fire-and-forget scenarios
@@ -239,15 +249,15 @@ In v7.1+, the library will detect non-awaited child transactions and:
 
 ## Propagation Mode Comparison
 
-| Mode | Creates TX if None | Joins Existing TX | Independent Commit | Throws if No TX | Throws if TX Exists |
-|------|-------------------|-------------------|-------------------|-----------------|---------------------|
-| **REQUIRED** | ✅ Yes | ✅ Yes | ❌ No | ❌ No | ❌ No |
-| **REQUIRES_NEW** | ✅ Yes | ❌ No (creates new) | ✅ Yes | ❌ No | ❌ No |
-| **NESTED** | ✅ Yes | ✅ Yes (savepoint) | ❌ No | ❌ No | ❌ No |
-| **NOT_SUPPORTED** | ❌ No | ❌ No (suspends) | N/A | ❌ No | ❌ No |
-| **MANDATORY** | ❌ No | ✅ Yes | ❌ No | ✅ Yes | ❌ No |
-| **NEVER** | ❌ No | N/A | N/A | ❌ No | ✅ Yes |
-| **SUPPORTS** | ❌ No | ✅ Yes | ❌ No | ❌ No | ❌ No |
+| Mode              | Creates TX if None | Joins Existing TX   | Independent Commit | Throws if No TX | Throws if TX Exists |
+| ----------------- | ------------------ | ------------------- | ------------------ | --------------- | ------------------- |
+| **REQUIRED**      | ✅ Yes             | ✅ Yes              | ❌ No              | ❌ No           | ❌ No               |
+| **REQUIRES_NEW**  | ✅ Yes             | ❌ No (creates new) | ✅ Yes             | ❌ No           | ❌ No               |
+| **NESTED**        | ✅ Yes             | ✅ Yes (savepoint)  | ❌ No              | ❌ No           | ❌ No               |
+| **NOT_SUPPORTED** | ❌ No              | ❌ No (suspends)    | N/A                | ❌ No           | ❌ No               |
+| **MANDATORY**     | ❌ No              | ✅ Yes              | ❌ No              | ✅ Yes          | ❌ No               |
+| **NEVER**         | ❌ No              | N/A                 | N/A                | ❌ No           | ✅ Yes              |
+| **SUPPORTS**      | ❌ No              | ✅ Yes              | ❌ No              | ❌ No           | ❌ No               |
 
 ---
 
