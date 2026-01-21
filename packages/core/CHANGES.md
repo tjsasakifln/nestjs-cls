@@ -2,6 +2,20 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [Unreleased]
+
+### Features
+
+* **core**: integrate DependencyGraph into proxy-provider-resolver for structural cycle detection
+  - Replace timeout-based circular dependency detection with fail-fast DFS-based cycle analysis
+  - Add ProxyProviderCircularDependencyException with detailed cycle path in error messages
+  - Add caching for cycle analysis results to improve performance across multiple resolutions
+  - Reduce detection time from 10s (timeout) to <10ms (structural validation)
+
+### Breaking Changes
+
+* **core**: ProxyProvidersResolutionTimeoutException may no longer be thrown - use ProxyProviderCircularDependencyException instead
+
 ## [6.3.0](https://github.com/Papooch/nestjs-cls/compare/nestjs-cls@6.2.0...nestjs-cls@6.3.0) "nestjs-cls" (2026-01-21)<a name="6.3.0"></a>
 
 ### Features

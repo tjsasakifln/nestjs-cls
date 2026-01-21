@@ -96,3 +96,10 @@ export class ProxyProvidersResolutionTimeoutException extends ProxyProviderError
         return new this(message);
     }
 }
+
+export class ProxyProviderCircularDependencyException extends ProxyProviderError {
+    static create(cyclePath: string) {
+        const message = `Circular dependency detected in Proxy Providers: ${cyclePath}. Please remove the circular dependency to allow proper resolution.`;
+        return new this(message);
+    }
+}
