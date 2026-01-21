@@ -9,7 +9,6 @@ import {
 import {
     ProxyProviderCircularDependencyException,
     ProxyProviderNotRegisteredException,
-    ProxyProvidersResolutionTimeoutException,
     UnknownProxyDependenciesException,
 } from './proxy-provider.exceptions';
 import { defaultProxyProviderTokens } from './proxy-provider.constants';
