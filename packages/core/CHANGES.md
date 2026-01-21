@@ -2,6 +2,15 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [6.3.0](https://github.com/Papooch/nestjs-cls/compare/nestjs-cls@6.2.0...nestjs-cls@6.3.0) "nestjs-cls" (2026-01-21)<a name="6.3.0"></a>
+
+### Features
+
+* **core**: add dependency graph utility for cycle detection ([d0f3b36](https://github.com/Papooch/nestjs-cls/commits/d0f3b36))
+
+
+
+
 ## [6.2.0](https://github.com/Papooch/nestjs-cls/compare/nestjs-cls@6.1.0...nestjs-cls@6.2.0) "nestjs-cls" (2026-01-06)<a name="6.2.0"></a>
 
 ### Features
