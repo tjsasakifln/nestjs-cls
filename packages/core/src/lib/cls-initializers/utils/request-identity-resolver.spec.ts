@@ -274,8 +274,7 @@ describe('RequestIdentityResolver', () => {
             expect(canonical).toBe(proxy);
 
             // Target gets its own canonical (they're independent)
-            const targetCanonical =
-                RequestIdentityResolver.getIdentity(target);
+            const targetCanonical = RequestIdentityResolver.getIdentity(target);
 
             // Both maintain stable canonicals
             expect(RequestIdentityResolver.getIdentity(proxy)).toBe(canonical);
@@ -311,8 +310,7 @@ describe('RequestIdentityResolver', () => {
     describe('Performance and Stability', () => {
         it('should maintain stable canonical across 1000+ calls', () => {
             const request = { method: 'GET', url: '/' };
-            const firstCanonical =
-                RequestIdentityResolver.getIdentity(request);
+            const firstCanonical = RequestIdentityResolver.getIdentity(request);
 
             for (let i = 0; i < 1000; i++) {
                 const canonical = RequestIdentityResolver.getIdentity(request);
@@ -344,8 +342,9 @@ describe('RequestIdentityResolver', () => {
             expect(uniqueCanonicals.size).toBe(1000);
 
             // Verify stability
-            const canonical500 =
-                RequestIdentityResolver.getIdentity(requests[500]);
+            const canonical500 = RequestIdentityResolver.getIdentity(
+                requests[500],
+            );
             expect(canonical500).toBe(requests[500]);
         });
 
@@ -405,18 +404,14 @@ describe('RequestIdentityResolver', () => {
 
             // Simulate concurrent access from multiple enhancers
             const promises = Array.from({ length: 10 }, () =>
-                Promise.resolve(
-                    RequestIdentityResolver.getIdentity(request),
-                ),
+                Promise.resolve(RequestIdentityResolver.getIdentity(request)),
             );
 
             const canonicals = await Promise.all(promises);
 
             // All should return the same canonical
             const firstCanonical = canonicals[0];
-            expect(canonicals.every((id) => id === firstCanonical)).toBe(
-                true,
-            );
+            expect(canonicals.every((id) => id === firstCanonical)).toBe(true);
             expect(firstCanonical).toBe(request);
         });
 
@@ -454,9 +449,8 @@ describe('RequestIdentityResolver', () => {
             };
 
             // All enhancers receive decorated request
-            const middlewareCanonical = RequestIdentityResolver.getIdentity(
-                decoratedRequest,
-            );
+            const middlewareCanonical =
+                RequestIdentityResolver.getIdentity(decoratedRequest);
             const guardCanonical =
                 RequestIdentityResolver.getIdentity(decoratedRequest);
             const interceptorCanonical =
@@ -485,8 +479,7 @@ describe('RequestIdentityResolver', () => {
             // All enhancers receive the same request object in Express
             const middlewareCanonical =
                 RequestIdentityResolver.getIdentity(request);
-            const guardCanonical =
-                RequestIdentityResolver.getIdentity(request);
+            const guardCanonical = RequestIdentityResolver.getIdentity(request);
             const interceptorCanonical =
                 RequestIdentityResolver.getIdentity(request);
 

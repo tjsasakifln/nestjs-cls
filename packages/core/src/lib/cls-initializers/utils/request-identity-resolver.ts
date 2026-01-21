@@ -164,18 +164,12 @@ export class RequestIdentityResolver {
      */
     private static resolveCanonicalObject(request: any): any {
         // Prefer .raw (Fastify)
-        if (
-            request.raw &&
-            typeof request.raw === 'object'
-        ) {
+        if (request.raw && typeof request.raw === 'object') {
             return request.raw;
         }
 
         // Prefer .req (Koa, Hapi)
-        if (
-            request.req &&
-            typeof request.req === 'object'
-        ) {
+        if (request.req && typeof request.req === 'object') {
             return request.req;
         }
 
