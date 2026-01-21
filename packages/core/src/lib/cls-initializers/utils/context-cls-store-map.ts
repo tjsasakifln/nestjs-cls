@@ -1,5 +1,6 @@
 import { ContextType, ExecutionContext } from '@nestjs/common';
 import { ClsStore } from '../../cls.options';
+import { RequestIdentityResolver } from './request-identity-resolver';
 
 /**
  * This static class can be used to save the CLS store in a WeakMap based on the ExecutionContext
@@ -37,11 +38,11 @@ export class ContextClsStoreMap {
         switch (context.getType() as ContextType | 'graphql') {
             case 'http':
                 const request = context.switchToHttp().getRequest();
-                // Workaround for Fastify
-                // When setting the request from ClsMiddleware, we only have access to the "raw" request
-                // But when accessing it from other enhancers, we receive the "full" request. Therefore,
-                // we have to reach into the "raw" property to be able to compare the identity of the request.
-                return request.raw ?? request;
+                // Use framework-agnostic request identity resolution
+                // This eliminates the need for framework-specific hacks (e.g., request.raw ?? request)
+                // and works consistently across Express, Fastify, Koa, and other frameworks.
+                // @see RequestIdentityResolver for implementation details
+                return RequestIdentityResolver.getIdentity(request);
             case 'ws':
                 return context.switchToWs();
             case 'rpc':

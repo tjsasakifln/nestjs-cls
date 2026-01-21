@@ -3,6 +3,7 @@ export * from './lib/cls-initializers/cls.interceptor';
 export * from './lib/cls-initializers/cls.middleware';
 export * from './lib/cls-initializers/use-cls.decorator';
 export * from './lib/cls-initializers/utils/context-cls-store-map';
+export * from './lib/cls-initializers/utils/request-identity-resolver';
 export * from './lib/cls-service-manager';
 export * from './lib/cls.constants';
 export * from './lib/cls-module/cls.module';

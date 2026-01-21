@@ -12,9 +12,21 @@
   - Add caching for cycle analysis results to improve performance across multiple resolutions
   - Reduce detection time from 10s (timeout) to <10ms (structural validation)
 
+* **core**: add framework-agnostic request identity resolution
+  - Add RequestIdentityResolver utility for stable request identity across enhancers
+  - Use Symbol tagging strategy with WeakMap fallback for frozen objects
+  - Support Express, Fastify, Koa, and other frameworks without framework-specific hacks
+  - Eliminate dependency on Fastify's internal `request.raw` structure
+  - Improve context tracking reliability with Proxy objects and mocked requests
+
 ### Breaking Changes
 
 * **core**: ProxyProvidersResolutionTimeoutException may no longer be thrown - use ProxyProviderCircularDependencyException instead
+
+* **core**: ContextClsStoreMap now uses RequestIdentityResolver for HTTP requests
+  - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
+  - This change should be transparent to users, but custom code relying on the old behavior may need updates
+  - Migration: If you're directly accessing or depending on the `request.raw` fallback logic, switch to using RequestIdentityResolver.getIdentity(request)
 
 ## [6.3.0](https://github.com/Papooch/nestjs-cls/compare/nestjs-cls@6.2.0...nestjs-cls@6.3.0) "nestjs-cls" (2026-01-21)<a name="6.3.0"></a>
 
