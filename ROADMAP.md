@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 (fragmented for manageability)                        |
-| **Progress**        | 1/13 completed (7.7%) - #2 ✅                            |
+| **Progress**        | 4/13 completed (30.8%) - #2, #5, #8, #11 ✅              |
 | **Timeline**        | 7 weeks (Week 1 in progress)                             |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -146,14 +146,14 @@ const { ProxyProviderManager } =
 | ✅ #2     | Directed graph analysis             | core          | `dependency-graph.ts` + specs         | **COMPLETED** (PR #15, 2026-01-21)  |
 | ✅ #5     | Framework-agnostic request identity | core          | Research doc + compatibility matrix   | **COMPLETED** (d517ce5, 2026-01-21) |
 | ✅ #8     | WeakMap false negatives             | core          | Research doc + edge case reproduction | **COMPLETED** (PR #20, 2026-01-21)  |
-| #11       | Transaction propagation semantics   | transactional | Semantic specification doc            | Pending                             |
+| ✅ #11    | Transaction propagation semantics   | transactional | Semantic specification doc            | **COMPLETED** (PR #22, 2026-01-21)  |
 
 **Exit Criteria:**
 
 - ✅ ~~#2 completed~~ - DependencyGraph utility implemented with 96.9% coverage
 - ✅ ~~#5 completed~~ - Framework request identity analysis with Symbol tagging strategy
 - ✅ ~~#8 completed~~ - WeakMap identity pitfalls documented with 70.6% failure rate
-- ⏳ #11 pending
+- ✅ ~~#11 completed~~ - Transaction propagation semantics documented with Spring/TypeORM analysis
 
 ---
 
@@ -410,10 +410,20 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-21
-**Status:** Ronda 1 - In Progress (3/4 complete - 75%)
-**Next Milestone:** Complete Issue #11 to finish Ronda 1, then proceed to Ronda 2
+**Status:** Ronda 1 - **COMPLETED** (4/4 complete - 100%) ✅
+**Next Milestone:** Proceed to Ronda 2 (Core Implementation) - Issues #17, #3, #6, #9, #14
 
 ### Recent Progress
+
+- ✅ **2026-01-21**: Issue #11 completed (PR #22) - **Ronda 1 COMPLETED** 🎉
+    - Comprehensive transaction propagation semantics documentation (1000+ lines)
+    - Analyzed Spring Framework @Transactional and TypeORM QueryRunner semantics
+    - Identified Issue #196 root cause: `ifNested: 'inherit'` in `Propagation.Required`
+    - Proposed 3 solutions (Hybrid approach recommended for v7.0)
+    - Created decision tables, sequence diagrams, and propagation mode comparison
+    - Updated transactional README with clarified semantics and non-awaited transaction warnings
+    - Research document: `docs/research/transaction-propagation-semantics.md`
+    - Ready for Ronda 2 implementation (Issue #12)
 
 - ✅ **2026-01-21**: Issue #8 completed (PR #20)
     - WeakMap object identity comparison pitfalls comprehensively analyzed
