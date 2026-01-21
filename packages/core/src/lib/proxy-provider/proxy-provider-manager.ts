@@ -5,7 +5,7 @@ import {
     ValueProvider,
 } from '@nestjs/common';
 import { ModuleRef } from '@nestjs/core';
-import { globalClsService } from '../cls-service.globals';
+import { ClsService } from '../cls.service';
 import { getProxyProviderSymbol } from './get-proxy-provider-symbol';
 import { InjectableProxyMetadata } from './injectable-proxy.decorator';
 import { ProxyProvidersResolver } from './proxy-provider-resolver';
@@ -32,7 +32,7 @@ type ProxyOptions = {
 };
 
 export class ProxyProviderManager {
-    private static clsService = globalClsService;
+    private static clsService?: ClsService;
     private static proxyProviderMap = new Map<
         symbol,
         ProxyProviderDefinition
@@ -56,8 +56,11 @@ export class ProxyProviderManager {
     /**
      * Init method called by the ClsRootModule#onModuleInit after it is certain
      * that all Proxy Providers have been registered.
+     *
+     * @param clsService The ClsService instance to use for proxy resolution
      */
-    static init() {
+    static init(clsService: ClsService) {
+        this.clsService = clsService;
         // If there are no proxy providers, there is no need to set up the resolver.
         if (this.proxyProviderMap.size === 0) {
             return;
@@ -160,7 +163,7 @@ export class ProxyProviderManager {
         { type = 'object', strict = false }: ProxyOptions = {},
     ): any {
         const checkAccess = getPropertyAccessChecker(providerKey, strict);
-        const getProvider = () => this.clsService.get()?.[providerKey];
+        const getProvider = () => this.clsService?.get()?.[providerKey];
         const getProviderOrEmpty = () => getProvider() ?? {};
         const baseType = type === 'function' ? () => null : {};
 

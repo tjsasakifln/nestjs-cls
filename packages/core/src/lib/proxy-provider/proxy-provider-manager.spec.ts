@@ -39,7 +39,7 @@ describe('ProxyProviderManager', () => {
 
                     const instance = useFactory();
 
-                    ProxyProviderManager.init();
+                    ProxyProviderManager.init(globalClsService);
                     await ProxyProviderManager.resolveProxyProviders();
 
                     expect(instance.key).toBe(provider.key);
@@ -61,7 +61,7 @@ describe('ProxyProviderManager', () => {
 
                     const instance = useFactory();
 
-                    ProxyProviderManager.init();
+                    ProxyProviderManager.init(globalClsService);
                     await ProxyProviderManager.resolveProxyProviders();
 
                     expect(instance.fn()).toBe(provider);
@@ -81,7 +81,7 @@ describe('ProxyProviderManager', () => {
 
                     const instance = useFactory();
 
-                    ProxyProviderManager.init();
+                    ProxyProviderManager.init(globalClsService);
                     await ProxyProviderManager.resolveProxyProviders();
 
                     expect(instance.fn.info).toEqual(expect.any(Function));

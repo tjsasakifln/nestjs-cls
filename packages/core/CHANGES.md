@@ -27,6 +27,13 @@
   - Symbol properties are copied by Object.assign() and spread operator (better than expected!)
   - Addresses Issue #129 (Context Leaking - ClsGuard)
 
+* **core**: eliminate circular dependency in ClsService proxy resolution
+  - Create ProxyResolutionFacade to provide clean public API for proxy resolution
+  - Remove dynamic import workaround from ClsService.resolve()
+  - Refactor ProxyProviderManager to accept ClsService instance in init() method
+  - Export ProxyResolutionFacade as the recommended API for manual proxy resolution
+  - Addresses Issue #14 (Internal Circular Dependency Cleanup)
+
 ### Breaking Changes
 
 * **core**: ProxyProvidersResolutionTimeoutException may no longer be thrown - use ProxyProviderCircularDependencyException instead
@@ -35,6 +42,26 @@
   - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
   - This change should be transparent to users, but custom code relying on the old behavior may need updates
   - Migration: If you're directly accessing or depending on the `request.raw` fallback logic, switch to using RequestIdentityResolver.getIdentity(request)
+
+* **core**: ProxyProviderManager.init() now requires ClsService parameter
+  - The init() method signature changed from `init()` to `init(clsService: ClsService)`
+  - This change only affects users directly calling ProxyProviderManager.init() (rare)
+  - Migration: Pass the ClsService instance (usually globalClsService) to init()
+  - Internal usage in ClsRootModule has been updated automatically
+
+* **core**: ClsService.resolve() is deprecated in favor of ProxyResolutionFacade
+  - ClsService.resolve() still works but is marked as deprecated
+  - Recommended migration: Replace `clsService.resolve(tokens)` with `ProxyResolutionFacade.resolveProxyProviders(tokens)`
+  - The deprecated method will be removed in a future major version
+  - Example:
+    ```typescript
+    // Old (deprecated)
+    await this.cls.resolve([MyService]);
+
+    // New (recommended)
+    import { ProxyResolutionFacade } from 'nestjs-cls';
+    await ProxyResolutionFacade.resolveProxyProviders([MyService]);
+    ```
 
 ## [6.3.0](https://github.com/Papooch/nestjs-cls/compare/nestjs-cls@6.2.0...nestjs-cls@6.3.0) "nestjs-cls" (2026-01-21)<a name="6.3.0"></a>
 

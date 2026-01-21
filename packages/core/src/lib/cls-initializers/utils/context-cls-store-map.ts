@@ -77,7 +77,7 @@ export class ContextClsStoreMap {
         try {
             // Primary: Tag with Symbol (works with Proxies, wrappers, etc.)
             ctx[this.CLS_STORE_SYMBOL] = value;
-        } catch (e) {
+        } catch (_e) {
             // Fallback: Object is frozen/sealed/non-extensible, use WeakMap
             this.contextMap.set(ctx, value);
         }

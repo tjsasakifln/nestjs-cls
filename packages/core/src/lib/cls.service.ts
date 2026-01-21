@@ -12,6 +12,7 @@ import { getValueFromPath, setValueFromPath } from '../utils/value-from-path';
 import { CLS_ID } from './cls.constants';
 import { ClsContextOptions, ClsStore } from './cls.options';
 import { getProxyProviderSymbol } from './proxy-provider/get-proxy-provider-symbol';
+import { ProxyResolutionFacade } from './proxy-provider/proxy-resolution-facade';
 
 export class ClsService<S extends ClsStore = ClsStore> {
     constructor(private readonly als: AsyncLocalStorage<any>) {
@@ -230,17 +231,13 @@ class ClsProxyAccessors {
      * Use to manually trigger resolution of Proxy Providers
      * in case `resolveProxyProviders` is not enabled in the enhancer.
      *
+     * @deprecated Use `ProxyResolutionFacade.resolveProxyProviders()` instead.
+     * This method will be removed in a future version.
+     *
      * @param proxyTokens An optional array of Proxy Provider injection tokens
      * to resolve. If not supplied, resolves all registered proxy providers.
      */
     async resolve(proxyTokens?: any[]) {
-        // Workaround for a circular dep
-        // TODO: This should be untangled and cleaned up
-        const { ProxyProviderManager } =
-            await import('./proxy-provider/proxy-provider-manager');
-        const proxySymbols = proxyTokens
-            ? proxyTokens.map(getProxyProviderSymbol)
-            : [];
-        await ProxyProviderManager.resolveProxyProviders(proxySymbols);
+        await ProxyResolutionFacade.resolveProxyProviders(proxyTokens);
     }
 }

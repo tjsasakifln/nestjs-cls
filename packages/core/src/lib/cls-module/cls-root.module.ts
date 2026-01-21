@@ -34,6 +34,7 @@ import {
     ClsModuleAsyncOptions,
     ClsModuleOptions,
 } from '../cls.options';
+import { globalClsService } from '../cls-service.globals';
 import { ClsPluginsModule } from '../plugin/cls-plugins.module';
 import { ProxyProviderManager } from '../proxy-provider/proxy-provider-manager';
 import { ClsCommonModule } from './cls-common.module';
@@ -71,7 +72,7 @@ export class ClsRootModule implements NestModule, OnModuleInit {
     }
 
     onModuleInit() {
-        ProxyProviderManager.init();
+        ProxyProviderManager.init(globalClsService);
     }
 
     /**
