@@ -145,14 +145,15 @@ const { ProxyProviderManager } =
 | --------- | ----------------------------------- | ------------- | ------------------------------------- | ----------------------------------- |
 | ✅ #2     | Directed graph analysis             | core          | `dependency-graph.ts` + specs         | **COMPLETED** (PR #15, 2026-01-21)  |
 | ✅ #5     | Framework-agnostic request identity | core          | Research doc + compatibility matrix   | **COMPLETED** (d517ce5, 2026-01-21) |
-| #8        | WeakMap false negatives             | core          | Research doc + edge case reproduction | Pending                             |
+| ✅ #8     | WeakMap false negatives             | core          | Research doc + edge case reproduction | **COMPLETED** (PR #20, 2026-01-21)  |
 | #11       | Transaction propagation semantics   | transactional | Semantic specification doc            | Pending                             |
 
 **Exit Criteria:**
 
 - ✅ ~~#2 completed~~ - DependencyGraph utility implemented with 96.9% coverage
 - ✅ ~~#5 completed~~ - Framework request identity analysis with Symbol tagging strategy
-- ⏳ #8, #11 pending
+- ✅ ~~#8 completed~~ - WeakMap identity pitfalls documented with 70.6% failure rate
+- ⏳ #11 pending
 
 ---
 
@@ -163,9 +164,9 @@ const { ProxyProviderManager } =
 | Sub-Issue | Title                            | Package | Key Changes                         | Status                   |
 | --------- | -------------------------------- | ------- | ----------------------------------- | ------------------------ |
 | #3        | Proxy Provider resolver refactor | core    | Replace timeout with graph analysis | Ready (depends on #2 ✅) |
-| #5        | Request identity resolver        | core    | Symbol-based identity + fallbacks   | Pending                  |
-| #8        | Context tracking hybrid strategy | core    | Symbol+WeakMap implementation       | Pending                  |
-| #13       | Circular dependency cleanup      | core    | Extract ProxyResolutionFacade       | Pending                  |
+| #6        | Request identity resolver        | core    | Symbol-based identity + fallbacks   | Ready (depends on #5 ✅) |
+| #9        | Context tracking hybrid strategy | core    | Symbol+WeakMap implementation       | Ready (depends on #8 ✅) |
+| #14       | Circular dependency cleanup      | core    | Extract ProxyResolutionFacade       | Pending                  |
 
 **Exit Criteria:**
 
@@ -409,10 +410,21 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-21
-**Status:** Ronda 1 - In Progress (2/4 complete - 50%)
-**Next Milestone:** Complete remaining Ronda 1 analysis sub-issues (#8, #11)
+**Status:** Ronda 1 - In Progress (3/4 complete - 75%)
+**Next Milestone:** Complete Issue #11 to finish Ronda 1, then proceed to Ronda 2
 
 ### Recent Progress
+
+- ✅ **2026-01-21**: Issue #8 completed (PR #20)
+    - WeakMap object identity comparison pitfalls comprehensively analyzed
+    - Documented 7 failure scenarios with 70.6% failure rate in edge cases
+    - Created 17-test suite demonstrating Proxy, clone, and transformer failures
+    - Identified root cause: WeakMap strict identity breaks with Proxy wrappers
+    - Proposed Symbol+WeakMap hybrid solution (95% expected success rate)
+    - Current Fastify hack (`request.raw ?? request`) proven insufficient
+    - Research document: `docs/research/weakmap-identity-pitfalls.md`
+    - Test suite: `packages/core/test/edge-cases/object-identity-failures.spec.ts`
+    - Ready for Ronda 2 implementation (Issue #9)
 
 - ✅ **2026-01-21**: Issue #5 completed (commit d517ce5)
     - Framework-agnostic request identity resolution strategy analyzed

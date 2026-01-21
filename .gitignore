@@ -5,6 +5,8 @@ package.tgz
 
 # temporary files
 tmp
+tmpclaude
+tmpclaude-*-cwd
 gqlschema.gql
 
 # Logs
@@ -51,3 +53,7 @@ lerna-debug.log*
 # Automatically copied files
 packages/**/LICENSE
 packages/core/README.md
+
+# Claude AI configuration
+.claude/
+CLAUDE.md
