@@ -7,8 +7,8 @@ import {
     ProxyProviderDefinition,
 } from './proxy-provider.interfaces';
 import {
+    ProxyProviderCircularDependencyException,
     ProxyProviderNotRegisteredException,
-    ProxyProvidersResolutionTimeoutException,
     UnknownProxyDependenciesException,
 } from './proxy-provider.exceptions';
 import { defaultProxyProviderTokens } from './proxy-provider.constants';
@@ -17,6 +17,10 @@ import {
     Promise_withResolvers,
     PromiseWithResolvers,
 } from '../../utils/promise-with-resolvers.polyfill';
+import {
+    DependencyGraph,
+    CycleDetectionResult,
+} from '../../utils/dependency-graph';
 
 /**
  * see {@link ProxyProvidersResolver.getOrCreateCurrentProxyPromisesMap}
@@ -27,6 +31,7 @@ const CLS_PROXY_PROVIDER_PROMISES_MAP = Symbol('CLS_PROVIDER_PROMISES_MAP');
 
 export class ProxyProvidersResolver {
     private readonly proxyProviderDependenciesMap = new Map<symbol, symbol[]>();
+    private cachedCycleAnalysis?: CycleDetectionResult<symbol>;
 
     constructor(
         private readonly cls: ClsService,
@@ -46,10 +51,40 @@ export class ProxyProvidersResolver {
     }
 
     /**
+     * Validates that there are no circular dependencies in the proxy provider dependency graph.
+     * Uses structural analysis via DependencyGraph to detect cycles upfront.
+     *
+     * @throws {ProxyProviderCircularDependencyException} If a circular dependency is detected
+     * @private
+     */
+    private validateNoCycles(): void {
+        // Use cached analysis if available
+        if (!this.cachedCycleAnalysis) {
+            const graph = new DependencyGraph(
+                this.proxyProviderDependenciesMap,
+            );
+            this.cachedCycleAnalysis = graph.detectCycles();
+        }
+
+        if (this.cachedCycleAnalysis.hasCycles) {
+            // Get the first detected cycle and format it for the error message
+            const firstCycle = this.cachedCycleAnalysis.cycles[0];
+            const cyclePath = DependencyGraph.formatCycle(
+                firstCycle,
+                (sym) => sym.description ?? 'unknown',
+            );
+            throw ProxyProviderCircularDependencyException.create(cyclePath);
+        }
+    }
+
+    /**
      * Resolves all Proxy Providers that have been registered,
      * or only the ones that are passed as an argument and their dependencies.
      */
     async resolve(providerSymbols?: symbol[]) {
+        // Validate no circular dependencies before attempting resolution
+        this.validateNoCycles();
+
         const providerSymbolsToResolve = providerSymbols?.length
             ? providerSymbols
             : Array.from(this.proxyProviderMap.keys());
@@ -79,21 +114,8 @@ export class ProxyProvidersResolver {
             );
         }
 
-        const timeout = 10_000;
-        const timeoutPromise = Promise_withResolvers();
-        const timeoutHandle = setTimeout(() => {
-            timeoutPromise.reject(
-                ProxyProvidersResolutionTimeoutException.create(timeout),
-            );
-        }, timeout);
-        try {
-            await Promise.race([
-                timeoutPromise.promise,
-                Promise.all(resolutionPromisesMap.values()),
-            ]);
-        } finally {
-            clearTimeout(timeoutHandle);
-        }
+        // All providers resolved without timeout - cycles already validated
+        await Promise.all(resolutionPromisesMap.values());
     }
 
     /**
