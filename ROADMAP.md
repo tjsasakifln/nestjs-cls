@@ -128,13 +128,14 @@ const { ProxyProviderManager } =
 | Sub-Issue | Title | Package | Deliverable | Status |
 |-----------|-------|---------|-------------|--------|
 | ✅ #2 | Directed graph analysis | core | `dependency-graph.ts` + specs | **COMPLETED** (PR #15, 2026-01-21) |
-| #4 | Framework-agnostic request identity | core | Research doc + compatibility matrix | Pending |
-| #7 | WeakMap false negatives | core | Research doc + edge case reproduction | Pending |
-| #10 | Transaction propagation semantics | transactional | Semantic specification doc | Pending |
+| ✅ #5 | Framework-agnostic request identity | core | Research doc + compatibility matrix | **COMPLETED** (d517ce5, 2026-01-21) |
+| #8 | WeakMap false negatives | core | Research doc + edge case reproduction | Pending |
+| #11 | Transaction propagation semantics | transactional | Semantic specification doc | Pending |
 
 **Exit Criteria:**
 - ✅ ~~#2 completed~~ - DependencyGraph utility implemented with 96.9% coverage
-- ⏳ #4, #7, #10 pending
+- ✅ ~~#5 completed~~ - Framework request identity analysis with Symbol tagging strategy
+- ⏳ #8, #11 pending
 
 ---
 
@@ -367,10 +368,20 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-21
-**Status:** Ronda 1 - In Progress (1/4 complete)
-**Next Milestone:** Complete remaining Ronda 1 analysis sub-issues (#4, #7, #10)
+**Status:** Ronda 1 - In Progress (2/4 complete - 50%)
+**Next Milestone:** Complete remaining Ronda 1 analysis sub-issues (#8, #11)
 
 ### Recent Progress
+- ✅ **2026-01-21**: Issue #5 completed (commit d517ce5)
+  - Framework-agnostic request identity resolution strategy analyzed
+  - Researched Express, Fastify, Koa, Hapi request object structures
+  - Identified fragility in current `request.raw ?? request` hack
+  - Recommended non-registered Symbol tagging as primary solution
+  - Created comprehensive compatibility matrix (NestJS 10/11 × frameworks)
+  - Documented 3 alternative strategies with pros/cons
+  - Research document: `docs/research/framework-request-identity.md`
+  - Ready for Ronda 2 implementation (Issue #6)
+
 - ✅ **2026-01-21**: Issue #2 completed (PR #15 merged)
   - DependencyGraph utility implemented with O(V+E) DFS-based cycle detection
   - 24 comprehensive tests, 96.9% coverage
