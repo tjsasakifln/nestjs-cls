@@ -53,10 +53,7 @@ function expectConsistentIds(
     expectedId?: string,
 ): void {
     const firstId =
-        expectedId ??
-        body.middlewareId ??
-        body.guardId ??
-        body.interceptorId;
+        expectedId ?? body.middlewareId ?? body.guardId ?? body.interceptorId;
 
     if (body.middlewareId) {
         expect(body.middlewareId).toEqual(firstId);
@@ -159,17 +156,16 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         })
         class BasicMiddlewareModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [BasicMiddlewareModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -269,9 +265,7 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         });
 
         it('should work with root path', async () => {
-            await request(app.getHttpServer())
-                .get('/')
-                .expect(404); // No route defined for root, but CLS should work
+            await request(app.getHttpServer()).get('/').expect(404); // No route defined for root, but CLS should work
 
             // Even if route doesn't exist, middleware should execute
             expect(true).toBe(true);
@@ -280,9 +274,7 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         it('should track identity for OPTIONS requests', async () => {
             // OPTIONS returns 404 by default in Express if no route is defined
             // But middleware should still execute
-            await request(app.getHttpServer())
-                .options('/hello')
-                .expect(404);
+            await request(app.getHttpServer()).options('/hello').expect(404);
 
             // Verify test completes without errors
             expect(true).toBe(true);
@@ -302,10 +294,11 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         class BasicGuardModule {}
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [BasicGuardModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -390,12 +383,8 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
             expect(response1.body.guardId).toBeDefined();
             expect(response2.body.guardId).toBeDefined();
             expect(response3.body.guardId).toBeDefined();
-            expect(response1.body.guardId).not.toEqual(
-                response2.body.guardId,
-            );
-            expect(response2.body.guardId).not.toEqual(
-                response3.body.guardId,
-            );
+            expect(response1.body.guardId).not.toEqual(response2.body.guardId);
+            expect(response2.body.guardId).not.toEqual(response3.body.guardId);
         });
 
         it('should work with async guard operations', async () => {
@@ -420,10 +409,11 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         class BasicInterceptorModule {}
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [BasicInterceptorModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -528,17 +518,16 @@ describe('Section 2: Express v4 vs v5 Compatibility (25 tests)', () => {
         })
         class CompatibilityModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [CompatibilityModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -649,17 +638,16 @@ describe('Section 2: Express v4 vs v5 Compatibility (25 tests)', () => {
         })
         class SymbolTaggingModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [SymbolTaggingModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -749,17 +737,16 @@ describe('Section 2: Express v4 vs v5 Compatibility (25 tests)', () => {
         })
         class BackwardCompatModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [BackwardCompatModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -880,10 +867,11 @@ describe('Section 3: Express-Specific Edge Cases (25 tests)', () => {
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [TransformModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -1028,10 +1016,11 @@ describe('Section 3: Express-Specific Edge Cases (25 tests)', () => {
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [MiddlewareCompatModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -1126,17 +1115,16 @@ describe('Section 3: Express-Specific Edge Cases (25 tests)', () => {
         })
         class GlobalPrefixModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [GlobalPrefixModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             app.setGlobalPrefix('api');
             await app.init();
@@ -1239,17 +1227,16 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
         })
         class MultiEnhancerModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [MultiEnhancerModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -1379,17 +1366,16 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
         })
         class MiddlewareGuardModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [MiddlewareGuardModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
@@ -1495,17 +1481,16 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
         })
         class MiddlewareInterceptorModule implements NestModule {
             configure(consumer: MiddlewareConsumer) {
-                consumer
-                    .apply(IdentityTrackingMiddleware)
-                    .forRoutes('/');
+                consumer.apply(IdentityTrackingMiddleware).forRoutes('/');
             }
         }
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule =
-                await Test.createTestingModule({
+            const moduleFixture: TestingModule = await Test.createTestingModule(
+                {
                     imports: [MiddlewareInterceptorModule],
-                }).compile();
+                },
+            ).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
