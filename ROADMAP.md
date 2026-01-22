@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (27 total in milestone)         |
-| **Progress**        | 10/27 completed (37.0%) - Ronda 4 in progress (7.1%) 🚀   |
+| **Progress**        | 11/27 completed (40.7%) - Ronda 4 in progress (14.3%) 🚀   |
 | **Timeline**        | 3-4 weeks (4-5 weeks ahead of schedule)                  |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -205,7 +205,7 @@ const { ProxyProviderManager } =
 | Issue | Title                                     | Package | Test Count | Status |
 | ----- | ----------------------------------------- | ------- | ---------- | ------ |
 | ✅ #27   | Simple circular dependency cycles         | core    | 50         | **COMPLETED** (PR #41, 2026-01-22) |
-| #28   | Complex circular dependency cycles        | core    | 100        | OPEN   |
+| ✅ #28   | Complex circular dependency cycles        | core    | 100        | **COMPLETED** (PR #42, 2026-01-22) |
 | #29   | Valid DAGs - no false positives           | core    | 50         | OPEN   |
 | #30   | Circular dependency edge cases & perf     | core    | 50         | OPEN   |
 
@@ -437,10 +437,22 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-22
-**Status:** Ronda 4 - **IN PROGRESS** (1/14 test issues complete, 7.1%)
+**Status:** Ronda 4 - **IN PROGRESS** (2/14 test issues complete, 14.3%)
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- ✅ **2026-01-22**: Issue #28 completed (PR #42) - **Ronda 4 MILESTONE: 14.3%** 🎉
+    - Implemented comprehensive test suite for complex circular dependency scenarios
+    - Added 100 tests across 4 sections: Nested Cycles (25), Multiple Independent Cycles (25), Long Cycle Chains (25), Mixed Scenarios (25)
+    - All cycle detections complete in <10ms (performance validated)
+    - Achieved 96.87% line coverage on dependency-graph.ts
+    - All 441 tests passing (100 new + 341 existing)
+    - Coverage: 95.45% overall, 96.87% on core dependency graph module
+    - Updated CHANGES.md with comprehensive test documentation
+    - Merged to main branch (PR #42)
+    - Ronda 4 progress: 2/14 test issues complete (14.3%)
+    - Next: Issue #29 (Valid DAGs - no false positives, 50 tests)
 
 - ✅ **2026-01-22**: Issue #27 completed (PR #41) - **Ronda 4 STARTED!** 🚀
     - Implemented comprehensive test suite for simple circular dependency detection
