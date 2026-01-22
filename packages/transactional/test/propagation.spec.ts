@@ -340,16 +340,8 @@ describe('Propagation', () => {
             // v7.0+: REQUIRED now creates isolated context when transaction exists
             // Parent and child have separate transactions to prevent non-awaited corruption
             expect(queries).toEqual([
-                [
-                    'BEGIN TRANSACTION;',
-                    'SELECT 1',
-                    'COMMIT TRANSACTION;',
-                ],
-                [
-                    'BEGIN TRANSACTION;',
-                    'SELECT 2',
-                    'COMMIT TRANSACTION;',
-                ],
+                ['BEGIN TRANSACTION;', 'SELECT 1', 'COMMIT TRANSACTION;'],
+                ['BEGIN TRANSACTION;', 'SELECT 2', 'COMMIT TRANSACTION;'],
             ]);
         });
         it('should create isolated transaction in REQUIRED mode (v7.0 behavior)', async () => {
@@ -357,16 +349,8 @@ describe('Propagation', () => {
             const queries = mockDbConnection.getClientsQueries();
             // v7.0+: REQUIRED creates independent transaction in isolated context
             expect(queries).toEqual([
-                [
-                    'BEGIN TRANSACTION;',
-                    'SELECT 3',
-                    'COMMIT TRANSACTION;',
-                ],
-                [
-                    'BEGIN TRANSACTION;',
-                    'SELECT 4',
-                    'COMMIT TRANSACTION;',
-                ],
+                ['BEGIN TRANSACTION;', 'SELECT 3', 'COMMIT TRANSACTION;'],
+                ['BEGIN TRANSACTION;', 'SELECT 4', 'COMMIT TRANSACTION;'],
             ]);
         });
         it('should create a new transaction in REQUIRES_NEW mode', async () => {
