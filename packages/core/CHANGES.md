@@ -44,6 +44,16 @@
 
 * **core**: ProxyProvidersResolutionTimeoutException may no longer be thrown - use ProxyProviderCircularDependencyException instead
 
+### Tests
+
+* **core**: add comprehensive test suite for simple circular dependency detection (50 tests)
+  - Add 10 tests for self-reference cycles (A→A patterns)
+  - Add 15 tests for two-node cycles (A→B→A patterns)
+  - Add 15 tests for three-node cycles (A→B→C→A patterns)
+  - Add 10 tests for error message validation
+  - All tests complete in ~28s with individual detection <50ms
+  - Addresses Issue #27
+
 * **core**: ContextClsStoreMap now uses RequestIdentityResolver for HTTP requests
   - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
   - This change should be transparent to users, but custom code relying on the old behavior may need updates
