@@ -73,6 +73,23 @@
   - Ensures DependencyGraph doesn't incorrectly flag valid acyclic dependencies as cycles
   - Addresses Issue #29
 
+* **core**: add comprehensive test suite for circular dependency edge cases (30 tests)
+  - Add 10 tests for empty and minimal graph scenarios (no providers, single provider, etc.)
+  - Add 10 tests for providers with various dependency patterns (multiple dependencies, shared deps, etc.)
+  - Add 10 tests for special character and naming edge cases (Unicode, special chars, long names, etc.)
+  - Validates graceful handling of unusual but valid dependency configurations
+  - All tests complete successfully without false positives or framework errors
+  - Addresses Issue #30 (Section 1)
+
+* **core**: add comprehensive test suite for circular dependency performance benchmarks (20 tests)
+  - Add 10 tests for cycle detection performance (linear chains, tree structures, large graphs up to 1000 providers)
+  - Add 10 tests for valid DAG validation performance (balanced trees, deep chains, wide graphs, complex mixed patterns)
+  - Validates performance meets ROADMAP targets for large-scale dependency graphs
+  - Cycle detection in 1000-provider graphs completes in <1000ms
+  - Valid DAG resolution for 1000-provider graphs completes in <1000ms
+  - Performance tests validate both correctness and efficiency of DependencyGraph implementation
+  - Addresses Issue #30 (Section 2)
+
 * **core**: ContextClsStoreMap now uses RequestIdentityResolver for HTTP requests
   - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
   - This change should be transparent to users, but custom code relying on the old behavior may need updates
