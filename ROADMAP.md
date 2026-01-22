@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (27 total in milestone)         |
-| **Progress**        | 11/27 completed (40.7%) - Ronda 4 in progress (14.3%) 🚀   |
+| **Progress**        | 13/27 completed (48.1%) - Ronda 4 in progress (28.6%) 🚀   |
 | **Timeline**        | 3-4 weeks (4-5 weeks ahead of schedule)                  |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -206,8 +206,8 @@ const { ProxyProviderManager } =
 | ----- | ----------------------------------------- | ------- | ---------- | ------ |
 | ✅ #27   | Simple circular dependency cycles         | core    | 50         | **COMPLETED** (PR #41, 2026-01-22) |
 | ✅ #28   | Complex circular dependency cycles        | core    | 100        | **COMPLETED** (PR #42, 2026-01-22) |
-| #29   | Valid DAGs - no false positives           | core    | 50         | OPEN   |
-| #30   | Circular dependency edge cases & perf     | core    | 50         | OPEN   |
+| ✅ #29   | Valid DAGs - no false positives           | core    | 50         | **COMPLETED** (PR #43, 2026-01-22) |
+| ✅ #30   | Circular dependency edge cases & perf     | core    | 50         | **COMPLETED** (PR #44, 2026-01-22) |
 
 #### Sub-Issue #6: Multi-Framework Integration Tests (400 tests)
 
@@ -437,10 +437,30 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-22
-**Status:** Ronda 4 - **IN PROGRESS** (2/14 test issues complete, 14.3%)
+**Status:** Ronda 4 - **IN PROGRESS** (4/14 test issues complete, 28.6%)
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- ✅ **2026-01-22**: Issue #30 completed (PR #44) - **Ronda 4 MILESTONE: 28.6%** 🎉
+    - Implemented comprehensive test suite for circular dependency edge cases and performance benchmarks
+    - Added 50 tests: 30 edge cases (empty/minimal graphs, various dependencies, special characters) + 20 performance benchmarks
+    - Edge cases validate graceful handling of unusual but valid dependency configurations
+    - Performance benchmarks: Cycle detection and valid DAG resolution for 1000-provider graphs in <1000ms
+    - All tests passing: 541 core tests (50 new + 491 existing)
+    - Coverage maintained at >85% for core package
+    - Updated CHANGES.md with comprehensive test documentation
+    - Merged to main branch (PR #44)
+    - Ronda 4 progress: 4/14 test issues complete (28.6%)
+    - Next: Issue #31 (Express request identity integration, 100 tests)
+
+- ✅ **2026-01-22**: Issue #29 completed (PR #43) - **Ronda 4 MILESTONE: 21.4%** 🎉
+    - Expanded valid DAG test suite from 5 to 50 comprehensive tests
+    - Validates zero false positives for acyclic dependency graphs
+    - Tests cover simple chains, tree structures, diamond patterns, wide/deep graphs, and complex scenarios
+    - All tests passing with 100% success rate for valid configurations
+    - Updated CHANGES.md with test documentation
+    - Ronda 4 progress: 3/14 test issues complete (21.4%)
 
 - ✅ **2026-01-22**: Issue #28 completed (PR #42) - **Ronda 4 MILESTONE: 14.3%** 🎉
     - Implemented comprehensive test suite for complex circular dependency scenarios
