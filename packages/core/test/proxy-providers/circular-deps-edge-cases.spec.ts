@@ -144,7 +144,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(_dep?: OptionalDep) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [OptionalDep], WithOptionalDep);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptionalDep],
+                WithOptionalDep,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(WithOptionalDep, OptionalDep),
@@ -195,10 +199,19 @@ describe('Circular Dependency Edge Cases', () => {
                 ) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [FirstDep, SecondDep, ThirdDep], WithMultipleDeps);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FirstDep, SecondDep, ThirdDep],
+                WithMultipleDeps,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(WithMultipleDeps, FirstDep, SecondDep, ThirdDep),
+                ClsModule.forFeature(
+                    WithMultipleDeps,
+                    FirstDep,
+                    SecondDep,
+                    ThirdDep,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -234,7 +247,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(private dep: PrivateDep) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [PrivateDep], UsesPrivate);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PrivateDep],
+                UsesPrivate,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(UsesPrivate, PrivateDep),
@@ -256,7 +273,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(readonly dep: ReadonlyDep) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ReadonlyDep], UsesReadonly);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ReadonlyDep],
+                UsesReadonly,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(UsesReadonly, ReadonlyDep),
@@ -278,7 +299,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(protected dep: ProtectedDep) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ProtectedDep], UsesProtected);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProtectedDep],
+                UsesProtected,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(UsesProtected, ProtectedDep),
@@ -343,7 +368,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(_dep: ConcreteImpl) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ConcreteImpl], UsesAbstract);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteImpl],
+                UsesAbstract,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(UsesAbstract, ConcreteImpl),
@@ -371,7 +400,11 @@ describe('Circular Dependency Edge Cases', () => {
                 constructor(_service: ServiceImpl) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ServiceImpl], UsesInterface);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ServiceImpl],
+                UsesInterface,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(UsesInterface, ServiceImpl),
@@ -405,7 +438,7 @@ describe('Circular Dependency Edge Cases', () => {
 
         it('handles provider with decorators on properties', async () => {
             function CustomDecorator() {
-                return (target: any, propertyKey: string) => {};
+                return (_target: any, _propertyKey: string) => {};
             }
 
             @InjectableProxy()
@@ -496,7 +529,9 @@ describe('Circular Dependency Edge Cases', () => {
 
             await cls.run(async () => {
                 const error = await cls.proxy.resolve().catch((e) => e);
-                expect(error).toBeInstanceOf(ProxyProviderCircularDependencyException);
+                expect(error).toBeInstanceOf(
+                    ProxyProviderCircularDependencyException,
+                );
                 expect(error.message).toMatch(/Special\$[AB]/);
             });
         });
@@ -507,7 +542,8 @@ describe('Circular Dependency Edge Cases', () => {
                 value = 'long';
             }
 
-            const LongName = VeryLongProviderNameThatExceedsNormalLengthAndGoesOnAndOnAndOnForeverAndEverToTestEdgeCasesInTheSystemWhereNamesAreExtremelyLongAndMayNeedToBeHandledSpeciallyForDisplayPurposesOrErrorMessagesOrOtherSituationsWhereTheNameIsUsed;
+            const LongName =
+                VeryLongProviderNameThatExceedsNormalLengthAndGoesOnAndOnAndOnForeverAndEverToTestEdgeCasesInTheSystemWhereNamesAreExtremelyLongAndMayNeedToBeHandledSpeciallyForDisplayPurposesOrErrorMessagesOrOtherSituationsWhereTheNameIsUsed;
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(LongName),
@@ -529,7 +565,9 @@ describe('Circular Dependency Edge Cases', () => {
                 value = 'second';
             }
 
-            Object.defineProperty(DuplicateName2, 'name', { value: 'DuplicateName' });
+            Object.defineProperty(DuplicateName2, 'name', {
+                value: 'DuplicateName',
+            });
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(DuplicateName, DuplicateName2),
@@ -597,7 +635,9 @@ describe('Circular Dependency Edge Cases', () => {
                 value = 'newline';
             }
 
-            Object.defineProperty(NewlineName, 'name', { value: 'Provider\nWith\nNewlines' });
+            Object.defineProperty(NewlineName, 'name', {
+                value: 'Provider\nWith\nNewlines',
+            });
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(NewlineName),
@@ -615,21 +655,35 @@ describe('Circular Dependency Edge Cases', () => {
                 class LongCycle {
                     constructor() {}
                 }
-                Object.defineProperty(LongCycle, 'name', { value: `CycleNode${i}` });
+                Object.defineProperty(LongCycle, 'name', {
+                    value: `CycleNode${i}`,
+                });
                 classes.push(LongCycle);
             }
 
             // Create cycle: Node0→Node1→...→Node11→Node0
             for (let i = 0; i < 11; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[0]], classes[11]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[0]],
+                classes[11],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const error = await cls.proxy.resolve().catch((e) => e);
-                expect(error).toBeInstanceOf(ProxyProviderCircularDependencyException);
+                expect(error).toBeInstanceOf(
+                    ProxyProviderCircularDependencyException,
+                );
                 // Error message should contain cycle path
                 expect(error.message).toMatch(/CycleNode\d+/);
             });

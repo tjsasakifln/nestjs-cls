@@ -59,7 +59,11 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [ProxyD], ProxyC);
             Reflect.defineMetadata('design:paramtypes', [ProxyD], ProxyB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyB, ProxyC], ProxyA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyB, ProxyC],
+                ProxyA,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(ProxyA, ProxyB, ProxyC, ProxyD),
@@ -103,12 +107,31 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [ProxyF], ProxyE);
             Reflect.defineMetadata('design:paramtypes', [ProxyF], ProxyD);
-            Reflect.defineMetadata('design:paramtypes', [ProxyD, ProxyE], ProxyC);
-            Reflect.defineMetadata('design:paramtypes', [ProxyD, ProxyE], ProxyB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyB, ProxyC], ProxyA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyD, ProxyE],
+                ProxyC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyD, ProxyE],
+                ProxyB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyB, ProxyC],
+                ProxyA,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ProxyA, ProxyB, ProxyC, ProxyD, ProxyE, ProxyF),
+                ClsModule.forFeature(
+                    ProxyA,
+                    ProxyB,
+                    ProxyC,
+                    ProxyD,
+                    ProxyE,
+                    ProxyF,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -142,13 +165,35 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_long: ProxyLongB, _short: ProxyShortB) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ProxyTarget], ProxyLongC);
-            Reflect.defineMetadata('design:paramtypes', [ProxyLongC], ProxyLongB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyTarget], ProxyShortB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyLongB, ProxyShortB], ProxyRoot);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyTarget],
+                ProxyLongC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyLongC],
+                ProxyLongB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyTarget],
+                ProxyShortB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyLongB, ProxyShortB],
+                ProxyRoot,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ProxyRoot, ProxyLongB, ProxyShortB, ProxyLongC, ProxyTarget),
+                ClsModule.forFeature(
+                    ProxyRoot,
+                    ProxyLongB,
+                    ProxyShortB,
+                    ProxyLongC,
+                    ProxyTarget,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -191,10 +236,21 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [ProxyF], ProxyD);
             Reflect.defineMetadata('design:paramtypes', [ProxyF], ProxyC);
             Reflect.defineMetadata('design:paramtypes', [ProxyF], ProxyB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyB, ProxyC, ProxyD, ProxyE], ProxyA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyB, ProxyC, ProxyD, ProxyE],
+                ProxyA,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ProxyA, ProxyB, ProxyC, ProxyD, ProxyE, ProxyF),
+                ClsModule.forFeature(
+                    ProxyA,
+                    ProxyB,
+                    ProxyC,
+                    ProxyD,
+                    ProxyE,
+                    ProxyF,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -228,12 +284,30 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_left: ProxyLeft, _right: ProxyRight) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [SharedX, SharedY], ProxyRight);
-            Reflect.defineMetadata('design:paramtypes', [SharedX, SharedY], ProxyLeft);
-            Reflect.defineMetadata('design:paramtypes', [ProxyLeft, ProxyRight], ProxyTop);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [SharedX, SharedY],
+                ProxyRight,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [SharedX, SharedY],
+                ProxyLeft,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyLeft, ProxyRight],
+                ProxyTop,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ProxyTop, ProxyLeft, ProxyRight, SharedX, SharedY),
+                ClsModule.forFeature(
+                    ProxyTop,
+                    ProxyLeft,
+                    ProxyRight,
+                    SharedX,
+                    SharedY,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -264,7 +338,11 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [OrderD], OrderC);
             Reflect.defineMetadata('design:paramtypes', [OrderD], OrderB);
-            Reflect.defineMetadata('design:paramtypes', [OrderB, OrderC], OrderA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OrderB, OrderC],
+                OrderA,
+            );
 
             // Register in non-topological order
             app = await createAndInitTestingApp([
@@ -355,7 +433,15 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [PathA, PathB], Root);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Root, PathA, PathB, PathC, PathD, BaseY, BaseZ),
+                ClsModule.forFeature(
+                    Root,
+                    PathA,
+                    PathB,
+                    PathC,
+                    PathD,
+                    BaseY,
+                    BaseZ,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -384,12 +470,29 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_cache: CacheService, _logger: LoggerService) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [DatabaseConnection], CacheService);
-            Reflect.defineMetadata('design:paramtypes', [DatabaseConnection], LoggerService);
-            Reflect.defineMetadata('design:paramtypes', [CacheService, LoggerService], UserService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseConnection],
+                CacheService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseConnection],
+                LoggerService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CacheService, LoggerService],
+                UserService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(UserService, CacheService, LoggerService, DatabaseConnection),
+                ClsModule.forFeature(
+                    UserService,
+                    CacheService,
+                    LoggerService,
+                    DatabaseConnection,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -423,7 +526,11 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [PropsD], PropsC);
             Reflect.defineMetadata('design:paramtypes', [PropsD], PropsB);
-            Reflect.defineMetadata('design:paramtypes', [PropsB, PropsC], PropsA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PropsB, PropsC],
+                PropsA,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(PropsA, PropsB, PropsC, PropsD),
@@ -459,7 +566,11 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [AsyncD], AsyncC);
             Reflect.defineMetadata('design:paramtypes', [AsyncD], AsyncB);
-            Reflect.defineMetadata('design:paramtypes', [AsyncB, AsyncC], AsyncA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncB, AsyncC],
+                AsyncA,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(AsyncA, AsyncB, AsyncC, AsyncD),
@@ -570,7 +681,11 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [TripleD], TripleC);
             Reflect.defineMetadata('design:paramtypes', [TripleD], TripleB);
             Reflect.defineMetadata('design:paramtypes', [TripleD], TripleA);
-            Reflect.defineMetadata('design:paramtypes', [TripleA, TripleB, TripleC], Root);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [TripleA, TripleB, TripleC],
+                Root,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(Root, TripleA, TripleB, TripleC, TripleD),
@@ -664,16 +779,24 @@ describe('Valid DAGs - No False Positives', () => {
                 class ProxyChain {
                     value = `Chain${i}`;
                 }
-                Object.defineProperty(ProxyChain, 'name', { value: `Chain${i}` });
+                Object.defineProperty(ProxyChain, 'name', {
+                    value: `Chain${i}`,
+                });
                 classes.push(ProxyChain);
             }
 
             // Set up linear dependencies: Chain0→Chain1→...→Chain19
             for (let i = 0; i < 19; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 await expect(cls.proxy.resolve()).resolves.not.toThrow();
@@ -736,12 +859,29 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_business: BusinessService) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [DatabaseService], RepositoryService);
-            Reflect.defineMetadata('design:paramtypes', [RepositoryService], BusinessService);
-            Reflect.defineMetadata('design:paramtypes', [BusinessService], ControllerService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseService],
+                RepositoryService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [RepositoryService],
+                BusinessService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BusinessService],
+                ControllerService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ControllerService, BusinessService, RepositoryService, DatabaseService),
+                ClsModule.forFeature(
+                    ControllerService,
+                    BusinessService,
+                    RepositoryService,
+                    DatabaseService,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -934,7 +1074,9 @@ describe('Valid DAGs - No False Positives', () => {
                 value = 'standalone';
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(Standalone)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(Standalone),
+            ]);
 
             await cls.run(async () => {
                 await expect(cls.proxy.resolve()).resolves.not.toThrow();
@@ -979,12 +1121,32 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_b: ProxyB, _c: ProxyC) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ProxyF, ProxyG], ProxyC);
-            Reflect.defineMetadata('design:paramtypes', [ProxyD, ProxyE], ProxyB);
-            Reflect.defineMetadata('design:paramtypes', [ProxyB, ProxyC], ProxyA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyF, ProxyG],
+                ProxyC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyD, ProxyE],
+                ProxyB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ProxyB, ProxyC],
+                ProxyA,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ProxyA, ProxyB, ProxyC, ProxyD, ProxyE, ProxyF, ProxyG),
+                ClsModule.forFeature(
+                    ProxyA,
+                    ProxyB,
+                    ProxyC,
+                    ProxyD,
+                    ProxyE,
+                    ProxyF,
+                    ProxyG,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1081,7 +1243,15 @@ describe('Valid DAGs - No False Positives', () => {
             );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(WideRoot, ChildA, ChildB, ChildC, ChildD, ChildE, ChildF),
+                ClsModule.forFeature(
+                    WideRoot,
+                    ChildA,
+                    ChildB,
+                    ChildC,
+                    ChildD,
+                    ChildE,
+                    ChildF,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1127,7 +1297,14 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [Level1], Level0);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Level0, Level1, Level2, Level3, Level4, Level5),
+                ClsModule.forFeature(
+                    Level0,
+                    Level1,
+                    Level2,
+                    Level3,
+                    Level4,
+                    Level5,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1181,9 +1358,21 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_b1: Branch1, _b2: Branch2, _l: Leaf1) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [Leaf4, Leaf5, Leaf6], Branch2);
-            Reflect.defineMetadata('design:paramtypes', [Leaf1, Leaf2, Leaf3], Branch1);
-            Reflect.defineMetadata('design:paramtypes', [Branch1, Branch2, Leaf1], TernaryRoot);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Leaf4, Leaf5, Leaf6],
+                Branch2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Leaf1, Leaf2, Leaf3],
+                Branch1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Branch1, Branch2, Leaf1],
+                TernaryRoot,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -1246,7 +1435,15 @@ describe('Valid DAGs - No False Positives', () => {
 
             // Random registration order
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(RandE, RandA, RandG, RandB, RandD, RandC, RandF),
+                ClsModule.forFeature(
+                    RandE,
+                    RandA,
+                    RandG,
+                    RandB,
+                    RandD,
+                    RandC,
+                    RandF,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1285,10 +1482,26 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_repo: RepositoryService, _logger: LoggerService) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ConfigService], CacheService);
-            Reflect.defineMetadata('design:paramtypes', [ConfigService], LoggerService);
-            Reflect.defineMetadata('design:paramtypes', [DatabaseService, CacheService], RepositoryService);
-            Reflect.defineMetadata('design:paramtypes', [RepositoryService, LoggerService], AuthService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService],
+                CacheService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService],
+                LoggerService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseService, CacheService],
+                RepositoryService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [RepositoryService, LoggerService],
+                AuthService,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -1397,7 +1610,15 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [FastB, FastC], FastA);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(FastA, FastB, FastC, FastD, FastE, FastF, FastG),
+                ClsModule.forFeature(
+                    FastA,
+                    FastB,
+                    FastC,
+                    FastD,
+                    FastE,
+                    FastF,
+                    FastG,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1452,7 +1673,15 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [PropB, PropC], PropA);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(PropA, PropB, PropC, PropD, PropE, PropF, PropG),
+                ClsModule.forFeature(
+                    PropA,
+                    PropB,
+                    PropC,
+                    PropD,
+                    PropE,
+                    PropF,
+                    PropG,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1553,12 +1782,32 @@ describe('Valid DAGs - No False Positives', () => {
                 constructor(_b: AsyncB, _c: AsyncC) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [AsyncF, AsyncG], AsyncC);
-            Reflect.defineMetadata('design:paramtypes', [AsyncD, AsyncE], AsyncB);
-            Reflect.defineMetadata('design:paramtypes', [AsyncB, AsyncC], AsyncA);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncF, AsyncG],
+                AsyncC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncD, AsyncE],
+                AsyncB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncB, AsyncC],
+                AsyncA,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(AsyncA, AsyncB, AsyncC, AsyncD, AsyncE, AsyncF, AsyncG),
+                ClsModule.forFeature(
+                    AsyncA,
+                    AsyncB,
+                    AsyncC,
+                    AsyncD,
+                    AsyncE,
+                    AsyncF,
+                    AsyncG,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1652,7 +1901,16 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [FullB], FullA);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(FullA, FullB, FullC, FullD, FullE, FullF, FullG, FullH),
+                ClsModule.forFeature(
+                    FullA,
+                    FullB,
+                    FullC,
+                    FullD,
+                    FullE,
+                    FullF,
+                    FullG,
+                    FullH,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1685,8 +1943,16 @@ describe('Valid DAGs - No False Positives', () => {
                 }
             }
 
-            Reflect.defineMetadata('design:paramtypes', [StaticLeaf], StaticBranch);
-            Reflect.defineMetadata('design:paramtypes', [StaticBranch], StaticRoot);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [StaticLeaf],
+                StaticBranch,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [StaticBranch],
+                StaticRoot,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(StaticRoot, StaticBranch, StaticLeaf),
@@ -1767,12 +2033,31 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [Shared], BranchD);
             Reflect.defineMetadata('design:paramtypes', [Shared], BranchC);
-            Reflect.defineMetadata('design:paramtypes', [BranchC, Shared], BranchB);
-            Reflect.defineMetadata('design:paramtypes', [BranchD, Shared], BranchA);
-            Reflect.defineMetadata('design:paramtypes', [BranchA, BranchB], Root);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BranchC, Shared],
+                BranchB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BranchD, Shared],
+                BranchA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BranchA, BranchB],
+                Root,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Root, BranchA, BranchB, BranchC, BranchD, Shared),
+                ClsModule.forFeature(
+                    Root,
+                    BranchA,
+                    BranchB,
+                    BranchC,
+                    BranchD,
+                    Shared,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1787,7 +2072,9 @@ describe('Valid DAGs - No False Positives', () => {
                 class ProxyLarge {
                     value = `Large${i}`;
                 }
-                Object.defineProperty(ProxyLarge, 'name', { value: `Large${i}` });
+                Object.defineProperty(ProxyLarge, 'name', {
+                    value: `Large${i}`,
+                });
                 classes.push(ProxyLarge);
             }
 
@@ -1798,7 +2085,9 @@ describe('Valid DAGs - No False Positives', () => {
                 Reflect.defineMetadata('design:paramtypes', deps, classes[i]);
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -1856,18 +2145,58 @@ describe('Valid DAGs - No False Positives', () => {
 
             @InjectableProxy()
             class ApiController {
-                constructor(_auth: AuthService, _user: UserService, _post: PostService) {}
+                constructor(
+                    _auth: AuthService,
+                    _user: UserService,
+                    _post: PostService,
+                ) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ConfigService], LoggerService);
-            Reflect.defineMetadata('design:paramtypes', [ConfigService, LoggerService], DatabaseService);
-            Reflect.defineMetadata('design:paramtypes', [ConfigService], CacheService);
-            Reflect.defineMetadata('design:paramtypes', [DatabaseService, CacheService], UserRepository);
-            Reflect.defineMetadata('design:paramtypes', [DatabaseService, CacheService], PostRepository);
-            Reflect.defineMetadata('design:paramtypes', [UserRepository, LoggerService], UserService);
-            Reflect.defineMetadata('design:paramtypes', [PostRepository, LoggerService], PostService);
-            Reflect.defineMetadata('design:paramtypes', [UserService, LoggerService], AuthService);
-            Reflect.defineMetadata('design:paramtypes', [AuthService, UserService, PostService], ApiController);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService],
+                LoggerService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService, LoggerService],
+                DatabaseService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService],
+                CacheService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseService, CacheService],
+                UserRepository,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DatabaseService, CacheService],
+                PostRepository,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [UserRepository, LoggerService],
+                UserService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PostRepository, LoggerService],
+                PostService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [UserService, LoggerService],
+                AuthService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AuthService, UserService, PostService],
+                ApiController,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -1927,7 +2256,14 @@ describe('Valid DAGs - No False Positives', () => {
             Reflect.defineMetadata('design:paramtypes', [TreeE, TreeF], TreeD);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(LinearA, LinearB, LinearC, TreeD, TreeE, TreeF),
+                ClsModule.forFeature(
+                    LinearA,
+                    LinearB,
+                    LinearC,
+                    TreeD,
+                    TreeE,
+                    TreeF,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -2077,12 +2413,31 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [Base], Layer1A);
             Reflect.defineMetadata('design:paramtypes', [Base], Layer1B);
-            Reflect.defineMetadata('design:paramtypes', [Layer1A, Layer1B], Layer2A);
-            Reflect.defineMetadata('design:paramtypes', [Layer1A, Layer1B], Layer2B);
-            Reflect.defineMetadata('design:paramtypes', [Layer2A, Layer2B, Base], Top);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Layer1A, Layer1B],
+                Layer2A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Layer1A, Layer1B],
+                Layer2B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Layer2A, Layer2B, Base],
+                Top,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Top, Layer2A, Layer2B, Layer1A, Layer1B, Base),
+                ClsModule.forFeature(
+                    Top,
+                    Layer2A,
+                    Layer2B,
+                    Layer1A,
+                    Layer1B,
+                    Base,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -2119,10 +2474,19 @@ describe('Valid DAGs - No False Positives', () => {
 
             Reflect.defineMetadata('design:paramtypes', [BaseImpl], ServiceA);
             Reflect.defineMetadata('design:paramtypes', [BaseImpl], ServiceB);
-            Reflect.defineMetadata('design:paramtypes', [ServiceA, ServiceB], AggregateService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ServiceA, ServiceB],
+                AggregateService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(AggregateService, ServiceA, ServiceB, BaseImpl),
+                ClsModule.forFeature(
+                    AggregateService,
+                    ServiceA,
+                    ServiceB,
+                    BaseImpl,
+                ),
             ]);
 
             await cls.run(async () => {

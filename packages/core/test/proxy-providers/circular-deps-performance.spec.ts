@@ -6,7 +6,6 @@ import {
 } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClsModule, ClsServiceManager, InjectableProxy } from '../../src';
-import { ProxyProviderCircularDependencyException } from '../../src/lib/proxy-provider/proxy-provider.exceptions';
 
 @Global()
 @Module({})
@@ -40,12 +39,12 @@ describe('Circular Dependency Performance Benchmarks', () => {
         it('detects 2-node cycle within 5ms', async () => {
             @InjectableProxy()
             class ProxyA {
-                constructor(_b: ProxyB) {}
+                constructor(_b: any) {}
             }
 
             @InjectableProxy()
             class ProxyB {
-                constructor(_a: ProxyA) {}
+                constructor(_a: any) {}
             }
 
             Reflect.defineMetadata('design:paramtypes', [ProxyB], ProxyA);
@@ -70,17 +69,29 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Cycle10 {
                     constructor() {}
                 }
-                Object.defineProperty(Cycle10, 'name', { value: `Cycle10_${i}` });
+                Object.defineProperty(Cycle10, 'name', {
+                    value: `Cycle10_${i}`,
+                });
                 classes.push(Cycle10);
             }
 
             // Create cycle: 0→1→2→...→9→0
             for (let i = 0; i < 9; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[0]], classes[9]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[0]],
+                classes[9],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -97,18 +108,34 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Cycle50 {
                     constructor() {}
                 }
-                Object.defineProperty(Cycle50, 'name', { value: `Cycle50_${i}` });
+                Object.defineProperty(Cycle50, 'name', {
+                    value: `Cycle50_${i}`,
+                });
                 classes.push(Cycle50);
             }
 
             // Create cycle at end: 0→1→...→48→49→48 (cycle between 48 and 49)
             for (let i = 0; i < 48; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[49]], classes[48]);
-            Reflect.defineMetadata('design:paramtypes', [classes[48]], classes[49]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[49]],
+                classes[48],
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[48]],
+                classes[49],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -125,17 +152,29 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Cycle100 {
                     constructor() {}
                 }
-                Object.defineProperty(Cycle100, 'name', { value: `Cycle100_${i}` });
+                Object.defineProperty(Cycle100, 'name', {
+                    value: `Cycle100_${i}`,
+                });
                 classes.push(Cycle100);
             }
 
             // Create cycle: 0→1→...→99→0
             for (let i = 0; i < 99; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[0]], classes[99]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[0]],
+                classes[99],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -152,22 +191,38 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Cycle500 {
                     constructor() {}
                 }
-                Object.defineProperty(Cycle500, 'name', { value: `Cycle500_${i}` });
+                Object.defineProperty(Cycle500, 'name', {
+                    value: `Cycle500_${i}`,
+                });
                 classes.push(Cycle500);
             }
 
             // Create cycle in middle: linear chain with cycle at positions 250-251
             for (let i = 0; i < 499; i++) {
                 if (i === 250) {
-                    Reflect.defineMetadata('design:paramtypes', [classes[251]], classes[i]);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        [classes[251]],
+                        classes[i],
+                    );
                 } else if (i === 251) {
-                    Reflect.defineMetadata('design:paramtypes', [classes[250]], classes[i]);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        [classes[250]],
+                        classes[i],
+                    );
                 } else {
-                    Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        [classes[i + 1]],
+                        classes[i],
+                    );
                 }
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -184,17 +239,29 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Cycle1000 {
                     constructor() {}
                 }
-                Object.defineProperty(Cycle1000, 'name', { value: `Cycle1000_${i}` });
+                Object.defineProperty(Cycle1000, 'name', {
+                    value: `Cycle1000_${i}`,
+                });
                 classes.push(Cycle1000);
             }
 
             // Create cycle: 0→1→...→999→0
             for (let i = 0; i < 999; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[0]], classes[999]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[0]],
+                classes[999],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -228,34 +295,34 @@ describe('Circular Dependency Performance Benchmarks', () => {
             // Cycle 1: A1↔B1
             @InjectableProxy()
             class CycleA1 {
-                constructor(_b: CycleB1) {}
+                constructor(_b: any) {}
             }
 
             @InjectableProxy()
             class CycleB1 {
-                constructor(_a: CycleA1) {}
+                constructor(_a: any) {}
             }
 
             // Cycle 2: A2↔B2
             @InjectableProxy()
             class CycleA2 {
-                constructor(_b: CycleB2) {}
+                constructor(_b: any) {}
             }
 
             @InjectableProxy()
             class CycleB2 {
-                constructor(_a: CycleA2) {}
+                constructor(_a: any) {}
             }
 
             // Cycle 3: A3↔B3
             @InjectableProxy()
             class CycleA3 {
-                constructor(_b: CycleB3) {}
+                constructor(_b: any) {}
             }
 
             @InjectableProxy()
             class CycleB3 {
-                constructor(_a: CycleA3) {}
+                constructor(_a: any) {}
             }
 
             Reflect.defineMetadata('design:paramtypes', [CycleB1], CycleA1);
@@ -266,7 +333,14 @@ describe('Circular Dependency Performance Benchmarks', () => {
             Reflect.defineMetadata('design:paramtypes', [CycleA3], CycleB3);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(CycleA1, CycleB1, CycleA2, CycleB2, CycleA3, CycleB3),
+                ClsModule.forFeature(
+                    CycleA1,
+                    CycleB1,
+                    CycleA2,
+                    CycleB2,
+                    CycleA3,
+                    CycleB3,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -281,23 +355,23 @@ describe('Circular Dependency Performance Benchmarks', () => {
             // Inner cycle: C↔D
             @InjectableProxy()
             class InnerC {
-                constructor(_d: InnerD) {}
+                constructor(_d: any) {}
             }
 
             @InjectableProxy()
             class InnerD {
-                constructor(_c: InnerC) {}
+                constructor(_c: any) {}
             }
 
             // Outer cycle: A→B→C (which cycles with D)
             @InjectableProxy()
             class OuterA {
-                constructor(_b: OuterB) {}
+                constructor(_b: any) {}
             }
 
             @InjectableProxy()
             class OuterB {
-                constructor(_c: InnerC) {}
+                constructor(_c: any) {}
             }
 
             Reflect.defineMetadata('design:paramtypes', [InnerD], InnerC);
@@ -330,11 +404,21 @@ describe('Circular Dependency Performance Benchmarks', () => {
 
             // Create deep linear chain with cycle at end: 0→1→...→49→48
             for (let i = 0; i < 49; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
-            Reflect.defineMetadata('design:paramtypes', [classes[48]], classes[49]);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [classes[48]],
+                classes[49],
+            );
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -353,16 +437,24 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Linear100 {
                     value = `Linear${i}`;
                 }
-                Object.defineProperty(Linear100, 'name', { value: `Linear100_${i}` });
+                Object.defineProperty(Linear100, 'name', {
+                    value: `Linear100_${i}`,
+                });
                 classes.push(Linear100);
             }
 
             // Linear chain: 0→1→...→99
             for (let i = 0; i < 99; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -379,7 +471,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Tree500 {
                     value = `Tree${i}`;
                 }
-                Object.defineProperty(Tree500, 'name', { value: `Tree500_${i}` });
+                Object.defineProperty(Tree500, 'name', {
+                    value: `Tree500_${i}`,
+                });
                 classes.push(Tree500);
             }
 
@@ -389,7 +483,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 Reflect.defineMetadata('design:paramtypes', deps, classes[i]);
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -406,7 +502,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class DAG1000 {
                     value = `DAG${i}`;
                 }
-                Object.defineProperty(DAG1000, 'name', { value: `DAG1000_${i}` });
+                Object.defineProperty(DAG1000, 'name', {
+                    value: `DAG1000_${i}`,
+                });
                 classes.push(DAG1000);
             }
 
@@ -416,13 +514,19 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 for (let i = 0; i < layerSize; i++) {
                     const nodeIdx = layer * layerSize + i;
                     const nextLayerStart = (layer + 1) * layerSize;
-                    const dep1 = nextLayerStart + (i * 2) % layerSize;
-                    const dep2 = nextLayerStart + (i * 2 + 1) % layerSize;
-                    Reflect.defineMetadata('design:paramtypes', [classes[dep1], classes[dep2]], classes[nodeIdx]);
+                    const dep1 = nextLayerStart + ((i * 2) % layerSize);
+                    const dep2 = nextLayerStart + ((i * 2 + 1) % layerSize);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        [classes[dep1], classes[dep2]],
+                        classes[nodeIdx],
+                    );
                 }
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -451,11 +555,17 @@ describe('Circular Dependency Performance Benchmarks', () => {
                     children.push(classes[childrenStart + j]);
                 }
                 if (children.length > 0) {
-                    Reflect.defineMetadata('design:paramtypes', children, classes[i]);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        children,
+                        classes[i],
+                    );
                 }
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -472,7 +582,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Diamond100 {
                     value = `Diamond${i}`;
                 }
-                Object.defineProperty(Diamond100, 'name', { value: `Diamond100_${i}` });
+                Object.defineProperty(Diamond100, 'name', {
+                    value: `Diamond100_${i}`,
+                });
                 classes.push(Diamond100);
             }
 
@@ -480,14 +592,28 @@ describe('Circular Dependency Performance Benchmarks', () => {
             for (let i = 0; i < 100; i++) {
                 const base = i * 4;
                 // Root → Left, Right
-                Reflect.defineMetadata('design:paramtypes', [classes[base + 1], classes[base + 2]], classes[base]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[base + 1], classes[base + 2]],
+                    classes[base],
+                );
                 // Left → Target
-                Reflect.defineMetadata('design:paramtypes', [classes[base + 3]], classes[base + 1]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[base + 3]],
+                    classes[base + 1],
+                );
                 // Right → Target
-                Reflect.defineMetadata('design:paramtypes', [classes[base + 3]], classes[base + 2]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[base + 3]],
+                    classes[base + 2],
+                );
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -504,7 +630,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Wide1000 {
                     value = `Wide${i}`;
                 }
-                Object.defineProperty(Wide1000, 'name', { value: `Wide1000_${i}` });
+                Object.defineProperty(Wide1000, 'name', {
+                    value: `Wide1000_${i}`,
+                });
                 classes.push(Wide1000);
             }
 
@@ -512,7 +640,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
             const children = classes.slice(1);
             Reflect.defineMetadata('design:paramtypes', children, classes[0]);
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -529,16 +659,24 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Deep100 {
                     value = `Deep${i}`;
                 }
-                Object.defineProperty(Deep100, 'name', { value: `Deep100_${i}` });
+                Object.defineProperty(Deep100, 'name', {
+                    value: `Deep100_${i}`,
+                });
                 classes.push(Deep100);
             }
 
             // Deep chain: 0→1→2→...→99
             for (let i = 0; i < 99; i++) {
-                Reflect.defineMetadata('design:paramtypes', [classes[i + 1]], classes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [classes[i + 1]],
+                    classes[i],
+                );
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -555,7 +693,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class RealWorld {
                     value = `RW${i}`;
                 }
-                Object.defineProperty(RealWorld, 'name', { value: `RealWorld_${i}` });
+                Object.defineProperty(RealWorld, 'name', {
+                    value: `RealWorld_${i}`,
+                });
                 classes.push(RealWorld);
             }
 
@@ -573,11 +713,16 @@ describe('Circular Dependency Performance Benchmarks', () => {
             }
             // Layer 4 (Controllers): 310-499, each depends on 2-3 repos
             for (let i = 310; i < 500; i++) {
-                const deps = [classes[110 + (i % 200)], classes[110 + ((i + 1) % 200)]];
+                const deps = [
+                    classes[110 + (i % 200)],
+                    classes[110 + ((i + 1) % 200)],
+                ];
                 Reflect.defineMetadata('design:paramtypes', deps, classes[i]);
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
@@ -594,7 +739,9 @@ describe('Circular Dependency Performance Benchmarks', () => {
                 class Disconnected {
                     value = `Disc${i}`;
                 }
-                Object.defineProperty(Disconnected, 'name', { value: `Disconnected_${i}` });
+                Object.defineProperty(Disconnected, 'name', {
+                    value: `Disconnected_${i}`,
+                });
                 classes.push(Disconnected);
             }
 
@@ -602,11 +749,17 @@ describe('Circular Dependency Performance Benchmarks', () => {
             for (let chain = 0; chain < 10; chain++) {
                 const start = chain * 10;
                 for (let i = 0; i < 9; i++) {
-                    Reflect.defineMetadata('design:paramtypes', [classes[start + i + 1]], classes[start + i]);
+                    Reflect.defineMetadata(
+                        'design:paramtypes',
+                        [classes[start + i + 1]],
+                        classes[start + i],
+                    );
                 }
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...classes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...classes),
+            ]);
 
             await cls.run(async () => {
                 const start = performance.now();
