@@ -125,7 +125,8 @@ describe('ContextClsStoreMap', () => {
             const gqlContext = { gql: 'context' };
             const mockContext = {
                 getType: () => 'graphql',
-                getArgByIndex: (index: number) => (index === 2 ? gqlContext : null),
+                getArgByIndex: (index: number) =>
+                    index === 2 ? gqlContext : null,
             } as any as ExecutionContext;
 
             ContextClsStoreMap.set(mockContext, store);
