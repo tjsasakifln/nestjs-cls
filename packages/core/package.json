@@ -1,8 +1,8 @@
 {
   "name": "nestjs-cls",
   "version": "6.2.0",
-  "description": "A continuation-local storage module compatible with NestJS's dependency injection.",
-  "author": "papooch",
+  "description": "Continuation-local storage module for NestJS (v7.0 refactor branch - exploratory)",
+  "author": "tjsasakifln",
   "license": "MIT",
   "engines": {
     "node": ">=18"
@@ -12,9 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Papooch/nestjs-cls.git"
+    "url": "git+https://github.com/tjsasakifln/nestjs-cls.git"
   },
-  "homepage": "https://papooch.github.io/nestjs-cls/",
+  "homepage": "https://github.com/tjsasakifln/nestjs-cls#readme",
+  "bugs": {
+    "url": "https://github.com/tjsasakifln/nestjs-cls/issues"
+  },
   "keywords": [
     "nest",
     "nestjs",
@@ -24,7 +27,12 @@
     "AsyncLocalStorage",
     "async_hooks",
     "request context",
-    "async context"
+    "async context",
+    "framework agnostic",
+    "circular dependency detection",
+    "transaction propagation",
+    "proxy providers",
+    "context tracking"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",

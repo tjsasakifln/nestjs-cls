@@ -1,8 +1,8 @@
 {
   "name": "@nestjs-cls/transactional",
   "version": "3.1.2",
-  "description": "A nestjs-cls plugin for transactional decorators",
-  "author": "papooch",
+  "description": "Transactional plugin for nestjs-cls (v7.0 refactor - testing isolated context mode)",
+  "author": "tjsasakifln",
   "license": "MIT",
   "engines": {
     "node": ">=18"
@@ -12,9 +12,12 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Papooch/nestjs-cls.git"
+    "url": "git+https://github.com/tjsasakifln/nestjs-cls.git"
   },
-  "homepage": "https://papooch.github.io/nestjs-cls/",
+  "homepage": "https://github.com/tjsasakifln/nestjs-cls#readme",
+  "bugs": {
+    "url": "https://github.com/tjsasakifln/nestjs-cls/issues"
+  },
   "keywords": [
     "nest",
     "nestjs",
@@ -28,7 +31,14 @@
     "transaction",
     "transactional",
     "transactional decorator",
-    "aop"
+    "aop",
+    "transaction isolation",
+    "transaction propagation",
+    "nestjs transactions",
+    "typeorm transactions",
+    "prisma transactions",
+    "knex transactions",
+    "kysely transactions"
   ],
   "main": "dist/src/index.js",
   "types": "dist/src/index.d.ts",
