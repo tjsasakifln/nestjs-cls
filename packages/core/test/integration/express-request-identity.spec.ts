@@ -242,23 +242,19 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
             expect(uniqueIds.size).toBe(100);
         });
 
-        it(
-            'should handle rapid sequential requests',
-            async () => {
-                const ids: string[] = [];
+        it('should handle rapid sequential requests', async () => {
+            const ids: string[] = [];
 
-                for (let i = 0; i < 20; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
-                    ids.push(response.body.middlewareId);
-                }
+            for (let i = 0; i < 20; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
+                ids.push(response.body.middlewareId);
+            }
 
-                const uniqueIds = new Set(ids);
-                expect(uniqueIds.size).toBe(20);
-            },
-            15000,
-        );
+            const uniqueIds = new Set(ids);
+            expect(uniqueIds.size).toBe(20);
+        }, 15000);
 
         it('should maintain context through async operations', async () => {
             const response = await request(app.getHttpServer())
@@ -363,23 +359,19 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
             expectConsistentIds(response.body);
         });
 
-        it(
-            'should handle rapid sequential requests with guard',
-            async () => {
-                const ids: string[] = [];
+        it('should handle rapid sequential requests with guard', async () => {
+            const ids: string[] = [];
 
-                for (let i = 0; i < 15; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
-                    ids.push(response.body.guardId);
-                }
+            for (let i = 0; i < 15; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
+                ids.push(response.body.guardId);
+            }
 
-                const uniqueIds = new Set(ids);
-                expect(uniqueIds.size).toBe(15);
-            },
-            15000,
-        );
+            const uniqueIds = new Set(ids);
+            expect(uniqueIds.size).toBe(15);
+        }, 15000);
 
         it('should generate unique IDs for different requests', async () => {
             const [response1, response2, response3] = await Promise.all([
@@ -483,23 +475,19 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
             );
         });
 
-        it(
-            'should handle rapid sequential requests with interceptor',
-            async () => {
-                const ids: string[] = [];
+        it('should handle rapid sequential requests with interceptor', async () => {
+            const ids: string[] = [];
 
-                for (let i = 0; i < 10; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
-                    ids.push(response.body.interceptorId);
-                }
+            for (let i = 0; i < 10; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
+                ids.push(response.body.interceptorId);
+            }
 
-                const uniqueIds = new Set(ids);
-                expect(uniqueIds.size).toBe(10);
-            },
-            15000,
-        );
+            const uniqueIds = new Set(ids);
+            expect(uniqueIds.size).toBe(10);
+        }, 15000);
 
         it('should work with async interceptor operations', async () => {
             const response = await request(app.getHttpServer())
@@ -1322,19 +1310,15 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
             expect(response.body.id).toBe('middleware-id');
         });
 
-        it(
-            'should handle rapid sequential requests',
-            async () => {
-                for (let i = 0; i < 15; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
+        it('should handle rapid sequential requests', async () => {
+            for (let i = 0; i < 15; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
 
-                    expectConsistentIds(response.body, 'middleware-id');
-                }
-            },
-            15000,
-        );
+                expectConsistentIds(response.body, 'middleware-id');
+            }
+        }, 15000);
 
         it('should maintain identity through async operations', async () => {
             const response = await request(app.getHttpServer())
@@ -1438,19 +1422,15 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
             expectConsistentIds(response.body, 'mw-guard-id');
         });
 
-        it(
-            'should handle rapid sequential requests',
-            async () => {
-                for (let i = 0; i < 10; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
+        it('should handle rapid sequential requests', async () => {
+            for (let i = 0; i < 10; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
 
-                    expectConsistentIds(response.body, 'mw-guard-id');
-                }
-            },
-            15000,
-        );
+                expectConsistentIds(response.body, 'mw-guard-id');
+            }
+        }, 15000);
 
         it('should work with query parameters', async () => {
             const response = await request(app.getHttpServer())
@@ -1548,19 +1528,15 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
             expect(response.body.interceptorId).toBe('mw-int-id');
         });
 
-        it(
-            'should handle rapid sequential requests',
-            async () => {
-                for (let i = 0; i < 8; i++) {
-                    const response = await request(app.getHttpServer())
-                        .get('/hello')
-                        .expect(200);
+        it('should handle rapid sequential requests', async () => {
+            for (let i = 0; i < 8; i++) {
+                const response = await request(app.getHttpServer())
+                    .get('/hello')
+                    .expect(200);
 
-                    expectConsistentIds(response.body, 'mw-int-id');
-                }
-            },
-            15000,
-        );
+                expectConsistentIds(response.body, 'mw-int-id');
+            }
+        }, 15000);
 
         it('should work with async interceptor operations', async () => {
             const response = await request(app.getHttpServer())
