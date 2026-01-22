@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1769045641274" clover="3.2.0">
+  <project timestamp="1769045641274" name="All files">
+    <metrics statements="12" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="1" elements="19" coveredelements="6" complexity="0" loc="12" ncloc="12" packages="2" files="2" classes="2"/>
+    <package name="src">
+      <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="index.ts" path="D:\Strategic OSS\nestjs-cls\packages\transactional-adapters\transactional-adapter-drizzle-orm\src\index.ts">
+        <metrics statements="1" coveredstatements="1" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="1" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib">
+      <metrics statements="11" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="1"/>
+      <file name="transactional-adapter-drizzle-orm.ts" path="D:\Strategic OSS\nestjs-cls\packages\transactional-adapters\transactional-adapter-drizzle-orm\src\lib\transactional-adapter-drizzle-orm.ts">
+        <metrics statements="11" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="7" coveredmethods="1"/>
+        <line num="29" count="1" type="stmt"/>
+        <line num="41" count="2" type="stmt"/>
+        <line num="42" count="2" type="stmt"/>
+        <line num="45" count="2" type="stmt"/>
+        <line num="51" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="53" count="0" type="stmt"/>
+        <line num="62" count="0" type="stmt"/>
+        <line num="63" count="0" type="stmt"/>
+        <line num="64" count="0" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

@@ -1,0 +1,904 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<coverage generated="1769120338200" clover="3.2.0">
+  <project timestamp="1769120338200" name="All files">
+    <metrics statements="757" coveredstatements="724" conditionals="281" coveredconditionals="235" methods="185" coveredmethods="172" elements="1223" coveredelements="1131" complexity="0" loc="757" ncloc="757" packages="9" files="38" classes="38"/>
+    <package name="src">
+      <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="index.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\index.ts">
+        <metrics statements="20" coveredstatements="20" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="20" type="stmt"/>
+        <line num="2" count="20" type="stmt"/>
+        <line num="3" count="20" type="stmt"/>
+        <line num="4" count="20" type="stmt"/>
+        <line num="5" count="20" type="stmt"/>
+        <line num="6" count="20" type="stmt"/>
+        <line num="7" count="20" type="stmt"/>
+        <line num="8" count="20" type="stmt"/>
+        <line num="9" count="20" type="stmt"/>
+        <line num="10" count="20" type="stmt"/>
+        <line num="11" count="20" type="stmt"/>
+        <line num="12" count="20" type="stmt"/>
+        <line num="13" count="20" type="stmt"/>
+        <line num="14" count="20" type="stmt"/>
+        <line num="15" count="20" type="stmt"/>
+        <line num="16" count="20" type="stmt"/>
+        <line num="17" count="20" type="stmt"/>
+        <line num="18" count="20" type="stmt"/>
+        <line num="20" count="20" type="stmt"/>
+        <line num="21" count="20" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib">
+      <metrics statements="103" coveredstatements="100" conditionals="32" coveredconditionals="27" methods="26" coveredmethods="25"/>
+      <file name="cls-service-manager.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-service-manager.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="22" type="stmt"/>
+        <line num="5" count="22" type="stmt"/>
+        <line num="6" count="22" type="stmt"/>
+        <line num="13" count="718" type="stmt"/>
+        <line num="14" count="718" type="stmt"/>
+      </file>
+      <file name="cls-service.globals.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-service.globals.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="23" type="stmt"/>
+        <line num="2" count="23" type="stmt"/>
+        <line num="4" count="23" type="stmt"/>
+        <line num="5" count="23" type="stmt"/>
+      </file>
+      <file name="cls.constants.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls.constants.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="7" count="23" type="stmt"/>
+        <line num="14" count="23" type="stmt"/>
+        <line num="21" count="23" type="stmt"/>
+        <line num="29" count="23" type="stmt"/>
+      </file>
+      <file name="cls.internal-constants.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls.internal-constants.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="4" count="21" type="stmt"/>
+      </file>
+      <file name="cls.options.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls.options.ts">
+        <metrics statements="28" coveredstatements="28" conditionals="0" coveredconditionals="0" methods="8" coveredmethods="8"/>
+        <line num="5" count="263" type="stmt"/>
+        <line num="7" count="23" type="stmt"/>
+        <line num="12" count="350" type="stmt"/>
+        <line num="68" count="23" type="stmt"/>
+        <line num="84" count="444" type="stmt"/>
+        <line num="87" count="23" type="stmt"/>
+        <line num="93" count="1422" type="stmt"/>
+        <line num="101" count="1422" type="stmt"/>
+        <line num="109" count="1422" type="stmt"/>
+        <line num="112" count="23" type="stmt"/>
+        <line num="118" count="684" type="stmt"/>
+        <line num="125" count="684" type="stmt"/>
+        <line num="130" count="684" type="stmt"/>
+        <line num="142" count="684" type="stmt"/>
+        <line num="148" count="684" type="stmt"/>
+        <line num="158" count="684" type="stmt"/>
+        <line num="161" count="23" type="stmt"/>
+        <line num="167" count="366" type="stmt"/>
+        <line num="174" count="366" type="stmt"/>
+        <line num="179" count="366" type="stmt"/>
+        <line num="197" count="366" type="stmt"/>
+        <line num="200" count="23" type="stmt"/>
+        <line num="206" count="368" type="stmt"/>
+        <line num="213" count="368" type="stmt"/>
+        <line num="218" count="368" type="stmt"/>
+        <line num="236" count="368" type="stmt"/>
+        <line num="239" count="23" type="stmt"/>
+        <line num="262" count="4" type="stmt"/>
+      </file>
+      <file name="cls.service.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls.service.ts">
+        <metrics statements="54" coveredstatements="52" conditionals="32" coveredconditionals="27" methods="16" coveredmethods="16"/>
+        <line num="11" count="23" type="stmt"/>
+        <line num="12" count="23" type="stmt"/>
+        <line num="13" count="23" type="stmt"/>
+        <line num="14" count="23" type="stmt"/>
+        <line num="15" count="23" type="stmt"/>
+        <line num="17" count="23" type="stmt"/>
+        <line num="18" count="24" type="stmt"/>
+        <line num="19" count="24" type="cond" truecount="2" falsecount="0"/>
+        <line num="20" count="1" type="stmt"/>
+        <line num="37" count="15938" type="stmt"/>
+        <line num="38" count="15938" type="cond" truecount="2" falsecount="0"/>
+        <line num="39" count="1" type="stmt"/>
+        <line num="45" count="15937" type="cond" truecount="2" falsecount="0"/>
+        <line num="46" count="14874" type="stmt"/>
+        <line num="48" count="1063" type="stmt"/>
+        <line num="64" count="419" type="cond" truecount="2" falsecount="0"/>
+        <line num="65" count="365" type="stmt"/>
+        <line num="66" count="365" type="stmt"/>
+        <line num="87" count="153481" type="stmt"/>
+        <line num="88" count="153481" type="cond" truecount="2" falsecount="0"/>
+        <line num="89" count="15656" type="cond" truecount="2" falsecount="0"/>
+        <line num="90" count="14360" type="stmt"/>
+        <line num="92" count="1296" type="stmt"/>
+        <line num="104" count="427" type="stmt"/>
+        <line num="105" count="427" type="cond" truecount="2" falsecount="0"/>
+        <line num="106" count="421" type="stmt"/>
+        <line num="108" count="6" type="stmt"/>
+        <line num="116" count="1739" type="stmt"/>
+        <line num="117" count="1739" type="stmt"/>
+        <line num="129" count="418" type="cond" truecount="2" falsecount="0"/>
+        <line num="130" count="9" type="stmt"/>
+        <line num="131" count="9" type="stmt"/>
+        <line num="133" count="409" type="stmt"/>
+        <line num="134" count="409" type="stmt"/>
+        <line num="136" count="418" type="cond" truecount="2" falsecount="0"/>
+        <line num="137" count="5" type="cond" truecount="4" falsecount="0"/>
+        <line num="139" count="3" type="stmt"/>
+        <line num="141" count="1" type="stmt"/>
+        <line num="144" count="1" type="stmt"/>
+        <line num="156" count="501" type="cond" truecount="1" falsecount="1"/>
+        <line num="165" count="28" type="cond" truecount="2" falsecount="0"/>
+        <line num="166" count="26" type="stmt"/>
+        <line num="167" count="26" type="cond" truecount="1" falsecount="3"/>
+        <line num="169" count="0" type="stmt"/>
+        <line num="171" count="26" type="stmt"/>
+        <line num="174" count="0" type="stmt"/>
+        <line num="183" count="95" type="cond" truecount="1" falsecount="1"/>
+        <line num="192" count="2" type="stmt"/>
+        <line num="200" count="733" type="stmt"/>
+        <line num="207" count="24" type="stmt"/>
+        <line num="211" count="24" type="stmt"/>
+        <line num="219" count="3" type="stmt"/>
+        <line num="229" count="1" type="stmt"/>
+        <line num="243" count="589" type="stmt"/>
+      </file>
+      <file name="inject-cls.decorator.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\inject-cls.decorator.ts">
+        <metrics statements="4" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
+        <line num="1" count="20" type="stmt"/>
+        <line num="2" count="20" type="stmt"/>
+        <line num="7" count="20" type="stmt"/>
+        <line num="8" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib.cls-initializers">
+      <metrics statements="131" coveredstatements="128" conditionals="60" coveredconditionals="43" methods="16" coveredmethods="16"/>
+      <file name="cls.guard.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\cls.guard.ts">
+        <metrics statements="31" coveredstatements="31" conditionals="14" coveredconditionals="10" methods="2" coveredmethods="2"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="7" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="12" count="21" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="16" count="21" type="stmt"/>
+        <line num="23" count="11" type="stmt"/>
+        <line num="27" count="121" type="stmt"/>
+        <line num="28" count="121" type="stmt"/>
+        <line num="29" count="121" type="stmt"/>
+        <line num="30" count="121" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="26" type="stmt"/>
+        <line num="33" count="95" type="stmt"/>
+        <line num="34" count="95" type="stmt"/>
+        <line num="36" count="121" type="stmt"/>
+        <line num="40" count="121" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="121" type="stmt"/>
+        <line num="43" count="121" type="cond" truecount="2" falsecount="0"/>
+        <line num="44" count="117" type="stmt"/>
+        <line num="45" count="117" type="stmt"/>
+        <line num="47" count="121" type="cond" truecount="1" falsecount="1"/>
+        <line num="48" count="121" type="stmt"/>
+        <line num="50" count="121" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="1" type="stmt"/>
+        <line num="53" count="121" type="cond" truecount="1" falsecount="1"/>
+        <line num="54" count="121" type="stmt"/>
+        <line num="56" count="121" type="cond" truecount="1" falsecount="1"/>
+        <line num="57" count="121" type="stmt"/>
+        <line num="59" count="121" type="stmt"/>
+      </file>
+      <file name="cls.interceptor.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\cls.interceptor.ts">
+        <metrics statements="36" coveredstatements="35" conditionals="14" coveredconditionals="10" methods="7" coveredmethods="7"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="21" type="stmt"/>
+        <line num="12" count="21" type="stmt"/>
+        <line num="14" count="21" type="stmt"/>
+        <line num="15" count="21" type="stmt"/>
+        <line num="18" count="21" type="stmt"/>
+        <line num="25" count="13" type="stmt"/>
+        <line num="29" count="81" type="stmt"/>
+        <line num="30" count="81" type="cond" truecount="2" falsecount="0"/>
+        <line num="31" count="81" type="stmt"/>
+        <line num="32" count="81" type="stmt"/>
+        <line num="33" count="81" type="stmt"/>
+        <line num="34" count="81" type="stmt"/>
+        <line num="35" count="81" type="stmt"/>
+        <line num="39" count="81" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="81" type="stmt"/>
+        <line num="42" count="81" type="cond" truecount="2" falsecount="0"/>
+        <line num="43" count="77" type="stmt"/>
+        <line num="44" count="77" type="stmt"/>
+        <line num="46" count="81" type="cond" truecount="1" falsecount="1"/>
+        <line num="47" count="81" type="stmt"/>
+        <line num="49" count="81" type="cond" truecount="2" falsecount="0"/>
+        <line num="50" count="1" type="stmt"/>
+        <line num="52" count="81" type="cond" truecount="1" falsecount="1"/>
+        <line num="53" count="81" type="stmt"/>
+        <line num="55" count="81" type="cond" truecount="1" falsecount="1"/>
+        <line num="56" count="81" type="stmt"/>
+        <line num="58" count="81" type="stmt"/>
+        <line num="59" count="81" type="stmt"/>
+        <line num="62" count="57" type="stmt"/>
+        <line num="63" count="24" type="stmt"/>
+        <line num="64" count="57" type="stmt"/>
+        <line num="67" count="0" type="stmt"/>
+      </file>
+      <file name="cls.middleware.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\cls.middleware.ts">
+        <metrics statements="34" coveredstatements="33" conditionals="18" coveredconditionals="13" methods="3" coveredmethods="3"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="4" count="21" type="stmt"/>
+        <line num="5" count="21" type="stmt"/>
+        <line num="7" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="11" count="21" type="stmt"/>
+        <line num="18" count="329" type="stmt"/>
+        <line num="20" count="329" type="stmt"/>
+        <line num="21" count="92" type="stmt"/>
+        <line num="22" count="92" type="stmt"/>
+        <line num="23" count="92" type="stmt"/>
+        <line num="24" count="92" type="stmt"/>
+        <line num="25" count="92" type="stmt"/>
+        <line num="30" count="92" type="cond" truecount="1" falsecount="1"/>
+        <line num="31" count="92" type="stmt"/>
+        <line num="32" count="92" type="cond" truecount="1" falsecount="1"/>
+        <line num="33" count="92" type="stmt"/>
+        <line num="35" count="92" type="cond" truecount="2" falsecount="0"/>
+        <line num="36" count="78" type="stmt"/>
+        <line num="37" count="78" type="stmt"/>
+        <line num="39" count="92" type="cond" truecount="1" falsecount="1"/>
+        <line num="40" count="92" type="cond" truecount="2" falsecount="0"/>
+        <line num="41" count="92" type="cond" truecount="2" falsecount="0"/>
+        <line num="42" count="1" type="stmt"/>
+        <line num="44" count="92" type="cond" truecount="1" falsecount="1"/>
+        <line num="45" count="92" type="stmt"/>
+        <line num="47" count="92" type="cond" truecount="2" falsecount="0"/>
+        <line num="48" count="88" type="stmt"/>
+        <line num="50" count="92" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="55" count="92" type="cond" truecount="1" falsecount="1"/>
+        <line num="58" count="92" type="stmt"/>
+      </file>
+      <file name="use-cls.decorator.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\use-cls.decorator.ts">
+        <metrics statements="30" coveredstatements="29" conditionals="14" coveredconditionals="10" methods="4" coveredmethods="4"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="4" count="21" type="stmt"/>
+        <line num="5" count="21" type="stmt"/>
+        <line num="7" count="21" type="stmt"/>
+        <line num="31" count="21" type="stmt"/>
+        <line num="34" count="4" type="stmt"/>
+        <line num="39" count="4" type="stmt"/>
+        <line num="40" count="4" type="stmt"/>
+        <line num="41" count="4" type="stmt"/>
+        <line num="42" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="43" count="0" type="stmt"/>
+        <line num="47" count="4" type="stmt"/>
+        <line num="49" count="5" type="stmt"/>
+        <line num="50" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="5" type="stmt"/>
+        <line num="55" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="56" count="5" type="stmt"/>
+        <line num="58" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="63" count="1" type="stmt"/>
+        <line num="65" count="5" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="1" type="stmt"/>
+        <line num="68" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="69" count="5" type="stmt"/>
+        <line num="71" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="72" count="5" type="stmt"/>
+        <line num="74" count="5" type="stmt"/>
+        <line num="78" count="4" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib.cls-initializers.utils">
+      <metrics statements="66" coveredstatements="59" conditionals="44" coveredconditionals="38" methods="13" coveredmethods="9"/>
+      <file name="context-cls-store-map.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\utils\context-cls-store-map.ts">
+        <metrics statements="26" coveredstatements="26" conditionals="11" coveredconditionals="11" methods="6" coveredmethods="5"/>
+        <line num="3" count="23" type="stmt"/>
+        <line num="30" count="23" type="stmt"/>
+        <line num="41" count="23" type="stmt"/>
+        <line num="49" count="23" type="stmt"/>
+        <line num="54" count="181" type="stmt"/>
+        <line num="55" count="181" type="stmt"/>
+        <line num="59" count="207" type="stmt"/>
+        <line num="60" count="207" type="stmt"/>
+        <line num="73" count="293" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="2" type="stmt"/>
+        <line num="77" count="291" type="stmt"/>
+        <line num="79" count="291" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="96" count="228" type="cond" truecount="2" falsecount="0"/>
+        <line num="97" count="2" type="stmt"/>
+        <line num="101" count="226" type="stmt"/>
+        <line num="102" count="226" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="67" type="stmt"/>
+        <line num="107" count="159" type="stmt"/>
+        <line num="111" count="388" type="cond" truecount="5" falsecount="0"/>
+        <line num="113" count="122" type="stmt"/>
+        <line num="118" count="122" type="stmt"/>
+        <line num="120" count="18" type="stmt"/>
+        <line num="122" count="2" type="stmt"/>
+        <line num="125" count="244" type="stmt"/>
+        <line num="127" count="2" type="stmt"/>
+      </file>
+      <file name="request-identity-resolver.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-initializers\utils\request-identity-resolver.ts">
+        <metrics statements="40" coveredstatements="33" conditionals="33" coveredconditionals="27" methods="7" coveredmethods="4"/>
+        <line num="7" count="24" type="stmt"/>
+        <line num="13" count="24" type="stmt"/>
+        <line num="56" count="24" type="stmt"/>
+        <line num="61" count="24" type="stmt"/>
+        <line num="112" count="3284" type="cond" truecount="4" falsecount="0"/>
+        <line num="113" count="5" type="stmt"/>
+        <line num="117" count="3279" type="cond" truecount="2" falsecount="0"/>
+        <line num="118" count="1085" type="stmt"/>
+        <line num="122" count="2194" type="stmt"/>
+        <line num="123" count="2194" type="cond" truecount="2" falsecount="0"/>
+        <line num="124" count="3" type="stmt"/>
+        <line num="128" count="2191" type="stmt"/>
+        <line num="131" count="2191" type="cond" truecount="4" falsecount="0"/>
+        <line num="132" count="2" type="stmt"/>
+        <line num="133" count="2" type="stmt"/>
+        <line num="134" count="2" type="stmt"/>
+        <line num="138" count="2189" type="stmt"/>
+        <line num="139" count="2189" type="cond" truecount="2" falsecount="0"/>
+        <line num="140" count="26" type="stmt"/>
+        <line num="144" count="2189" type="cond" truecount="2" falsecount="0"/>
+        <line num="145" count="5" type="stmt"/>
+        <line num="147" count="2189" type="cond" truecount="3" falsecount="1"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="151" count="2189" type="stmt"/>
+        <line num="167" count="2191" type="cond" truecount="4" falsecount="0"/>
+        <line num="168" count="27" type="stmt"/>
+        <line num="172" count="2164" type="cond" truecount="4" falsecount="0"/>
+        <line num="173" count="1" type="stmt"/>
+        <line num="177" count="2163" type="stmt"/>
+        <line num="198" count="0" type="stmt"/>
+        <line num="203" count="0" type="stmt"/>
+        <line num="204" count="0" type="stmt"/>
+        <line num="205" count="0" type="cond" truecount="0" falsecount="2"/>
+        <line num="210" count="0" type="stmt"/>
+        <line num="215" count="0" type="stmt"/>
+        <line num="228" count="2217" type="stmt"/>
+        <line num="230" count="2217" type="stmt"/>
+        <line num="236" count="2212" type="stmt"/>
+        <line num="239" count="5" type="stmt"/>
+        <line num="267" count="28" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib.cls-module">
+      <metrics statements="120" coveredstatements="117" conditionals="42" coveredconditionals="37" methods="32" coveredmethods="31"/>
+      <file name="cls-common.module.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-module\cls-common.module.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="5" count="21" type="stmt"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="16" count="63" type="stmt"/>
+        <line num="29" count="21" type="stmt"/>
+      </file>
+      <file name="cls-root.module.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-module\cls-root.module.ts">
+        <metrics statements="59" coveredstatements="58" conditionals="16" coveredconditionals="13" methods="17" coveredmethods="16"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="14" count="21" type="stmt"/>
+        <line num="20" count="21" type="stmt"/>
+        <line num="21" count="21" type="stmt"/>
+        <line num="22" count="21" type="stmt"/>
+        <line num="23" count="21" type="stmt"/>
+        <line num="24" count="21" type="stmt"/>
+        <line num="30" count="21" type="stmt"/>
+        <line num="37" count="21" type="stmt"/>
+        <line num="38" count="21" type="stmt"/>
+        <line num="39" count="21" type="stmt"/>
+        <line num="40" count="21" type="stmt"/>
+        <line num="41" count="21" type="stmt"/>
+        <line num="51" count="21" type="stmt"/>
+        <line num="52" count="21" type="stmt"/>
+        <line num="55" count="355" type="stmt"/>
+        <line num="56" count="355" type="stmt"/>
+        <line num="60" count="351" type="stmt"/>
+        <line num="62" count="351" type="cond" truecount="2" falsecount="0"/>
+        <line num="63" count="323" type="stmt"/>
+        <line num="64" count="323" type="stmt"/>
+        <line num="65" count="323" type="cond" truecount="1" falsecount="1"/>
+        <line num="66" count="323" type="stmt"/>
+        <line num="70" count="323" type="stmt"/>
+        <line num="75" count="355" type="stmt"/>
+        <line num="84" count="350" type="stmt"/>
+        <line num="85" count="350" type="stmt"/>
+        <line num="86" count="350" type="stmt"/>
+        <line num="87" count="350" type="stmt"/>
+        <line num="91" count="349" type="stmt"/>
+        <line num="104" count="11" type="stmt"/>
+        <line num="115" count="6" type="stmt"/>
+        <line num="116" count="6" type="stmt"/>
+        <line num="117" count="6" type="stmt"/>
+        <line num="121" count="6" type="stmt"/>
+        <line num="133" count="0" type="stmt"/>
+        <line num="143" count="641" type="stmt"/>
+        <line num="145" count="16618" type="stmt"/>
+        <line num="153" count="356" type="stmt"/>
+        <line num="170" count="356" type="stmt"/>
+        <line num="183" count="356" type="stmt"/>
+        <line num="192" count="355" type="stmt"/>
+        <line num="196" count="355" type="stmt"/>
+        <line num="202" count="355" type="stmt"/>
+        <line num="206" count="355" type="stmt"/>
+        <line num="212" count="355" type="stmt"/>
+        <line num="216" count="355" type="stmt"/>
+        <line num="220" count="355" type="cond" truecount="2" falsecount="0"/>
+        <line num="221" count="10" type="cond" truecount="1" falsecount="1"/>
+        <line num="222" count="10" type="stmt"/>
+        <line num="226" count="10" type="stmt"/>
+        <line num="228" count="345" type="stmt"/>
+        <line num="229" count="185" type="stmt"/>
+        <line num="236" count="355" type="cond" truecount="2" falsecount="0"/>
+        <line num="237" count="12" type="cond" truecount="1" falsecount="1"/>
+        <line num="238" count="12" type="stmt"/>
+        <line num="242" count="12" type="stmt"/>
+        <line num="244" count="343" type="stmt"/>
+        <line num="245" count="225" type="stmt"/>
+      </file>
+      <file name="cls.module.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-module\cls.module.ts">
+        <metrics statements="15" coveredstatements="15" conditionals="4" coveredconditionals="4" methods="6" coveredmethods="6"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="5" count="21" type="stmt"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="8" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="18" count="21" type="stmt"/>
+        <line num="25" count="350" type="stmt"/>
+        <line num="41" count="6" type="stmt"/>
+        <line num="63" count="285" type="stmt"/>
+        <line num="64" count="284" type="stmt"/>
+        <line num="67" count="16605" type="stmt"/>
+        <line num="79" count="43" type="stmt"/>
+        <line num="80" count="43" type="cond" truecount="2" falsecount="0"/>
+        <line num="81" count="43" type="stmt"/>
+        <line num="94" count="6" type="stmt"/>
+      </file>
+      <file name="feature-detection.utils.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-module\feature-detection.utils.ts">
+        <metrics statements="23" coveredstatements="23" conditionals="16" coveredconditionals="16" methods="7" coveredmethods="7"/>
+        <line num="3" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="4" count="22" type="stmt"/>
+        <line num="5" count="22" type="stmt"/>
+        <line num="8" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="22" type="stmt"/>
+        <line num="10" count="22" type="stmt"/>
+        <line num="13" count="22" type="cond" truecount="2" falsecount="0"/>
+        <line num="14" count="22" type="stmt"/>
+        <line num="15" count="22" type="stmt"/>
+        <line num="32" count="22" type="stmt"/>
+        <line num="35" count="327" type="stmt"/>
+        <line num="36" count="327" type="cond" truecount="2" falsecount="0"/>
+        <line num="37" count="6" type="stmt"/>
+        <line num="42" count="321" type="stmt"/>
+        <line num="50" count="327" type="cond" truecount="2" falsecount="0"/>
+        <line num="51" count="6" type="stmt"/>
+        <line num="53" count="321" type="stmt"/>
+        <line num="58" count="321" type="cond" truecount="2" falsecount="0"/>
+        <line num="62" count="320" type="stmt"/>
+        <line num="64" count="1" type="stmt"/>
+        <line num="69" count="6" type="cond" truecount="2" falsecount="0"/>
+        <line num="74" count="5" type="stmt"/>
+        <line num="76" count="1" type="stmt"/>
+      </file>
+      <file name="middleware.utils.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\cls-module\middleware.utils.ts">
+        <metrics statements="14" coveredstatements="12" conditionals="6" coveredconditionals="4" methods="1" coveredmethods="1"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="9" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="12" count="21" type="stmt"/>
+        <line num="13" count="21" type="stmt"/>
+        <line num="15" count="21" type="stmt"/>
+        <line num="16" count="323" type="stmt"/>
+        <line num="17" count="323" type="cond" truecount="2" falsecount="0"/>
+        <line num="18" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="19" count="4" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="23" count="319" type="cond" truecount="1" falsecount="1"/>
+        <line num="24" count="319" type="stmt"/>
+        <line num="26" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib.plugin">
+      <metrics statements="50" coveredstatements="42" conditionals="6" coveredconditionals="5" methods="24" coveredmethods="21"/>
+      <file name="cls-plugin-base.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\plugin\cls-plugin-base.ts">
+        <metrics statements="12" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="5" coveredmethods="2"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="0" type="stmt"/>
+        <line num="12" count="0" type="stmt"/>
+        <line num="13" count="0" type="stmt"/>
+        <line num="18" count="0" type="stmt"/>
+        <line num="21" count="0" type="stmt"/>
+        <line num="47" count="0" type="stmt"/>
+        <line num="52" count="0" type="stmt"/>
+        <line num="56" count="21" type="stmt"/>
+        <line num="57" count="52" type="stmt"/>
+        <line num="60" count="21" type="stmt"/>
+        <line num="61" count="34338" type="cond" truecount="2" falsecount="0"/>
+      </file>
+      <file name="cls-plugin-hooks-host.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\plugin\cls-plugin-hooks-host.ts">
+        <metrics statements="23" coveredstatements="22" conditionals="2" coveredconditionals="1" methods="9" coveredmethods="9"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="4" count="21" type="stmt"/>
+        <line num="6" count="21" type="stmt"/>
+        <line num="14" count="21" type="stmt"/>
+        <line num="17" count="355" type="stmt"/>
+        <line num="21" count="299" type="cond" truecount="1" falsecount="1"/>
+        <line num="22" count="0" type="stmt"/>
+        <line num="24" count="299" type="stmt"/>
+        <line num="27" count="355" type="stmt"/>
+        <line num="28" count="355" type="stmt"/>
+        <line num="32" count="355" type="stmt"/>
+        <line num="34" count="34338" type="stmt"/>
+        <line num="35" count="26" type="stmt"/>
+        <line num="37" count="355" type="stmt"/>
+        <line num="38" count="26" type="stmt"/>
+        <line num="40" count="355" type="stmt"/>
+        <line num="41" count="26" type="stmt"/>
+        <line num="46" count="299" type="stmt"/>
+        <line num="47" count="16" type="stmt"/>
+        <line num="52" count="299" type="stmt"/>
+        <line num="53" count="16" type="stmt"/>
+      </file>
+      <file name="cls-plugins.module.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\plugin\cls-plugins.module.ts">
+        <metrics statements="15" coveredstatements="15" conditionals="2" coveredconditionals="2" methods="10" coveredmethods="10"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="21" type="stmt"/>
+        <line num="15" count="21" type="stmt"/>
+        <line num="17" count="361" type="stmt"/>
+        <line num="18" count="26" type="cond" truecount="2" falsecount="0"/>
+        <line num="23" count="21" type="stmt"/>
+        <line num="34" count="26" type="stmt"/>
+        <line num="43" count="26" type="stmt"/>
+        <line num="52" count="26" type="stmt"/>
+        <line num="55" count="26" type="stmt"/>
+        <line num="58" count="26" type="stmt"/>
+        <line num="61" count="26" type="stmt"/>
+        <line num="64" count="26" type="stmt"/>
+        <line num="68" count="26" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.lib.proxy-provider">
+      <metrics statements="210" coveredstatements="204" conditionals="81" coveredconditionals="71" methods="59" coveredmethods="55"/>
+      <file name="get-proxy-provider-symbol.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\get-proxy-provider-symbol.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="6" coveredconditionals="6" methods="1" coveredmethods="1"/>
+        <line num="4" count="23" type="stmt"/>
+        <line num="7" count="34257" type="cond" truecount="2" falsecount="0"/>
+        <line num="8" count="34223" type="cond" truecount="2" falsecount="0"/>
+        <line num="9" count="34208" type="cond" truecount="2" falsecount="0"/>
+        <line num="10" count="1" type="stmt"/>
+      </file>
+      <file name="index.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\index.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="21" type="stmt"/>
+        <line num="3" count="21" type="stmt"/>
+        <line num="4" count="21" type="stmt"/>
+      </file>
+      <file name="injectable-proxy.decorator.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\injectable-proxy.decorator.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="1" coveredconditionals="1" methods="2" coveredmethods="2"/>
+        <line num="1" count="20" type="stmt"/>
+        <line num="2" count="20" type="stmt"/>
+        <line num="20" count="20" type="cond" truecount="1" falsecount="0"/>
+        <line num="21" count="16616" type="stmt"/>
+        <line num="22" count="16616" type="stmt"/>
+      </file>
+      <file name="proxy-provider-manager.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider-manager.ts">
+        <metrics statements="69" coveredstatements="68" conditionals="38" coveredconditionals="35" methods="23" coveredmethods="21"/>
+        <line num="7" count="23" type="stmt"/>
+        <line num="9" count="23" type="stmt"/>
+        <line num="11" count="23" type="stmt"/>
+        <line num="12" count="23" type="stmt"/>
+        <line num="13" count="23" type="stmt"/>
+        <line num="17" count="23" type="stmt"/>
+        <line num="27" count="23" type="stmt"/>
+        <line num="34" count="23" type="stmt"/>
+        <line num="36" count="23" type="stmt"/>
+        <line num="53" count="361" type="stmt"/>
+        <line num="63" count="358" type="stmt"/>
+        <line num="65" count="358" type="cond" truecount="2" falsecount="0"/>
+        <line num="66" count="46" type="stmt"/>
+        <line num="68" count="312" type="stmt"/>
+        <line num="75" count="16666" type="stmt"/>
+        <line num="76" count="16666" type="stmt"/>
+        <line num="78" count="16666" type="stmt"/>
+        <line num="79" count="16666" type="cond" truecount="2" falsecount="0"/>
+        <line num="80" count="16636" type="stmt"/>
+        <line num="81" count="16634" type="stmt"/>
+        <line num="83" count="16664" type="cond" truecount="3" falsecount="0"/>
+        <line num="85" count="16664" type="stmt"/>
+        <line num="91" count="16664" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="16634" type="stmt"/>
+        <line num="93" count="16634" type="stmt"/>
+        <line num="97" count="16635" type="stmt"/>
+        <line num="105" count="16635" type="stmt"/>
+        <line num="106" count="16635" type="stmt"/>
+        <line num="110" count="30" type="cond" truecount="2" falsecount="0"/>
+        <line num="111" count="30" type="stmt"/>
+        <line num="115" count="31" type="stmt"/>
+        <line num="122" count="31" type="stmt"/>
+        <line num="123" count="31" type="stmt"/>
+        <line num="127" count="16664" type="stmt"/>
+        <line num="134" count="63" type="stmt"/>
+        <line num="135" count="63" type="stmt"/>
+        <line num="139" count="63" type="stmt"/>
+        <line num="145" count="16636" type="stmt"/>
+        <line num="146" count="16636" type="cond" truecount="2" falsecount="0"/>
+        <line num="147" count="2" type="stmt"/>
+        <line num="149" count="16634" type="stmt"/>
+        <line num="155" count="16666" type="stmt"/>
+        <line num="165" count="16727" type="stmt"/>
+        <line num="166" count="137744" type="stmt"/>
+        <line num="167" count="16727" type="cond" truecount="2" falsecount="0"/>
+        <line num="168" count="16727" type="cond" truecount="2" falsecount="0"/>
+        <line num="170" count="16727" type="stmt"/>
+        <line num="172" count="3" type="cond" truecount="2" falsecount="0"/>
+        <line num="173" count="2" type="stmt"/>
+        <line num="176" count="136624" type="cond" truecount="2" falsecount="0"/>
+        <line num="177" count="136621" type="stmt"/>
+        <line num="178" count="136621" type="cond" truecount="2" falsecount="0"/>
+        <line num="179" count="271" type="stmt"/>
+        <line num="181" count="136350" type="stmt"/>
+        <line num="185" count="5" type="cond" truecount="1" falsecount="1"/>
+        <line num="186" count="5" type="stmt"/>
+        <line num="189" count="4" type="stmt"/>
+        <line num="192" count="1096" type="stmt"/>
+        <line num="195" count="12" type="stmt"/>
+        <line num="201" count="0" type="stmt"/>
+        <line num="207" count="592" type="stmt"/>
+        <line num="211" count="23" type="stmt"/>
+        <line num="236" count="16727" type="stmt"/>
+        <line num="238" count="16727" type="cond" truecount="2" falsecount="0"/>
+        <line num="239" count="116324" type="stmt"/>
+        <line num="241" count="85" type="stmt"/>
+        <line num="242" count="5104" type="cond" truecount="4" falsecount="0"/>
+        <line num="243" count="4" type="stmt"/>
+        <line num="248" count="5100" type="stmt"/>
+      </file>
+      <file name="proxy-provider-resolver.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider-resolver.ts">
+        <metrics statements="69" coveredstatements="69" conditionals="22" coveredconditionals="20" methods="16" coveredmethods="16"/>
+        <line num="1" count="23" type="stmt"/>
+        <line num="3" count="23" type="stmt"/>
+        <line num="9" count="23" type="stmt"/>
+        <line num="14" count="23" type="stmt"/>
+        <line num="15" count="23" type="stmt"/>
+        <line num="16" count="23" type="stmt"/>
+        <line num="20" count="23" type="stmt"/>
+        <line num="30" count="23" type="stmt"/>
+        <line num="32" count="23" type="stmt"/>
+        <line num="33" count="312" type="stmt"/>
+        <line num="37" count="312" type="stmt"/>
+        <line num="38" count="312" type="stmt"/>
+        <line num="40" count="312" type="stmt"/>
+        <line num="43" count="16664" type="stmt"/>
+        <line num="47" count="17583" type="stmt"/>
+        <line num="48" count="17556" type="stmt"/>
+        <line num="62" count="311" type="cond" truecount="2" falsecount="0"/>
+        <line num="63" count="298" type="stmt"/>
+        <line num="66" count="298" type="stmt"/>
+        <line num="69" count="311" type="cond" truecount="2" falsecount="0"/>
+        <line num="71" count="166" type="stmt"/>
+        <line num="72" count="166" type="stmt"/>
+        <line num="74" count="1839" type="cond" truecount="1" falsecount="1"/>
+        <line num="76" count="166" type="stmt"/>
+        <line num="86" count="311" type="stmt"/>
+        <line num="88" count="145" type="cond" truecount="2" falsecount="0"/>
+        <line num="92" count="145" type="stmt"/>
+        <line num="94" count="145" type="stmt"/>
+        <line num="98" count="145" type="stmt"/>
+        <line num="100" count="145" type="stmt"/>
+        <line num="101" count="14204" type="stmt"/>
+        <line num="102" count="14204" type="cond" truecount="2" falsecount="0"/>
+        <line num="103" count="14200" type="stmt"/>
+        <line num="104" count="14200" type="stmt"/>
+        <line num="105" count="14200" type="stmt"/>
+        <line num="109" count="145" type="stmt"/>
+        <line num="110" count="14200" type="stmt"/>
+        <line num="118" count="145" type="stmt"/>
+        <line num="133" count="145" type="cond" truecount="2" falsecount="0"/>
+        <line num="136" count="145" type="stmt"/>
+        <line num="140" count="145" type="stmt"/>
+        <line num="148" count="145" type="stmt"/>
+        <line num="150" count="14210" type="stmt"/>
+        <line num="153" count="14204" type="cond" truecount="2" falsecount="0"/>
+        <line num="155" count="14204" type="stmt"/>
+        <line num="166" count="14200" type="stmt"/>
+        <line num="168" count="14200" type="stmt"/>
+        <line num="169" count="14200" type="cond" truecount="2" falsecount="0"/>
+        <line num="170" count="1" type="stmt"/>
+        <line num="176" count="14199" type="cond" truecount="2" falsecount="0"/>
+        <line num="178" count="14199" type="stmt"/>
+        <line num="179" count="15052" type="stmt"/>
+        <line num="182" count="14199" type="stmt"/>
+        <line num="184" count="14199" type="stmt"/>
+        <line num="185" count="14196" type="stmt"/>
+        <line num="186" count="14196" type="stmt"/>
+        <line num="188" count="4" type="stmt"/>
+        <line num="194" count="14199" type="cond" truecount="2" falsecount="0"/>
+        <line num="195" count="14170" type="stmt"/>
+        <line num="197" count="29" type="stmt"/>
+        <line num="199" count="14199" type="stmt"/>
+        <line num="205" count="14170" type="stmt"/>
+        <line num="206" count="14170" type="stmt"/>
+        <line num="208" count="14170" type="stmt"/>
+        <line num="209" count="14170" type="stmt"/>
+        <line num="211" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="212" count="3" type="stmt"/>
+        <line num="219" count="29" type="stmt"/>
+        <line num="220" count="29" type="stmt"/>
+      </file>
+      <file name="proxy-provider.constants.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider.constants.ts">
+        <metrics statements="3" coveredstatements="3" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="23" type="stmt"/>
+        <line num="3" count="23" type="stmt"/>
+        <line num="5" count="23" type="stmt"/>
+      </file>
+      <file name="proxy-provider.exceptions.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider.exceptions.ts">
+        <metrics statements="37" coveredstatements="32" conditionals="12" coveredconditionals="7" methods="11" coveredmethods="9"/>
+        <line num="3" count="23" type="stmt"/>
+        <line num="4" count="23" type="stmt"/>
+        <line num="6" count="23" type="stmt"/>
+        <line num="7" count="176" type="stmt"/>
+        <line num="10" count="23" type="stmt"/>
+        <line num="12" count="3" type="stmt"/>
+        <line num="13" count="3" type="stmt"/>
+        <line num="14" count="3" type="stmt"/>
+        <line num="15" count="3" type="stmt"/>
+        <line num="17" count="3" type="stmt"/>
+        <line num="23" count="3" type="stmt"/>
+        <line num="32" count="3" type="cond" truecount="1" falsecount="1"/>
+        <line num="41" count="3" type="stmt"/>
+        <line num="50" count="23" type="stmt"/>
+        <line num="52" count="2" type="stmt"/>
+        <line num="53" count="2" type="stmt"/>
+        <line num="57" count="23" type="stmt"/>
+        <line num="59" count="1" type="stmt"/>
+        <line num="60" count="1" type="stmt"/>
+        <line num="64" count="23" type="stmt"/>
+        <line num="66" count="4" type="stmt"/>
+        <line num="70" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="74" count="4" type="cond" truecount="2" falsecount="0"/>
+        <line num="75" count="3" type="stmt"/>
+        <line num="77" count="1" type="stmt"/>
+        <line num="79" count="4" type="cond" truecount="1" falsecount="1"/>
+        <line num="80" count="0" type="stmt"/>
+        <line num="82" count="4" type="stmt"/>
+        <line num="84" count="4" type="stmt"/>
+        <line num="88" count="0" type="stmt"/>
+        <line num="89" count="0" type="stmt"/>
+        <line num="93" count="23" type="stmt"/>
+        <line num="95" count="0" type="stmt"/>
+        <line num="96" count="0" type="stmt"/>
+        <line num="100" count="23" type="stmt"/>
+        <line num="102" count="166" type="stmt"/>
+        <line num="103" count="166" type="stmt"/>
+      </file>
+      <file name="proxy-provider.functions.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider.functions.ts">
+        <metrics statements="4" coveredstatements="4" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="8" count="23" type="stmt"/>
+        <line num="11" count="33330" type="stmt"/>
+        <line num="13" count="23" type="stmt"/>
+        <line num="16" count="14199" type="stmt"/>
+      </file>
+      <file name="proxy-provider.utils.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-provider.utils.ts">
+        <metrics statements="9" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="3" coveredmethods="3"/>
+        <line num="2" count="23" type="stmt"/>
+        <line num="4" count="23" type="stmt"/>
+        <line num="6" count="23" type="stmt"/>
+        <line num="7" count="16637" type="stmt"/>
+        <line num="10" count="23" type="stmt"/>
+        <line num="11" count="16634" type="stmt"/>
+        <line num="12" count="16634" type="stmt"/>
+        <line num="14" count="1" type="stmt"/>
+        <line num="15" count="16634" type="stmt"/>
+      </file>
+      <file name="proxy-resolution-facade.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\lib\proxy-provider\proxy-resolution-facade.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="2" coveredconditionals="2" methods="1" coveredmethods="1"/>
+        <line num="1" count="23" type="stmt"/>
+        <line num="2" count="23" type="stmt"/>
+        <line num="21" count="23" type="stmt"/>
+        <line num="35" count="589" type="cond" truecount="2" falsecount="0"/>
+        <line num="38" count="589" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.types">
+      <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+      <file name="terminal.type.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\types\terminal.type.ts">
+        <metrics statements="2" coveredstatements="0" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
+        <line num="1" count="0" type="stmt"/>
+        <line num="2" count="0" type="stmt"/>
+      </file>
+    </package>
+    <package name="src.utils">
+      <metrics statements="55" coveredstatements="54" conditionals="16" coveredconditionals="14" methods="15" coveredmethods="15"/>
+      <file name="copy-method-metadata.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\utils\copy-method-metadata.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="10" count="21" type="stmt"/>
+        <line num="11" count="4" type="stmt"/>
+        <line num="12" count="4" type="stmt"/>
+        <line num="13" count="4" type="stmt"/>
+        <line num="14" count="4" type="stmt"/>
+      </file>
+      <file name="dependency-graph.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\utils\dependency-graph.ts">
+        <metrics statements="32" coveredstatements="31" conditionals="12" coveredconditionals="11" methods="6" coveredmethods="6"/>
+        <line num="42" count="24" type="stmt"/>
+        <line num="56" count="316" type="stmt"/>
+        <line num="57" count="316" type="stmt"/>
+        <line num="58" count="316" type="stmt"/>
+        <line num="59" count="316" type="stmt"/>
+        <line num="60" count="316" type="stmt"/>
+        <line num="77" count="318" type="stmt"/>
+        <line num="78" count="318" type="stmt"/>
+        <line num="79" count="318" type="stmt"/>
+        <line num="80" count="318" type="stmt"/>
+        <line num="83" count="318" type="stmt"/>
+        <line num="84" count="16855" type="cond" truecount="2" falsecount="0"/>
+        <line num="85" count="1238" type="stmt"/>
+        <line num="89" count="318" type="stmt"/>
+        <line num="108" count="16856" type="stmt"/>
+        <line num="109" count="16856" type="stmt"/>
+        <line num="110" count="16856" type="stmt"/>
+        <line num="113" count="16856" type="cond" truecount="2" falsecount="0"/>
+        <line num="116" count="16856" type="stmt"/>
+        <line num="117" count="17712" type="cond" truecount="2" falsecount="0"/>
+        <line num="119" count="15618" type="stmt"/>
+        <line num="120" count="2094" type="cond" truecount="2" falsecount="0"/>
+        <line num="122" count="219" type="stmt"/>
+        <line num="128" count="16856" type="stmt"/>
+        <line num="129" count="16856" type="stmt"/>
+        <line num="144" count="219" type="stmt"/>
+        <line num="146" count="219" type="cond" truecount="1" falsecount="1"/>
+        <line num="148" count="0" type="stmt"/>
+        <line num="152" count="219" type="stmt"/>
+        <line num="157" count="219" type="stmt"/>
+        <line num="181" count="172" type="cond" truecount="2" falsecount="0"/>
+        <line num="182" count="172" type="stmt"/>
+      </file>
+      <file name="is-non-nullable.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\utils\is-non-nullable.ts">
+        <metrics statements="2" coveredstatements="2" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="1"/>
+        <line num="1" count="21" type="stmt"/>
+        <line num="2" count="1110" type="stmt"/>
+      </file>
+      <file name="promise-with-resolvers.polyfill.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\utils\promise-with-resolvers.polyfill.ts">
+        <metrics statements="5" coveredstatements="5" conditionals="0" coveredconditionals="0" methods="2" coveredmethods="2"/>
+        <line num="13" count="23" type="stmt"/>
+        <line num="16" count="14200" type="stmt"/>
+        <line num="17" count="14200" type="stmt"/>
+        <line num="18" count="14200" type="stmt"/>
+        <line num="21" count="14200" type="stmt"/>
+      </file>
+      <file name="value-from-path.ts" path="D:\Strategic OSS\nestjs-cls\packages\core\src\utils\value-from-path.ts">
+        <metrics statements="11" coveredstatements="11" conditionals="4" coveredconditionals="3" methods="4" coveredmethods="4"/>
+        <line num="6" count="24" type="stmt"/>
+        <line num="10" count="1305" type="stmt"/>
+        <line num="11" count="1305" type="stmt"/>
+        <line num="12" count="1323" type="stmt"/>
+        <line num="17" count="24" type="stmt"/>
+        <line num="22" count="1067" type="stmt"/>
+        <line num="23" count="1067" type="stmt"/>
+        <line num="24" count="14" type="cond" truecount="2" falsecount="0"/>
+        <line num="25" count="14" type="stmt"/>
+        <line num="28" count="1067" type="stmt"/>
+        <line num="29" count="1067" type="stmt"/>
+      </file>
+    </package>
+  </project>
+</coverage>

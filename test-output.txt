@@ -1,0 +1,86 @@
+PASS test/proxy-providers/for-root.spec.ts (14.725 s)
+PASS test/proxy-providers/for-feature.spec.ts (14.787 s)
+PASS test/rest/for-root-async.spec.ts (15.031 s)
+PASS test/proxy-providers/resolve-proxy-providers.spec.ts (14.998 s)
+PASS test/proxy-providers/req-res-ctx-proxy-providers.spec.ts (15.273 s)
+PASS test/proxy-providers/strict-proxy-providers.spec.ts (15.378 s)
+PASS test/proxy-providers/proxy-providers-resolution-order.spec.ts (15.655 s)
+PASS test/plugin/plugin.spec.ts (15.901 s)
+PASS src/lib/cls.service.spec.ts
+PASS src/utils/dependency-graph.spec.ts
+PASS src/lib/cls-initializers/utils/request-identity-resolver.spec.ts
+PASS src/lib/proxy-provider/proxy-provider-manager.spec.ts
+PASS src/lib/cls-initializers/use-cls.decorator.spec.ts
+PASS test/edge-cases/object-identity-failures.spec.ts
+PASS test/proxy-providers/circular-dependency-detection.spec.ts
+PASS src/utils/value-from-path.spec.ts
+PASS src/lib/cls-initializers/utils/context-cls-store-map.spec.ts
+PASS test/proxy-providers/proxy-providers.spec.ts (16.839 s)
+PASS test/proxy-providers/circular-deps-simple.spec.ts
+PASS src/lib/cls-module/feature-detection.utils.spec.ts (17.182 s)
+(node:10772) ExperimentalWarning: VM Modules is an experimental feature and might change at any time
+(Use `node --trace-warnings ...` to show where the warning was created)
+PASS test/proxy-providers/circular-deps-complex.spec.ts
+PASS test/websockets/ws.spec.ts (18.84 s)
+PASS test/rest/http-fastify.spec.ts (23.893 s)
+PASS test/gql/gql-apollo.spec.ts (25.991 s)
+PASS test/rest/http-express.spec.ts (27.988 s)
+PASS test/gql/gql-mercurius.spec.ts (28.602 s)
+-------------------------------------|---------|----------|---------|---------|-------------------
+File                                 | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s 
+-------------------------------------|---------|----------|---------|---------|-------------------
+All files                            |   95.45 |    83.27 |   92.97 |    95.5 |                   
+ src                                 |     100 |      100 |     100 |     100 |                   
+  index.ts                           |     100 |      100 |     100 |     100 |                   
+ src/lib                             |   97.22 |    84.37 |   96.15 |   97.08 |                   
+  cls-service-manager.ts             |     100 |      100 |     100 |     100 |                   
+  cls-service.globals.ts             |     100 |      100 |     100 |     100 |                   
+  cls.constants.ts                   |     100 |      100 |     100 |     100 |                   
+  cls.internal-constants.ts          |     100 |      100 |     100 |     100 |                   
+  cls.options.ts                     |     100 |      100 |     100 |     100 |                   
+  cls.service.ts                     |   96.55 |    84.37 |     100 |   96.29 | 169,174           
+  inject-cls.decorator.ts            |      75 |      100 |       0 |      75 | 8                 
+ src/lib/cls-initializers            |   97.84 |    71.66 |     100 |    97.7 |                   
+  cls.guard.ts                       |     100 |    71.42 |     100 |     100 | 40,47,53-56       
+  cls.interceptor.ts                 |   97.36 |    71.42 |     100 |   97.22 | 67                
+  cls.middleware.ts                  |   97.36 |    72.22 |     100 |   97.05 | 52                
+  use-cls.decorator.ts               |   96.66 |    71.42 |     100 |   96.66 | 43                
+ src/lib/cls-initializers/utils      |   89.39 |    86.36 |   69.23 |   89.39 |                   
+  context-cls-store-map.ts           |     100 |      100 |   83.33 |     100 |                   
+  request-identity-resolver.ts       |    82.5 |    81.81 |   57.14 |    82.5 | 148,198-215       
+ src/lib/cls-module                  |    97.6 |    88.09 |   96.87 |    97.5 |                   
+  cls-common.module.ts               |     100 |      100 |     100 |     100 |                   
+  cls-root.module.ts                 |   98.33 |    81.25 |   94.11 |    98.3 | 133               
+  cls.module.ts                      |     100 |      100 |     100 |     100 |                   
+  feature-detection.utils.ts         |     100 |      100 |     100 |     100 |                   
+  middleware.utils.ts                |   85.71 |    66.66 |     100 |   85.71 | 21,26             
+ src/lib/plugin                      |   85.45 |    83.33 |    87.5 |      84 |                   
+  cls-plugin-base.ts                 |   41.66 |      100 |      40 |   41.66 | 11-52             
+  cls-plugin-hooks-host.ts           |      96 |       50 |     100 |   95.65 | 22                
+  cls-plugins.module.ts              |     100 |      100 |     100 |     100 |                   
+ src/lib/proxy-provider              |   95.92 |    86.41 |   93.22 |   96.66 |                   
+  get-proxy-provider-symbol.ts       |    87.5 |    83.33 |     100 |      80 | 10                
+  index.ts                           |     100 |      100 |     100 |     100 |                   
+  injectable-proxy.decorator.ts      |     100 |      100 |     100 |     100 |                   
+  proxy-provider-manager.ts          |   97.26 |     92.1 |    91.3 |   98.55 | 201               
+  proxy-provider-resolver.ts         |   98.57 |     90.9 |     100 |     100 | 74,211            
+  proxy-provider.constants.ts        |     100 |      100 |     100 |     100 |                   
+  proxy-provider.exceptions.ts       |   86.84 |    58.33 |   81.81 |   86.48 | 80,88-89,95-96    
+  proxy-provider.functions.ts        |     100 |      100 |     100 |     100 |                   
+  proxy-provider.utils.ts            |     100 |      100 |     100 |     100 |                   
+  proxy-resolution-facade.ts         |     100 |      100 |     100 |     100 |                   
+ src/types                           |       0 |      100 |     100 |       0 |                   
+  terminal.type.ts                   |       0 |      100 |     100 |       0 | 1-2               
+ src/utils                           |   98.21 |     87.5 |     100 |   98.18 |                   
+  copy-method-metadata.ts            |     100 |      100 |     100 |     100 |                   
+  dependency-graph.ts                |   96.96 |    91.66 |     100 |   96.87 | 148               
+  is-non-nullable.ts                 |     100 |      100 |     100 |     100 |                   
+  promise-with-resolvers.polyfill.ts |     100 |      100 |     100 |     100 |                   
+  value-from-path.ts                 |     100 |       75 |     100 |     100 | 26                
+-------------------------------------|---------|----------|---------|---------|-------------------
+
+Test Suites: 26 passed, 26 total
+Tests:       441 passed, 441 total
+Snapshots:   0 total
+Time:        35.275 s, estimated 42 s
+Ran all test suites.

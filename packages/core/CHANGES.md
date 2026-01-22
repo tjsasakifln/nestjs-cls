@@ -73,6 +73,15 @@
   - Ensures DependencyGraph doesn't incorrectly flag valid acyclic dependencies as cycles
   - Addresses Issue #29
 
+* **core**: add Express request identity integration test suite (100 tests)
+  - Add 25 tests for basic Express integration (ClsMiddleware, ClsGuard, ClsInterceptor)
+  - Add 25 tests for Express v4 vs v5 compatibility (request object structure, Symbol tagging)
+  - Add 25 tests for Express-specific edge cases (middleware transformations, body-parser, express-session)
+  - Add 25 tests for multi-enhancer scenarios (Middleware + Guard, Middleware + Interceptor, all enhancers)
+  - Validates RequestIdentityResolver works correctly with Express framework
+  - Zero context leaks in 100 concurrent request scenarios
+  - Addresses Issue #31 (Ronda 4 - Multi-Framework Integration Tests)
+
 * **core**: add comprehensive test suite for circular dependency edge cases (30 tests)
   - Add 10 tests for empty and minimal graph scenarios (no providers, single provider, etc.)
   - Add 10 tests for providers with various dependency patterns (multiple dependencies, shared deps, etc.)
