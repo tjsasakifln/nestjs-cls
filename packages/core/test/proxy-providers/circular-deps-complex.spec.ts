@@ -254,14 +254,24 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Root→BranchLeft→LeafA, Root→BranchRight→LeafB→LeafA→LeafB
-            Reflect.defineMetadata('design:paramtypes', [BranchLeft, BranchRight], TreeRoot);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BranchLeft, BranchRight],
+                TreeRoot,
+            );
             Reflect.defineMetadata('design:paramtypes', [LeafA], BranchLeft);
             Reflect.defineMetadata('design:paramtypes', [LeafB], BranchRight);
             Reflect.defineMetadata('design:paramtypes', [LeafA], LeafB);
             Reflect.defineMetadata('design:paramtypes', [LeafB], LeafA);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(TreeRoot, BranchLeft, BranchRight, LeafA, LeafB),
+                ClsModule.forFeature(
+                    TreeRoot,
+                    BranchLeft,
+                    BranchRight,
+                    LeafA,
+                    LeafB,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -455,7 +465,11 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // CycleP→Dep1,Dep2,CycleQ and CycleQ→Dep3,CycleP
-            Reflect.defineMetadata('design:paramtypes', [Dep1, Dep2, CycleQ], CycleP);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Dep1, Dep2, CycleQ],
+                CycleP,
+            );
             Reflect.defineMetadata('design:paramtypes', [Dep3, CycleP], CycleQ);
 
             app = await createAndInitTestingApp([
@@ -496,14 +510,40 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Diamond: Top→Left,Right; Left,Right→Bottom; Bottom→TailCycle→Bottom
-            Reflect.defineMetadata('design:paramtypes', [DiamondLeft, DiamondRight], DiamondTop);
-            Reflect.defineMetadata('design:paramtypes', [DiamondBottom], DiamondLeft);
-            Reflect.defineMetadata('design:paramtypes', [DiamondBottom], DiamondRight);
-            Reflect.defineMetadata('design:paramtypes', [TailCycle], DiamondBottom);
-            Reflect.defineMetadata('design:paramtypes', [DiamondBottom], TailCycle);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondLeft, DiamondRight],
+                DiamondTop,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondBottom],
+                DiamondLeft,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondBottom],
+                DiamondRight,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [TailCycle],
+                DiamondBottom,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondBottom],
+                TailCycle,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(DiamondTop, DiamondLeft, DiamondRight, DiamondBottom, TailCycle),
+                ClsModule.forFeature(
+                    DiamondTop,
+                    DiamondLeft,
+                    DiamondRight,
+                    DiamondBottom,
+                    TailCycle,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -537,11 +577,24 @@ describe('Complex Circular Dependency Cycles', () => {
             // ChainStart→ChainMid→CycleNode1→CycleNode2→CycleNode1
             Reflect.defineMetadata('design:paramtypes', [ChainMid], ChainStart);
             Reflect.defineMetadata('design:paramtypes', [CycleNode1], ChainMid);
-            Reflect.defineMetadata('design:paramtypes', [CycleNode2], CycleNode1);
-            Reflect.defineMetadata('design:paramtypes', [CycleNode1], CycleNode2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleNode2],
+                CycleNode1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleNode1],
+                CycleNode2,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ChainStart, ChainMid, CycleNode1, CycleNode2),
+                ClsModule.forFeature(
+                    ChainStart,
+                    ChainMid,
+                    CycleNode1,
+                    CycleNode2,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -605,11 +658,24 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // IsolatedA, IsolatedB (no deps), ConnectedX↔ConnectedY (cycle)
-            Reflect.defineMetadata('design:paramtypes', [ConnectedY], ConnectedX);
-            Reflect.defineMetadata('design:paramtypes', [ConnectedX], ConnectedY);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConnectedY],
+                ConnectedX,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConnectedX],
+                ConnectedY,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(IsolatedA, IsolatedB, ConnectedX, ConnectedY),
+                ClsModule.forFeature(
+                    IsolatedA,
+                    IsolatedB,
+                    ConnectedX,
+                    ConnectedY,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -635,9 +701,21 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [FastInnerA], FastOuter);
-            Reflect.defineMetadata('design:paramtypes', [FastInnerB], FastInnerA);
-            Reflect.defineMetadata('design:paramtypes', [FastInnerA], FastInnerB);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FastInnerA],
+                FastOuter,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FastInnerB],
+                FastInnerA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FastInnerA],
+                FastInnerB,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(FastOuter, FastInnerA, FastInnerB),
@@ -670,12 +748,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // OrderService→PaymentService→NotificationService→PaymentService
-            Reflect.defineMetadata('design:paramtypes', [PaymentService], OrderService);
-            Reflect.defineMetadata('design:paramtypes', [NotificationService], PaymentService);
-            Reflect.defineMetadata('design:paramtypes', [PaymentService], NotificationService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PaymentService],
+                OrderService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [NotificationService],
+                PaymentService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PaymentService],
+                NotificationService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(OrderService, PaymentService, NotificationService),
+                ClsModule.forFeature(
+                    OrderService,
+                    PaymentService,
+                    NotificationService,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -776,9 +870,21 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // ModuleAService→ModuleBService→ModuleCService→ModuleBService
-            Reflect.defineMetadata('design:paramtypes', [ModuleBService], ModuleAService);
-            Reflect.defineMetadata('design:paramtypes', [ModuleCService], ModuleBService);
-            Reflect.defineMetadata('design:paramtypes', [ModuleBService], ModuleCService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleBService],
+                ModuleAService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleCService],
+                ModuleBService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleBService],
+                ModuleCService,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(ModuleAService),
@@ -816,9 +922,21 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // PropsNodeA→PropsNodeB→PropsNodeC→PropsNodeB
-            Reflect.defineMetadata('design:paramtypes', [PropsNodeB], PropsNodeA);
-            Reflect.defineMetadata('design:paramtypes', [PropsNodeC], PropsNodeB);
-            Reflect.defineMetadata('design:paramtypes', [PropsNodeB], PropsNodeC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PropsNodeB],
+                PropsNodeA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PropsNodeC],
+                PropsNodeB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PropsNodeB],
+                PropsNodeC,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(PropsNodeA, PropsNodeB, PropsNodeC),
@@ -843,8 +961,16 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // $SpecialNode1↔_SpecialNode2
-            Reflect.defineMetadata('design:paramtypes', [_SpecialNode2], $SpecialNode1);
-            Reflect.defineMetadata('design:paramtypes', [$SpecialNode1], _SpecialNode2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [_SpecialNode2],
+                $SpecialNode1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [$SpecialNode1],
+                _SpecialNode2,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature($SpecialNode1, _SpecialNode2),
@@ -906,12 +1032,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // OptionalOuter→OptionalInner1→OptionalInner2→OptionalInner1
-            Reflect.defineMetadata('design:paramtypes', [OptionalInner1], OptionalOuter);
-            Reflect.defineMetadata('design:paramtypes', [OptionalInner2], OptionalInner1);
-            Reflect.defineMetadata('design:paramtypes', [OptionalInner1], OptionalInner2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptionalInner1],
+                OptionalOuter,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptionalInner2],
+                OptionalInner1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptionalInner1],
+                OptionalInner2,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(OptionalOuter, OptionalInner1, OptionalInner2),
+                ClsModule.forFeature(
+                    OptionalOuter,
+                    OptionalInner1,
+                    OptionalInner2,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1126,7 +1268,14 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Beta1], Beta3);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Alpha1, Alpha2, Alpha3, Beta1, Beta2, Beta3),
+                ClsModule.forFeature(
+                    Alpha1,
+                    Alpha2,
+                    Alpha3,
+                    Beta1,
+                    Beta2,
+                    Beta3,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1163,13 +1312,27 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Both cycles depend on SharedUtil, but cycles are independent
-            Reflect.defineMetadata('design:paramtypes', [Cycle1B, SharedUtil], Cycle1A);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Cycle1B, SharedUtil],
+                Cycle1A,
+            );
             Reflect.defineMetadata('design:paramtypes', [Cycle1A], Cycle1B);
-            Reflect.defineMetadata('design:paramtypes', [Cycle2B, SharedUtil], Cycle2A);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Cycle2B, SharedUtil],
+                Cycle2A,
+            );
             Reflect.defineMetadata('design:paramtypes', [Cycle2A], Cycle2B);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(SharedUtil, Cycle1A, Cycle1B, Cycle2A, Cycle2B),
+                ClsModule.forFeature(
+                    SharedUtil,
+                    Cycle1A,
+                    Cycle1B,
+                    Cycle2A,
+                    Cycle2B,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1219,7 +1382,14 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Large1], Large4);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Small1, Small2, Large1, Large2, Large3, Large4),
+                ClsModule.forFeature(
+                    Small1,
+                    Small2,
+                    Large1,
+                    Large2,
+                    Large3,
+                    Large4,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1250,10 +1420,26 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ModuleACycle2], ModuleACycle1);
-            Reflect.defineMetadata('design:paramtypes', [ModuleACycle1], ModuleACycle2);
-            Reflect.defineMetadata('design:paramtypes', [ModuleBCycle2], ModuleBCycle1);
-            Reflect.defineMetadata('design:paramtypes', [ModuleBCycle1], ModuleBCycle2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleACycle2],
+                ModuleACycle1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleACycle1],
+                ModuleACycle2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleBCycle2],
+                ModuleBCycle1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ModuleBCycle1],
+                ModuleBCycle2,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(ModuleACycle1, ModuleACycle2),
@@ -1377,7 +1563,15 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Deep1], Deep5);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Shallow1, Shallow2, Deep1, Deep2, Deep3, Deep4, Deep5),
+                ClsModule.forFeature(
+                    Shallow1,
+                    Shallow2,
+                    Deep1,
+                    Deep2,
+                    Deep3,
+                    Deep4,
+                    Deep5,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1409,13 +1603,34 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // UserAuth↔TokenAuth and PaymentProcessor↔BillingService
-            Reflect.defineMetadata('design:paramtypes', [TokenAuthService], UserAuthService);
-            Reflect.defineMetadata('design:paramtypes', [UserAuthService], TokenAuthService);
-            Reflect.defineMetadata('design:paramtypes', [BillingService], PaymentProcessor);
-            Reflect.defineMetadata('design:paramtypes', [PaymentProcessor], BillingService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [TokenAuthService],
+                UserAuthService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [UserAuthService],
+                TokenAuthService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [BillingService],
+                PaymentProcessor,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PaymentProcessor],
+                BillingService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(UserAuthService, TokenAuthService, PaymentProcessor, BillingService),
+                ClsModule.forFeature(
+                    UserAuthService,
+                    TokenAuthService,
+                    PaymentProcessor,
+                    BillingService,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1519,10 +1734,26 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // GroupA↔, NonCyclic in middle, GroupB↔
-            Reflect.defineMetadata('design:paramtypes', [CycleGroupA2], CycleGroupA1);
-            Reflect.defineMetadata('design:paramtypes', [CycleGroupA1], CycleGroupA2);
-            Reflect.defineMetadata('design:paramtypes', [CycleGroupB2], CycleGroupB1);
-            Reflect.defineMetadata('design:paramtypes', [CycleGroupB1], CycleGroupB2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleGroupA2],
+                CycleGroupA1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleGroupA1],
+                CycleGroupA2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleGroupB2],
+                CycleGroupB1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleGroupB1],
+                CycleGroupB2,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -1613,13 +1844,36 @@ describe('Complex Circular Dependency Cycles', () => {
 
             // Group1A→Util1,Group1B and Group1B→Util2,Group1A (cycle)
             // Group2A→Util1,Group2B and Group2B→Util2,Group2A (cycle)
-            Reflect.defineMetadata('design:paramtypes', [Util1, Group1B], Group1A);
-            Reflect.defineMetadata('design:paramtypes', [Util2, Group1A], Group1B);
-            Reflect.defineMetadata('design:paramtypes', [Util1, Group2B], Group2A);
-            Reflect.defineMetadata('design:paramtypes', [Util2, Group2A], Group2B);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Util1, Group1B],
+                Group1A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Util2, Group1A],
+                Group1B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Util1, Group2B],
+                Group2A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Util2, Group2A],
+                Group2B,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Util1, Util2, Group1A, Group1B, Group2A, Group2B),
+                ClsModule.forFeature(
+                    Util1,
+                    Util2,
+                    Group1A,
+                    Group1B,
+                    Group2A,
+                    Group2B,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1753,7 +2007,11 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Root→Branch1→Leaf1A↔Leaf1B and Root→Branch2→Leaf2A↔Leaf2B
-            Reflect.defineMetadata('design:paramtypes', [Branch1, Branch2], TopologyRoot);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Branch1, Branch2],
+                TopologyRoot,
+            );
             Reflect.defineMetadata('design:paramtypes', [Leaf1A], Branch1);
             Reflect.defineMetadata('design:paramtypes', [Leaf2A], Branch2);
             Reflect.defineMetadata('design:paramtypes', [Leaf1B], Leaf1A);
@@ -1908,7 +2166,12 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [ServiceB1], ServiceB2);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ServiceA1, ServiceA2, ServiceB1, ServiceB2),
+                ClsModule.forFeature(
+                    ServiceA1,
+                    ServiceA2,
+                    ServiceB1,
+                    ServiceB2,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1951,13 +2214,34 @@ describe('Complex Circular Dependency Cycles', () => {
                 }
             }
 
-            Reflect.defineMetadata('design:paramtypes', [AsyncGroup1B], AsyncGroup1A);
-            Reflect.defineMetadata('design:paramtypes', [AsyncGroup1A], AsyncGroup1B);
-            Reflect.defineMetadata('design:paramtypes', [AsyncGroup2B], AsyncGroup2A);
-            Reflect.defineMetadata('design:paramtypes', [AsyncGroup2A], AsyncGroup2B);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncGroup1B],
+                AsyncGroup1A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncGroup1A],
+                AsyncGroup1B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncGroup2B],
+                AsyncGroup2A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncGroup2A],
+                AsyncGroup2B,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(AsyncGroup1A, AsyncGroup1B, AsyncGroup2A, AsyncGroup2B),
+                ClsModule.forFeature(
+                    AsyncGroup1A,
+                    AsyncGroup1B,
+                    AsyncGroup2A,
+                    AsyncGroup2B,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -1988,13 +2272,34 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor(_opt?: any) {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [OptGroup1B], OptGroup1A);
-            Reflect.defineMetadata('design:paramtypes', [OptGroup1A], OptGroup1B);
-            Reflect.defineMetadata('design:paramtypes', [OptGroup2B], OptGroup2A);
-            Reflect.defineMetadata('design:paramtypes', [OptGroup2A], OptGroup2B);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptGroup1B],
+                OptGroup1A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptGroup1A],
+                OptGroup1B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptGroup2B],
+                OptGroup2A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OptGroup2A],
+                OptGroup2B,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(OptGroup1A, OptGroup1B, OptGroup2A, OptGroup2B),
+                ClsModule.forFeature(
+                    OptGroup1A,
+                    OptGroup1B,
+                    OptGroup2A,
+                    OptGroup2B,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -2035,12 +2340,36 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [Provider1B], Provider1A);
-            Reflect.defineMetadata('design:paramtypes', [Provider1A], Provider1B);
-            Reflect.defineMetadata('design:paramtypes', [Provider2B], Provider2A);
-            Reflect.defineMetadata('design:paramtypes', [Provider2A], Provider2B);
-            Reflect.defineMetadata('design:paramtypes', [Provider3B], Provider3A);
-            Reflect.defineMetadata('design:paramtypes', [Provider3A], Provider3B);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider1B],
+                Provider1A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider1A],
+                Provider1B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider2B],
+                Provider2A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider2A],
+                Provider2B,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider3B],
+                Provider3A,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Provider3A],
+                Provider3B,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -2260,10 +2589,26 @@ describe('Complex Circular Dependency Cycles', () => {
                 }
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ConcreteServiceA2], ConcreteServiceA1);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteServiceA1], ConcreteServiceA2);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteServiceB2], ConcreteServiceB1);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteServiceB1], ConcreteServiceB2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteServiceA2],
+                ConcreteServiceA1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteServiceA1],
+                ConcreteServiceA2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteServiceB2],
+                ConcreteServiceB1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteServiceB1],
+                ConcreteServiceB2,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -2312,12 +2657,36 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [FeatureACycle2], FeatureACycle1);
-            Reflect.defineMetadata('design:paramtypes', [FeatureACycle1], FeatureACycle2);
-            Reflect.defineMetadata('design:paramtypes', [FeatureBCycle2], FeatureBCycle1);
-            Reflect.defineMetadata('design:paramtypes', [FeatureBCycle1], FeatureBCycle2);
-            Reflect.defineMetadata('design:paramtypes', [FeatureCCycle2], FeatureCCycle1);
-            Reflect.defineMetadata('design:paramtypes', [FeatureCCycle1], FeatureCCycle2);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureACycle2],
+                FeatureACycle1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureACycle1],
+                FeatureACycle2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureBCycle2],
+                FeatureBCycle1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureBCycle1],
+                FeatureBCycle2,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureCCycle2],
+                FeatureCCycle1,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [FeatureCCycle1],
+                FeatureCCycle2,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(FeatureACycle1, FeatureACycle2),
@@ -2371,7 +2740,14 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Cycle2A], Cycle2B);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Safe1, Cycle1A, Safe2, Cycle1B, Cycle2A, Cycle2B),
+                ClsModule.forFeature(
+                    Safe1,
+                    Cycle1A,
+                    Safe2,
+                    Cycle1B,
+                    Cycle2A,
+                    Cycle2B,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -2416,7 +2792,13 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Chain5A], Chain5E);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Chain5A, Chain5B, Chain5C, Chain5D, Chain5E),
+                ClsModule.forFeature(
+                    Chain5A,
+                    Chain5B,
+                    Chain5C,
+                    Chain5D,
+                    Chain5E,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -2465,7 +2847,14 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [Chain6A], Chain6F);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Chain6A, Chain6B, Chain6C, Chain6D, Chain6E, Chain6F),
+                ClsModule.forFeature(
+                    Chain6A,
+                    Chain6B,
+                    Chain6C,
+                    Chain6D,
+                    Chain6E,
+                    Chain6F,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -3509,14 +3898,46 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [LongCycleB, Util1], LongCycleA);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleC], LongCycleB);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleD, Util2], LongCycleC);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleE], LongCycleD);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleF, Util1], LongCycleE);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleG], LongCycleF);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleH, Util2], LongCycleG);
-            Reflect.defineMetadata('design:paramtypes', [LongCycleA], LongCycleH);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleB, Util1],
+                LongCycleA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleC],
+                LongCycleB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleD, Util2],
+                LongCycleC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleE],
+                LongCycleD,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleF, Util1],
+                LongCycleE,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleG],
+                LongCycleF,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleH, Util2],
+                LongCycleG,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LongCycleA],
+                LongCycleH,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -3582,14 +4003,46 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Long chain that cycles back
-            Reflect.defineMetadata('design:paramtypes', [EmailService], NotificationService);
-            Reflect.defineMetadata('design:paramtypes', [TemplateService], EmailService);
-            Reflect.defineMetadata('design:paramtypes', [ConfigService], TemplateService);
-            Reflect.defineMetadata('design:paramtypes', [CacheService], ConfigService);
-            Reflect.defineMetadata('design:paramtypes', [ValidationService], CacheService);
-            Reflect.defineMetadata('design:paramtypes', [LoggerService], ValidationService);
-            Reflect.defineMetadata('design:paramtypes', [MetricsService], LoggerService);
-            Reflect.defineMetadata('design:paramtypes', [NotificationService], MetricsService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [EmailService],
+                NotificationService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [TemplateService],
+                EmailService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConfigService],
+                TemplateService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CacheService],
+                ConfigService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ValidationService],
+                CacheService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [LoggerService],
+                ValidationService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MetricsService],
+                LoggerService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [NotificationService],
+                MetricsService,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -3779,12 +4232,36 @@ describe('Complex Circular Dependency Cycles', () => {
                 }
             }
 
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongB], AsyncLongA);
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongC], AsyncLongB);
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongD], AsyncLongC);
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongE], AsyncLongD);
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongF], AsyncLongE);
-            Reflect.defineMetadata('design:paramtypes', [AsyncLongA], AsyncLongF);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongB],
+                AsyncLongA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongC],
+                AsyncLongB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongD],
+                AsyncLongC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongE],
+                AsyncLongD,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongF],
+                AsyncLongE,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AsyncLongA],
+                AsyncLongF,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -3969,12 +4446,36 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongB], ConcreteLongA);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongC], ConcreteLongB);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongD], ConcreteLongC);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongE], ConcreteLongD);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongF], ConcreteLongE);
-            Reflect.defineMetadata('design:paramtypes', [ConcreteLongA], ConcreteLongF);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongB],
+                ConcreteLongA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongC],
+                ConcreteLongB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongD],
+                ConcreteLongC,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongE],
+                ConcreteLongD,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongF],
+                ConcreteLongE,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ConcreteLongA],
+                ConcreteLongF,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -4011,10 +4512,16 @@ describe('Complex Circular Dependency Cycles', () => {
             // Create cycle: 0→1→2→...→24→0
             for (let i = 0; i < 25; i++) {
                 const nextIndex = (i + 1) % 25;
-                Reflect.defineMetadata('design:paramtypes', [nodes[nextIndex]], nodes[i]);
+                Reflect.defineMetadata(
+                    'design:paramtypes',
+                    [nodes[nextIndex]],
+                    nodes[i],
+                );
             }
 
-            app = await createAndInitTestingApp([ClsModule.forFeature(...nodes)]);
+            app = await createAndInitTestingApp([
+                ClsModule.forFeature(...nodes),
+            ]);
 
             await cls.run(async () => {
                 await expect(cls.proxy.resolve()).rejects.toThrow(
@@ -4056,7 +4563,13 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [PathTestA], PathTestE);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(PathTestA, PathTestB, PathTestC, PathTestD, PathTestE),
+                ClsModule.forFeature(
+                    PathTestA,
+                    PathTestB,
+                    PathTestC,
+                    PathTestD,
+                    PathTestE,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4379,12 +4892,30 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // All nodes depend on shared services, but A→B→C→A is a cycle
-            Reflect.defineMetadata('design:paramtypes', [MixedB, SharedConfig], MixedA);
-            Reflect.defineMetadata('design:paramtypes', [MixedC, SharedLogger], MixedB);
-            Reflect.defineMetadata('design:paramtypes', [MixedA, SharedConfig, SharedLogger], MixedC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedB, SharedConfig],
+                MixedA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedC, SharedLogger],
+                MixedB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedA, SharedConfig, SharedLogger],
+                MixedC,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(SharedConfig, SharedLogger, MixedA, MixedB, MixedC),
+                ClsModule.forFeature(
+                    SharedConfig,
+                    SharedLogger,
+                    MixedA,
+                    MixedB,
+                    MixedC,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4418,8 +4949,16 @@ describe('Complex Circular Dependency Cycles', () => {
             // EntryX→CycleNodeA, EntryY→CycleNodeB, CycleNodeA↔CycleNodeB
             Reflect.defineMetadata('design:paramtypes', [CycleNodeA], EntryX);
             Reflect.defineMetadata('design:paramtypes', [CycleNodeB], EntryY);
-            Reflect.defineMetadata('design:paramtypes', [CycleNodeB], CycleNodeA);
-            Reflect.defineMetadata('design:paramtypes', [CycleNodeA], CycleNodeB);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleNodeB],
+                CycleNodeA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CycleNodeA],
+                CycleNodeB,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(EntryX, EntryY, CycleNodeA, CycleNodeB),
@@ -4455,7 +4994,11 @@ describe('Complex Circular Dependency Cycles', () => {
 
             // A→B→A (cycle 1) and B→C→D→B (cycle 2, shares B)
             Reflect.defineMetadata('design:paramtypes', [OverlapB], OverlapA);
-            Reflect.defineMetadata('design:paramtypes', [OverlapA, OverlapC], OverlapB);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [OverlapA, OverlapC],
+                OverlapB,
+            );
             Reflect.defineMetadata('design:paramtypes', [OverlapD], OverlapC);
             Reflect.defineMetadata('design:paramtypes', [OverlapB], OverlapD);
 
@@ -4497,10 +5040,26 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Diamond + cycle: Left→Cycle→Left (2-node cycle) + Merge→Left,Right; Right→Base
-            Reflect.defineMetadata('design:paramtypes', [DiamondCycle], DiamondLeftPath);
-            Reflect.defineMetadata('design:paramtypes', [DiamondBase], DiamondRightPath);
-            Reflect.defineMetadata('design:paramtypes', [DiamondLeftPath, DiamondRightPath], DiamondMerge);
-            Reflect.defineMetadata('design:paramtypes', [DiamondLeftPath], DiamondCycle);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondCycle],
+                DiamondLeftPath,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondBase],
+                DiamondRightPath,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondLeftPath, DiamondRightPath],
+                DiamondMerge,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DiamondLeftPath],
+                DiamondCycle,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(
@@ -4560,7 +5119,15 @@ describe('Complex Circular Dependency Cycles', () => {
             Reflect.defineMetadata('design:paramtypes', [CyclicX], CyclicY);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(Safe1, Safe2, Safe3, CyclicX, Safe4, CyclicY, Safe5),
+                ClsModule.forFeature(
+                    Safe1,
+                    Safe2,
+                    Safe3,
+                    CyclicX,
+                    Safe4,
+                    CyclicY,
+                    Safe5,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4592,9 +5159,21 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Complex: A→B,C; B→C,D; C→D,A; D→A (multiple paths + cycle)
-            Reflect.defineMetadata('design:paramtypes', [ComplexB, ComplexC], ComplexA);
-            Reflect.defineMetadata('design:paramtypes', [ComplexC, ComplexD], ComplexB);
-            Reflect.defineMetadata('design:paramtypes', [ComplexD, ComplexA], ComplexC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ComplexB, ComplexC],
+                ComplexA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ComplexC, ComplexD],
+                ComplexB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ComplexD, ComplexA],
+                ComplexC,
+            );
             Reflect.defineMetadata('design:paramtypes', [ComplexA], ComplexD);
 
             app = await createAndInitTestingApp([
@@ -4652,12 +5231,25 @@ describe('Complex Circular Dependency Cycles', () => {
             // Varying: A has 1 dep, B has 2, C has 3, D has 2, E has 1, and E→A cycles
             Reflect.defineMetadata('design:paramtypes', [VaryB], VaryA);
             Reflect.defineMetadata('design:paramtypes', [VaryC, UtilX], VaryB);
-            Reflect.defineMetadata('design:paramtypes', [VaryD, UtilY, UtilZ], VaryC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [VaryD, UtilY, UtilZ],
+                VaryC,
+            );
             Reflect.defineMetadata('design:paramtypes', [VaryE, UtilX], VaryD);
             Reflect.defineMetadata('design:paramtypes', [VaryA], VaryE);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(VaryA, VaryB, VaryC, VaryD, VaryE, UtilX, UtilY, UtilZ),
+                ClsModule.forFeature(
+                    VaryA,
+                    VaryB,
+                    VaryC,
+                    VaryD,
+                    VaryE,
+                    UtilX,
+                    UtilY,
+                    UtilZ,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4729,9 +5321,21 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [MultiCallB], MultiCallA);
-            Reflect.defineMetadata('design:paramtypes', [MultiCallC], MultiCallB);
-            Reflect.defineMetadata('design:paramtypes', [MultiCallA], MultiCallC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MultiCallB],
+                MultiCallA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MultiCallC],
+                MultiCallB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MultiCallA],
+                MultiCallC,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(MultiCallA),
@@ -4767,12 +5371,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // MixedPatternA→SingletonLike→TransientLike→MixedPatternA
-            Reflect.defineMetadata('design:paramtypes', [SingletonLike], MixedPatternA);
-            Reflect.defineMetadata('design:paramtypes', [TransientLike], SingletonLike);
-            Reflect.defineMetadata('design:paramtypes', [MixedPatternA], TransientLike);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [SingletonLike],
+                MixedPatternA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [TransientLike],
+                SingletonLike,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedPatternA],
+                TransientLike,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(MixedPatternA, SingletonLike, TransientLike),
+                ClsModule.forFeature(
+                    MixedPatternA,
+                    SingletonLike,
+                    TransientLike,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4801,9 +5421,21 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [DecoratedB], DecoratedA);
-            Reflect.defineMetadata('design:paramtypes', [DecoratedC], DecoratedB);
-            Reflect.defineMetadata('design:paramtypes', [DecoratedA], DecoratedC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DecoratedB],
+                DecoratedA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DecoratedC],
+                DecoratedB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DecoratedA],
+                DecoratedC,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(DecoratedA, DecoratedB, DecoratedC),
@@ -4873,12 +5505,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Cyclic anti-pattern: Repository→Service→Controller→Repository
-            Reflect.defineMetadata('design:paramtypes', [MixedService], MixedRepository);
-            Reflect.defineMetadata('design:paramtypes', [MixedController], MixedService);
-            Reflect.defineMetadata('design:paramtypes', [MixedRepository], MixedController);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedService],
+                MixedRepository,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedController],
+                MixedService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedRepository],
+                MixedController,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(MixedRepository, MixedService, MixedController),
+                ClsModule.forFeature(
+                    MixedRepository,
+                    MixedService,
+                    MixedController,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4905,12 +5553,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // EventEmitter→HandlerA→HandlerB→EventEmitter
-            Reflect.defineMetadata('design:paramtypes', [EventHandlerA], EventEmitter);
-            Reflect.defineMetadata('design:paramtypes', [EventHandlerB], EventHandlerA);
-            Reflect.defineMetadata('design:paramtypes', [EventEmitter], EventHandlerB);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [EventHandlerA],
+                EventEmitter,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [EventHandlerB],
+                EventHandlerA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [EventEmitter],
+                EventHandlerB,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(EventEmitter, EventHandlerA, EventHandlerB),
+                ClsModule.forFeature(
+                    EventEmitter,
+                    EventHandlerA,
+                    EventHandlerB,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -4945,9 +5609,21 @@ describe('Complex Circular Dependency Cycles', () => {
                 }
             }
 
-            Reflect.defineMetadata('design:paramtypes', [MiddlewareB], MiddlewareA);
-            Reflect.defineMetadata('design:paramtypes', [MiddlewareC], MiddlewareB);
-            Reflect.defineMetadata('design:paramtypes', [MiddlewareA], MiddlewareC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MiddlewareB],
+                MiddlewareA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MiddlewareC],
+                MiddlewareB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MiddlewareA],
+                MiddlewareC,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(MiddlewareA, MiddlewareB, MiddlewareC),
@@ -4977,9 +5653,17 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // StrategyContext→StrategyA→StrategyB→StrategyContext
-            Reflect.defineMetadata('design:paramtypes', [StrategyA], StrategyContext);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [StrategyA],
+                StrategyContext,
+            );
             Reflect.defineMetadata('design:paramtypes', [StrategyB], StrategyA);
-            Reflect.defineMetadata('design:paramtypes', [StrategyContext], StrategyB);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [StrategyContext],
+                StrategyB,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(StrategyContext, StrategyA, StrategyB),
@@ -5077,12 +5761,29 @@ describe('Complex Circular Dependency Cycles', () => {
                 value = 'safe';
             }
 
-            Reflect.defineMetadata('design:paramtypes', [QuickMixedB, SafeUtil], QuickMixedA);
-            Reflect.defineMetadata('design:paramtypes', [QuickMixedC], QuickMixedB);
-            Reflect.defineMetadata('design:paramtypes', [QuickMixedA, SafeUtil], QuickMixedC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [QuickMixedB, SafeUtil],
+                QuickMixedA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [QuickMixedC],
+                QuickMixedB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [QuickMixedA, SafeUtil],
+                QuickMixedC,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(QuickMixedA, QuickMixedB, QuickMixedC, SafeUtil),
+                ClsModule.forFeature(
+                    QuickMixedA,
+                    QuickMixedB,
+                    QuickMixedC,
+                    SafeUtil,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -5117,13 +5818,34 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // ApiGateway→AuthService→UserService→NotificationService→ApiGateway
-            Reflect.defineMetadata('design:paramtypes', [AuthService], ApiGateway);
-            Reflect.defineMetadata('design:paramtypes', [UserService], AuthService);
-            Reflect.defineMetadata('design:paramtypes', [NotificationService], UserService);
-            Reflect.defineMetadata('design:paramtypes', [ApiGateway], NotificationService);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [AuthService],
+                ApiGateway,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [UserService],
+                AuthService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [NotificationService],
+                UserService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [ApiGateway],
+                NotificationService,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(ApiGateway, AuthService, UserService, NotificationService),
+                ClsModule.forFeature(
+                    ApiGateway,
+                    AuthService,
+                    UserService,
+                    NotificationService,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -5150,12 +5872,28 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // CacheManager→DataService→CacheInvalidator→CacheManager
-            Reflect.defineMetadata('design:paramtypes', [DataService], CacheManager);
-            Reflect.defineMetadata('design:paramtypes', [CacheInvalidator], DataService);
-            Reflect.defineMetadata('design:paramtypes', [CacheManager], CacheInvalidator);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [DataService],
+                CacheManager,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CacheInvalidator],
+                DataService,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [CacheManager],
+                CacheInvalidator,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(CacheManager, DataService, CacheInvalidator),
+                ClsModule.forFeature(
+                    CacheManager,
+                    DataService,
+                    CacheInvalidator,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -5182,9 +5920,21 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Validator→RuleEngine→SchemaBuilder→Validator
-            Reflect.defineMetadata('design:paramtypes', [RuleEngine], Validator);
-            Reflect.defineMetadata('design:paramtypes', [SchemaBuilder], RuleEngine);
-            Reflect.defineMetadata('design:paramtypes', [Validator], SchemaBuilder);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [RuleEngine],
+                Validator,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [SchemaBuilder],
+                RuleEngine,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Validator],
+                SchemaBuilder,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(Validator, RuleEngine, SchemaBuilder),
@@ -5214,9 +5964,21 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // Serializer→Transformer→Formatter→Serializer
-            Reflect.defineMetadata('design:paramtypes', [Transformer], Serializer);
-            Reflect.defineMetadata('design:paramtypes', [Formatter], Transformer);
-            Reflect.defineMetadata('design:paramtypes', [Serializer], Formatter);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Transformer],
+                Serializer,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Formatter],
+                Transformer,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [Serializer],
+                Formatter,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(Serializer, Transformer, Formatter),
@@ -5251,13 +6013,26 @@ describe('Complex Circular Dependency Cycles', () => {
             }
 
             // PipelineCoordinator→StageA→StageB→StageC→PipelineCoordinator
-            Reflect.defineMetadata('design:paramtypes', [StageA], PipelineCoordinator);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [StageA],
+                PipelineCoordinator,
+            );
             Reflect.defineMetadata('design:paramtypes', [StageB], StageA);
             Reflect.defineMetadata('design:paramtypes', [StageC], StageB);
-            Reflect.defineMetadata('design:paramtypes', [PipelineCoordinator], StageC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [PipelineCoordinator],
+                StageC,
+            );
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(PipelineCoordinator, StageA, StageB, StageC),
+                ClsModule.forFeature(
+                    PipelineCoordinator,
+                    StageA,
+                    StageB,
+                    StageC,
+                ),
             ]);
 
             await cls.run(async () => {
@@ -5283,9 +6058,21 @@ describe('Complex Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata('design:paramtypes', [MixedErrorB], MixedErrorA);
-            Reflect.defineMetadata('design:paramtypes', [MixedErrorC], MixedErrorB);
-            Reflect.defineMetadata('design:paramtypes', [MixedErrorA], MixedErrorC);
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedErrorB],
+                MixedErrorA,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedErrorC],
+                MixedErrorB,
+            );
+            Reflect.defineMetadata(
+                'design:paramtypes',
+                [MixedErrorA],
+                MixedErrorC,
+            );
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(MixedErrorA, MixedErrorB, MixedErrorC),
@@ -5296,8 +6083,12 @@ describe('Complex Circular Dependency Cycles', () => {
                     await cls.proxy.resolve();
                     fail('Should have thrown');
                 } catch (error: any) {
-                    expect(error).toBeInstanceOf(ProxyProviderCircularDependencyException);
-                    expect(error.message).toContain('Circular dependency detected');
+                    expect(error).toBeInstanceOf(
+                        ProxyProviderCircularDependencyException,
+                    );
+                    expect(error.message).toContain(
+                        'Circular dependency detected',
+                    );
                     expect(error.message).toMatch(/MixedErrorA/);
                     expect(error.message).toMatch(/MixedErrorB/);
                     expect(error.message).toMatch(/MixedErrorC/);
