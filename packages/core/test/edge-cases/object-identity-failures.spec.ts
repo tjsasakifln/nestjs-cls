@@ -2,16 +2,16 @@ import { ContextClsStoreMap } from '../../src/lib/cls-initializers/utils/context
 import { ClsStore } from '../../src/lib/cls.options';
 
 /**
- * This test suite demonstrates WeakMap identity comparison failures
- * that can occur when objects are wrapped, cloned, or transformed.
+ * This test suite validates Symbol+WeakMap hybrid strategy for robust
+ * context identity tracking across object wrappers, proxies, and transformations.
  *
- * These tests DOCUMENT CURRENT BUGGY BEHAVIOR. They pass by asserting that
- * the current implementation returns `undefined` when it shouldn't.
+ * After Issue #9: Symbol tagging allows the store to work transparently through
+ * Proxy wrappers and most transformations that previously failed with WeakMap-only.
  *
- * TODO: After implementing Issue #9 (Symbol+WeakMap hybrid), update these
- * tests to expect the store to be retrieved successfully.
+ * @see Issue #9 - Replace WeakMap-only tracking with hybrid Symbol+WeakMap strategy
+ * @see docs/research/weakmap-identity-pitfalls.md
  */
-describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
+describe('Symbol+WeakMap Hybrid Strategy Validation', () => {
     let originalObject: any;
     let store: ClsStore;
 
@@ -21,7 +21,7 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
     });
 
     describe('Scenario 1: Proxy Objects', () => {
-        it('should fail to retrieve store when object is wrapped in Proxy', () => {
+        it('should retrieve store when object is wrapped in Proxy', () => {
             // Store the original object
             ContextClsStoreMap.setByRaw(originalObject, store);
 
@@ -32,18 +32,17 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
                 },
             });
 
-            // WeakMap uses identity comparison, so it fails to recognize the Proxy
+            // Symbol tagging works transparently through Proxy wrappers
             const retrieved = ContextClsStoreMap.getByRaw(proxiedObject);
 
-            // Current buggy behavior: returns undefined
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: After Symbol+WeakMap hybrid, should return: expect(retrieved).toBe(store);
+            // ✅ After Issue #9: Symbol allows retrieval through Proxy
+            expect(retrieved).toBe(store);
         });
 
-        it('should fail with Proxy that intercepts property access', () => {
+        it('should retrieve store with Proxy that intercepts property access', () => {
             const handler = {
                 get(target: any, prop: string) {
-                    console.log(`Accessing ${prop}`);
+                    // console.log(`Accessing ${prop}`);
                     return target[prop];
                 },
             };
@@ -55,14 +54,13 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             const reProxied = new Proxy(originalObject, handler);
 
             const retrieved = ContextClsStoreMap.getByRaw(reProxied);
-            // Current buggy behavior: Different Proxy instances not recognized
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ After Issue #9: Symbol is set on original target, accessible through any Proxy
+            expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 2: Object.create() Clones', () => {
-        it('should fail when object is cloned with Object.create()', () => {
+        it('should retrieve store from Object.create() clone via prototype chain', () => {
             ContextClsStoreMap.setByRaw(originalObject, store);
 
             // Create a new object with original as prototype
@@ -70,26 +68,25 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             clonedObject.id = 'test-request'; // Same properties
 
             const retrieved = ContextClsStoreMap.getByRaw(clonedObject);
-            // Current buggy behavior: Different object identity
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ Symbol is found via prototype chain (Object.create inherits)
+            expect(retrieved).toBe(store);
         });
 
-        it('should fail with Object.assign() shallow copy', () => {
+        it('should retrieve store with Object.assign() shallow copy (Symbol is copied!)', () => {
             ContextClsStoreMap.setByRaw(originalObject, store);
 
             // Shallow copy (common in middleware transformations)
             const copied = Object.assign({}, originalObject);
 
             const retrieved = ContextClsStoreMap.getByRaw(copied);
-            // Current buggy behavior: Different object identity
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ Object.assign() copies Symbol properties (better than expected!)
+            // This is BETTER than the WeakMap-only approach
+            expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 3: Request Transformers', () => {
-        it('should fail when middleware transforms request object', () => {
+        it('should retrieve store when middleware transforms request with spread (Symbol copied!)', () => {
             const request = { url: '/test', method: 'GET' };
             ContextClsStoreMap.setByRaw(request, store);
 
@@ -101,12 +98,12 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             };
 
             const retrieved = ContextClsStoreMap.getByRaw(transformedRequest);
-            // Current buggy behavior: Spread creates new object
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ Spread operator copies Symbol properties (better than expected!)
+            // This handles a common middleware pattern seamlessly
+            expect(retrieved).toBe(store);
         });
 
-        it('should fail when request is destructured and reconstructed', () => {
+        it('should fail when request is destructured and reconstructed (new object)', () => {
             ContextClsStoreMap.setByRaw(originalObject, store);
 
             // Common pattern in middleware
@@ -114,14 +111,13 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             const reconstructed = { id, headers };
 
             const retrieved = ContextClsStoreMap.getByRaw(reconstructed);
-            // Current buggy behavior: New object created
+            // ⚠️ New object created, Symbol not transferred (acceptable limitation)
             expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 4: Mocking Libraries', () => {
-        it('should fail with jest.mock() wrapped objects', () => {
+        it('should retrieve store with jest.mock() wrapped objects (Proxy)', () => {
             const mockRequest = {
                 id: 'test',
                 headers: {},
@@ -142,9 +138,8 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             });
 
             const retrieved = ContextClsStoreMap.getByRaw(wrappedMock);
-            // Current buggy behavior: Mock proxy wrapper not recognized
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ After Issue #9: Symbol works through Proxy wrapper
+            expect(retrieved).toBe(store);
         });
 
         it('should work with spied objects (jest.spyOn)', () => {
@@ -160,31 +155,31 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
 
             // In this case, jest.spyOn doesn't replace the object itself
             const retrieved = ContextClsStoreMap.getByRaw(request);
-            // This actually works because object identity is preserved
+            // ✅ This works because object identity is preserved
             expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 5: Frozen/Sealed Objects', () => {
-        it('should work with frozen objects (baseline test)', () => {
+        it('should work with frozen objects via WeakMap fallback', () => {
             const frozenObject = Object.freeze({ id: 'frozen' });
             ContextClsStoreMap.setByRaw(frozenObject, store);
 
             const retrieved = ContextClsStoreMap.getByRaw(frozenObject);
-            // This works: same object reference
+            // ✅ WeakMap fallback handles frozen objects (cannot accept Symbol properties)
             expect(retrieved).toBe(store);
         });
 
-        it('should work with sealed objects (baseline test)', () => {
+        it('should work with sealed objects via WeakMap fallback', () => {
             const sealedObject = Object.seal({ id: 'sealed' });
             ContextClsStoreMap.setByRaw(sealedObject, store);
 
             const retrieved = ContextClsStoreMap.getByRaw(sealedObject);
-            // This works: same object reference
+            // ✅ WeakMap fallback handles sealed objects (cannot accept new Symbol properties)
             expect(retrieved).toBe(store);
         });
 
-        it('should fail when frozen object is cloned', () => {
+        it('should fail when frozen object is cloned (creates new object)', () => {
             const frozenObject = Object.freeze({ id: 'frozen' });
             ContextClsStoreMap.setByRaw(frozenObject, store);
 
@@ -192,14 +187,13 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             const cloned = { ...frozenObject };
 
             const retrieved = ContextClsStoreMap.getByRaw(cloned);
-            // Current buggy behavior: Different object
+            // ⚠️ Cloning creates new object without Symbol (acceptable limitation)
             expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 6: Framework-specific Wrappers', () => {
-        it('should fail with Express-style request wrapping', () => {
+        it('should fail with Express-style request wrapping (different object)', () => {
             const rawRequest = { url: '/test' };
             ContextClsStoreMap.setByRaw(rawRequest, store);
 
@@ -212,12 +206,13 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
 
             // If we try to access via wrapped object
             const retrieved = ContextClsStoreMap.getByRaw(expressRequest);
-            // Current buggy behavior: Different wrapper object
+            // ⚠️ Different wrapper object without Symbol (acceptable limitation)
+            // Solution: Use RequestIdentityResolver.getIdentity() from Issue #6
+            // which resolves the canonical object reference before calling setByRaw/getByRaw
             expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
         });
 
-        it('should demonstrate Fastify raw vs full request mismatch', () => {
+        it('should fail with Fastify raw vs full request mismatch (different object)', () => {
             const rawRequest = { url: '/test' };
             ContextClsStoreMap.setByRaw(rawRequest, store);
 
@@ -228,17 +223,16 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
                 query: {},
             };
 
-            // Current workaround: request.raw ?? request
-            // But this fails if you don't know about the 'raw' property
             const retrieved = ContextClsStoreMap.getByRaw(fastifyRequest);
-            // Current buggy behavior: Wrapper not recognized
+            // ⚠️ Different wrapper object (acceptable limitation)
+            // Solution: RequestIdentityResolver.getIdentity() from Issue #6 handles this
+            // by using canonical object reference (request.raw ?? request)
             expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
         });
     });
 
     describe('Scenario 7: Multiple Wrappers Chain', () => {
-        it('should fail with multiple layers of proxies', () => {
+        it('should retrieve store through multiple layers of proxies', () => {
             ContextClsStoreMap.setByRaw(originalObject, store);
 
             // Middleware A wraps in proxy
@@ -248,9 +242,8 @@ describe('WeakMap Object Identity Failures (Current Buggy Behavior)', () => {
             const layer2 = new Proxy(layer1, {});
 
             const retrieved = ContextClsStoreMap.getByRaw(layer2);
-            // Current buggy behavior: Multiple wrapper layers
-            expect(retrieved).toBeUndefined();
-            // TODO Issue #9: expect(retrieved).toBe(store);
+            // ✅ After Issue #9: Symbol accessible through nested Proxy chains
+            expect(retrieved).toBe(store);
         });
     });
 });
