@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (27 total in milestone)         |
-| **Progress**        | 9/27 completed (33.3%) - Rondas 1-3 complete ✅           |
+| **Progress**        | 10/27 completed (37.0%) - Ronda 4 in progress (7.1%) 🚀   |
 | **Timeline**        | 3-4 weeks (4-5 weeks ahead of schedule)                  |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -204,7 +204,7 @@ const { ProxyProviderManager } =
 
 | Issue | Title                                     | Package | Test Count | Status |
 | ----- | ----------------------------------------- | ------- | ---------- | ------ |
-| #27   | Simple circular dependency cycles         | core    | 50         | OPEN   |
+| ✅ #27   | Simple circular dependency cycles         | core    | 50         | **COMPLETED** (PR #41, 2026-01-22) |
 | #28   | Complex circular dependency cycles        | core    | 100        | OPEN   |
 | #29   | Valid DAGs - no false positives           | core    | 50         | OPEN   |
 | #30   | Circular dependency edge cases & perf     | core    | 50         | OPEN   |
@@ -436,11 +436,20 @@ This roadmap is considered **COMPLETE** when:
 
 ---
 
-**Last Updated:** 2026-01-21
-**Status:** Ronda 4 - **IN PROGRESS** (0/18 test issues complete)
+**Last Updated:** 2026-01-22
+**Status:** Ronda 4 - **IN PROGRESS** (1/14 test issues complete, 7.1%)
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- ✅ **2026-01-22**: Issue #27 completed (PR #41) - **Ronda 4 STARTED!** 🚀
+    - Implemented comprehensive test suite for simple circular dependency detection
+    - Added 50 tests covering self-reference, two-node, and three-node cycles
+    - All tests pass in ~28s with individual detection <50ms (fail-fast performance)
+    - Coverage maintained at 76.47% on proxy-provider module
+    - Updated CHANGES.md with test documentation
+    - Ronda 4 progress: 1/14 test issues complete (7.1%)
+    - Next: Issue #28 (Complex circular dependency cycles, 100 tests)
 
 - 📊 **2026-01-21**: ROADMAP Audit & Update - Documentation synchronized with GitHub
     - Updated Executive Summary: 9/27 completed (33.3%), 3-4 weeks timeline
