@@ -63,6 +63,16 @@
   - Achieves 96.87% line coverage on dependency-graph.ts
   - Addresses Issue #28
 
+* **core**: add comprehensive test suite for valid DAGs (50 tests) - no false positives
+  - Add 15 tests for diamond dependency patterns (A→B,C; B,C→D and variations)
+  - Add 10 tests for linear chain patterns (A→B→C→D with up to 20+ nodes)
+  - Add 15 tests for tree structure patterns (binary, unbalanced, wide, deep trees)
+  - Add 10 tests for mixed valid patterns (disconnected DAGs, large graphs 100+ providers)
+  - Validates ZERO false positives (all valid DAGs resolve successfully)
+  - All resolutions complete in <100ms, large graphs (100+ providers) in <200ms
+  - Ensures DependencyGraph doesn't incorrectly flag valid acyclic dependencies as cycles
+  - Addresses Issue #29
+
 * **core**: ContextClsStoreMap now uses RequestIdentityResolver for HTTP requests
   - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
   - This change should be transparent to users, but custom code relying on the old behavior may need updates
