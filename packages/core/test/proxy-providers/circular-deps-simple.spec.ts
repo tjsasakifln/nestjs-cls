@@ -180,8 +180,6 @@ describe('Simple Circular Dependency Cycles', () => {
         });
 
         it('detects self-reference with Symbol provider', async () => {
-            const ProxySymbol = Symbol('ProxySymbol');
-
             @InjectableProxy()
             class ProxySelfSymbol {
                 constructor() {}
@@ -282,7 +280,7 @@ describe('Simple Circular Dependency Cycles', () => {
         it('detects self-reference with default constructor parameter', async () => {
             @InjectableProxy()
             class ProxySelfDefault {
-                constructor(dep: any = null) {}
+                constructor(_dep: any = null) {}
             }
 
             Reflect.defineMetadata(
@@ -337,19 +335,11 @@ describe('Simple Circular Dependency Cycles', () => {
 
             @InjectableProxy()
             class ProxyTwoA {
-                constructor(b: ProxyTwoB) {}
+                constructor(_b: ProxyTwoB) {}
             }
 
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [ProxyTwoB],
-                ProxyTwoA,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [ProxyTwoA],
-                ProxyTwoB,
-            );
+            Reflect.defineMetadata('design:paramtypes', [ProxyTwoB], ProxyTwoA);
+            Reflect.defineMetadata('design:paramtypes', [ProxyTwoA], ProxyTwoB);
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(ProxyTwoA, ProxyTwoB),
@@ -492,16 +482,8 @@ describe('Simple Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [ProxyModB],
-                ProxyModA,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [ProxyModA],
-                ProxyModB,
-            );
+            Reflect.defineMetadata('design:paramtypes', [ProxyModB], ProxyModA);
+            Reflect.defineMetadata('design:paramtypes', [ProxyModA], ProxyModB);
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(ProxyModA),
@@ -699,12 +681,12 @@ describe('Simple Circular Dependency Cycles', () => {
 
         it('detects two-node cycle with generic types', async () => {
             @InjectableProxy()
-            class ProxyGenericB<T = string> {
+            class ProxyGenericB {
                 constructor() {}
             }
 
             @InjectableProxy()
-            class ProxyGenericA<T = number> {
+            class ProxyGenericA {
                 constructor() {}
             }
 
@@ -1000,31 +982,12 @@ describe('Simple Circular Dependency Cycles', () => {
                 constructor() {}
             }
 
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [MultiB, Dep1],
-                MultiA,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [MultiC, Dep2],
-                MultiB,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [MultiA, Dep3],
-                MultiC,
-            );
+            Reflect.defineMetadata('design:paramtypes', [MultiB, Dep1], MultiA);
+            Reflect.defineMetadata('design:paramtypes', [MultiC, Dep2], MultiB);
+            Reflect.defineMetadata('design:paramtypes', [MultiA, Dep3], MultiC);
 
             app = await createAndInitTestingApp([
-                ClsModule.forFeature(
-                    MultiA,
-                    MultiB,
-                    MultiC,
-                    Dep1,
-                    Dep2,
-                    Dep3,
-                ),
+                ClsModule.forFeature(MultiA, MultiB, MultiC, Dep1, Dep2, Dep3),
             ]);
 
             await cls.run(async () => {
@@ -1413,29 +1376,17 @@ describe('Simple Circular Dependency Cycles', () => {
 
             @InjectableProxy()
             class OptionalB {
-                constructor(c?: OptionalC) {}
+                constructor(_c?: OptionalC) {}
             }
 
             @InjectableProxy()
             class OptionalA {
-                constructor(b?: OptionalB) {}
+                constructor(_b?: OptionalB) {}
             }
 
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [OptionalB],
-                OptionalA,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [OptionalC],
-                OptionalB,
-            );
-            Reflect.defineMetadata(
-                'design:paramtypes',
-                [OptionalA],
-                OptionalC,
-            );
+            Reflect.defineMetadata('design:paramtypes', [OptionalB], OptionalA);
+            Reflect.defineMetadata('design:paramtypes', [OptionalC], OptionalB);
+            Reflect.defineMetadata('design:paramtypes', [OptionalA], OptionalC);
 
             app = await createAndInitTestingApp([
                 ClsModule.forFeature(OptionalA, OptionalB, OptionalC),
