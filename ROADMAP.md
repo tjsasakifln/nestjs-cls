@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 (fragmented for manageability)                        |
-| **Progress**        | 8/13 completed (61.5%) - #2, #3, #5, #6, #8, #9, #11, #14 ✅ |
+| **Progress**        | 9/13 completed (69.2%) - #2, #3, #5, #6, #8, #9, #11, #12, #14 ✅ |
 | **Timeline**        | 7 weeks (Week 1 in progress)                             |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -410,10 +410,22 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-22
-**Status:** Ronda 2 - **COMPLETED** (4/4 complete - 100%) 🎉
-**Next Milestone:** Ronda 3 (Transactional Implementation) OR Ronda 4 (Validation)
+**Status:** Ronda 3 - **STARTED** (1/1 complete - 100%) 🎉
+**Next Milestone:** Ronda 4 (Validation)
 
 ### Recent Progress
+
+- ✅ **2026-01-22**: Issue #12 completed (PR #26) - **Ronda 3 COMPLETED!** 🎉🎉🎉
+    - Implemented `isolated` mode in ClsContextOptions for transaction isolation
+    - Modified Propagation.Required to create independent transactions when parent exists
+    - Fixes Issue #196: Non-awaited child transactions no longer corrupt parent transactions
+    - Breaking change: Nested transactions now isolated instead of shared
+    - All tests passing: 291 core + 50 transactional
+    - Coverage: 95.45% core, 92.82% transactional
+    - Migration guide provided in CHANGES.md
+    - Addresses Issue #196 (Transaction Already Finished Errors)
+    - **RONDA 3 NOW 100% COMPLETE** - Transaction isolation implemented!
+    - Next step: Ronda 4 (Validation) - 300+ propagation mode tests
 
 - 📊 **2026-01-22**: ROADMAP Audit completed - Project health verified
     - Milestone progress: 6/13 closed (46%), on track for 2026-03-10 deadline
