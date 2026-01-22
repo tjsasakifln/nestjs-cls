@@ -44,32 +44,40 @@ describe('Nested transactions - edge cases', () => {
     });
 
     describe('When a transaction is inherited in a non-awaited function', () => {
-        it('Should not throw an error when trying to use the transaction after the parent function ends the transaction', async () => {
+        it('Should create an isolated transaction context that completes independently', async () => {
             const childTransaction = () =>
                 txHost.withTransaction(async () => {
                     await txHost.tx.query('SELECT Child 1');
                     // simulate delay in the child transaction
                     await new Promise((resolve) => setTimeout(resolve, 10));
-                    await txHost.tx.query('SELECT Child 2'); // the client should throw here
+                    await txHost.tx.query('SELECT Child 2');
                 });
             let childPromise: Promise<void> | undefined = undefined;
             const parentTransaction = () =>
                 txHost.withTransaction(async () => {
                     await txHost.tx.query('SELECT Parent 1');
                     childPromise = childTransaction(); // not awaited
-                    // the transaction ends here
+                    // the parent transaction ends here
                 });
 
             await parentTransaction();
 
-            expect(childPromise).rejects.toThrow(
-                'Transaction already finished',
-            );
+            // With isolated context, child has its own transaction and completes successfully
+            await expect(childPromise).resolves.not.toThrow();
+
+            // Parent and child now have separate transactions
             expect(mockDbConnection.getClientsQueries()).toEqual([
+                // Parent transaction
                 [
                     'BEGIN TRANSACTION;',
                     'SELECT Parent 1',
+                    'COMMIT TRANSACTION;',
+                ],
+                // Child transaction (independent)
+                [
+                    'BEGIN TRANSACTION;',
                     'SELECT Child 1',
+                    'SELECT Child 2',
                     'COMMIT TRANSACTION;',
                 ],
             ]);

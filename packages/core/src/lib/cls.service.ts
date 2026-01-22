@@ -140,6 +140,7 @@ export class ClsService<S extends ClsStore = ClsStore> {
             case 'reuse':
                 return callback();
             case 'override':
+            case 'isolated':
                 return this.runWith({} as S, callback);
         }
     }
@@ -169,6 +170,7 @@ export class ClsService<S extends ClsStore = ClsStore> {
             case 'reuse':
                 return;
             case 'override':
+            case 'isolated':
                 return this.enterWith({} as S);
         }
     }

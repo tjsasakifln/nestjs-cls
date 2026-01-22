@@ -76,8 +76,12 @@ export class ClsContextOptions {
      *
      * `override` - Run the callback with an new empty context.
      * Warning: No values from the parent context will be accessible.
+     *
+     * `isolated` - Run the callback with a completely isolated new context.
+     * Similar to `override`, but semantically indicates intentional isolation for operations
+     * that should not share state with the parent (e.g., independent transactions).
      */
-    ifNested?: 'inherit' | 'reuse' | 'override' = 'inherit';
+    ifNested?: 'inherit' | 'reuse' | 'override' | 'isolated' = 'inherit';
 }
 
 export class ClsInitializerCommonOptions {
