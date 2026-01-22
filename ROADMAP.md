@@ -11,9 +11,9 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | Metric              | Value                                                    |
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
-| **Sub-Issues**      | 13 (fragmented for manageability)                        |
-| **Progress**        | 9/13 completed (69.2%) - #2, #3, #5, #6, #8, #9, #11, #12, #14 ✅ |
-| **Timeline**        | 7 weeks (Week 1 in progress)                             |
+| **Sub-Issues**      | 13 core + 14 test issues (27 total in milestone)         |
+| **Progress**        | 9/27 completed (33.3%) - Rondas 1-3 complete ✅           |
+| **Timeline**        | 3-4 weeks (4-5 weeks ahead of schedule)                  |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
 | **Coverage Target** | >90% on modified files                                   |
@@ -196,16 +196,43 @@ const { ProxyProviderManager } =
 
 ---
 
-### Week 6-7: Ronda 4 - Comprehensive Validation
+### Week 2-3: Ronda 4 - Comprehensive Validation
 
-**Objective:** Validate with exhaustive test suites
+**Objective:** Validate with exhaustive test suites (1200+ tests)
 
-| Sub-Issue | Title                             | Package       | Test Count |
-| --------- | --------------------------------- | ------------- | ---------- |
-| #3        | Circular dependency tests         | core          | 200+ tests |
-| #6        | Multi-framework integration tests | core          | 400+ tests |
-| #9        | Edge case tests (Proxy, mocks)    | core          | 300+ tests |
-| #12       | Propagation mode tests            | transactional | 300+ tests |
+#### Sub-Issue #3: Circular Dependency Tests (200 tests)
+
+| Issue | Title                                     | Package | Test Count | Status |
+| ----- | ----------------------------------------- | ------- | ---------- | ------ |
+| #27   | Simple circular dependency cycles         | core    | 50         | OPEN   |
+| #28   | Complex circular dependency cycles        | core    | 100        | OPEN   |
+| #29   | Valid DAGs - no false positives           | core    | 50         | OPEN   |
+| #30   | Circular dependency edge cases & perf     | core    | 50         | OPEN   |
+
+#### Sub-Issue #6: Multi-Framework Integration Tests (400 tests)
+
+| Issue | Title                                     | Package | Test Count | Status |
+| ----- | ----------------------------------------- | ------- | ---------- | ------ |
+| #31   | Express request identity integration      | core    | 100        | OPEN   |
+| #32   | Fastify request identity integration      | core    | 100        | OPEN   |
+| #33   | Koa request identity integration          | core    | 100        | OPEN   |
+| #34   | Multi-enhancer scenarios across frameworks| core    | 100        | OPEN   |
+
+#### Sub-Issue #9: Edge Case Tests for Context Tracking (300 tests)
+
+| Issue | Title                                     | Package | Test Count | Status |
+| ----- | ----------------------------------------- | ------- | ---------- | ------ |
+| #35   | Proxy object edge cases                   | core    | 100        | OPEN   |
+| #36   | Frozen/sealed objects                     | core    | 100        | OPEN   |
+| #37   | Mock objects and test doubles             | core    | 100        | OPEN   |
+
+#### Sub-Issue #12: Propagation Mode Tests (300 tests)
+
+| Issue | Title                                           | Package       | Test Count | Status |
+| ----- | ----------------------------------------------- | ------------- | ---------- | ------ |
+| #38   | Propagation.Required isolation scenarios        | transactional | 100        | OPEN   |
+| #39   | Propagation.RequiresNew and other modes         | transactional | 100        | OPEN   |
+| #40   | Race conditions and edge cases                  | transactional | 100        | OPEN   |
 
 **Exit Criteria:**
 
@@ -409,11 +436,21 @@ This roadmap is considered **COMPLETE** when:
 
 ---
 
-**Last Updated:** 2026-01-22
-**Status:** Ronda 3 - **STARTED** (1/1 complete - 100%) 🎉
-**Next Milestone:** Ronda 4 (Validation)
+**Last Updated:** 2026-01-21
+**Status:** Ronda 4 - **IN PROGRESS** (0/18 test issues complete)
+**Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- 📊 **2026-01-21**: ROADMAP Audit & Update - Documentation synchronized with GitHub
+    - Updated Executive Summary: 9/27 completed (33.3%), 3-4 weeks timeline
+    - Documented Ronda 4 test issues: #27-#40 (14 granular test issues)
+    - Milestone progress: Rondas 1-3 complete (100%), Ronda 4 in progress (0%)
+    - Project health: 4-5 weeks ahead of schedule, exceptional velocity (9 issues/week)
+    - No phantoms, no stale issues, all completed issues properly synced
+    - Updated Ronda 4 section with breakdown by sub-issue (#3, #6, #9, #12)
+    - Total test count: 1200+ tests across 4 categories
+    - Recommendation: Begin Ronda 4 Batch 1 (Issues #27-#37, core package tests)
 
 - ✅ **2026-01-22**: Issue #12 completed (PR #26) - **Ronda 3 COMPLETED!** 🎉🎉🎉
     - Implemented `isolated` mode in ClsContextOptions for transaction isolation
