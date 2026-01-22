@@ -34,6 +34,12 @@
   - Export ProxyResolutionFacade as the recommended API for manual proxy resolution
   - Addresses Issue #14 (Internal Circular Dependency Cleanup)
 
+* **core**: add `isolated` mode to ClsContextOptions for transaction isolation (#12)
+  - New `ifNested: 'isolated'` option creates completely isolated context (like `override`)
+  - Semantically indicates intentional isolation for operations that should not share state
+  - Used by transactional package to prevent non-awaited transaction corruption
+  - Functionally equivalent to `override` but with clearer intent for transaction scenarios
+
 ### Breaking Changes
 
 * **core**: ProxyProvidersResolutionTimeoutException may no longer be thrown - use ProxyProviderCircularDependencyException instead

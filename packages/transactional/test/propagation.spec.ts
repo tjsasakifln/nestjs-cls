@@ -334,25 +334,36 @@ describe('Propagation', () => {
     });
 
     describe('when run in an existing transaction', () => {
-        it('should re-use an existing transaction by default', async () => {
+        it('should create isolated transaction context by default (v7.0 behavior)', async () => {
             await withTx.defaultPropagation();
             const queries = mockDbConnection.getClientsQueries();
+            // v7.0+: REQUIRED now creates isolated context when transaction exists
+            // Parent and child have separate transactions to prevent non-awaited corruption
             expect(queries).toEqual([
                 [
                     'BEGIN TRANSACTION;',
                     'SELECT 1',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    'BEGIN TRANSACTION;',
                     'SELECT 2',
                     'COMMIT TRANSACTION;',
                 ],
             ]);
         });
-        it('should re-use an existing transaction in REQUIRED mode', async () => {
+        it('should create isolated transaction in REQUIRED mode (v7.0 behavior)', async () => {
             await withTx.explicitRequiredPropagation();
             const queries = mockDbConnection.getClientsQueries();
+            // v7.0+: REQUIRED creates independent transaction in isolated context
             expect(queries).toEqual([
                 [
                     'BEGIN TRANSACTION;',
                     'SELECT 3',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    'BEGIN TRANSACTION;',
                     'SELECT 4',
                     'COMMIT TRANSACTION;',
                 ],
@@ -440,35 +451,59 @@ describe('Propagation', () => {
     });
 
     describe('when multiple nested transactions with different options are used', () => {
-        it('should behave according to the settings', async () => {
+        it('should behave according to the settings (v7.0 with isolated contexts)', async () => {
             await expect(withTx.multipleNestedTransactions()).rejects.toThrow(
                 'Bad thing',
             );
             const queries = mockDbConnection.getClientsQueries();
+            // v7.0+: REQUIRED creates isolated contexts, resulting in more independent transactions
             expect(queries).toEqual([
-                ['SELECT 10'],
+                ['SELECT 10'], // NOT_SUPPORTED - no transaction
                 [
+                    // requiredPropagationWithOptions(11) - new isolated transaction
                     'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN TRANSACTION;',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    // SELECT 11 in its own transaction (isolated from options tx)
+                    'BEGIN TRANSACTION;',
                     'SELECT 11',
                     'COMMIT TRANSACTION;',
                 ],
                 [
+                    // RequiresNew with nested calls
                     'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN TRANSACTION;',
-                    'SELECT 13',
-                    'SELECT 14',
-                    'SELECT 15',
-                    'SELECT 16',
-                    'ROLLBACK TRANSACTION;',
+                    'SELECT 14', // doWork(14)
+                    'SELECT 16', // supportsPropagationWithOptions(16) - SUPPORTS reuses
+                    'ROLLBACK TRANSACTION;', // rollback due to error
                 ],
-                ['BEGIN TRANSACTION;', 'SELECT 12', 'COMMIT TRANSACTION;'],
+                [
+                    // withRequiresNewPropagation(12) - creates independent transaction
+                    'BEGIN TRANSACTION;',
+                    'SELECT 12',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    // defaultPropagationWithOptions(13) - creates tx with serializable options
+                    'SET TRANSACTION ISOLATION LEVEL SERIALIZABLE; BEGIN TRANSACTION;',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    // Then isolated context for the actual work
+                    'BEGIN TRANSACTION;',
+                    'SELECT 13',
+                    'COMMIT TRANSACTION;',
+                ],
+                [
+                    // mandatoryPropagationWithOptions(15) - MANDATORY creates isolated transaction
+                    'BEGIN TRANSACTION;',
+                    'SELECT 15',
+                    'COMMIT TRANSACTION;',
+                ],
             ]);
             expect(mockLogger.warn.mock.calls).toEqual([
                 [
                     'Transaction options are ignored because the propagation mode is NOT_SUPPORTED (for method bound multipleNestedTransactions).',
-                    'TransactionHost',
-                ],
-                [
-                    'Transaction options are ignored because a transaction is already active and the propagation mode is REQUIRED (for method bound defaultPropagationWithOptions).',
                     'TransactionHost',
                 ],
                 [

@@ -2,6 +2,43 @@
 
 <!-- MONODEPLOY:BELOW -->
 
+## [Unreleased]
+
+### Breaking Changes
+
+* **transactional**: `Propagation.Required` now creates isolated transaction contexts when a transaction already exists (#12, addresses #196)
+
+  **Migration Required:** This is a breaking semantic change that affects nested transactions.
+
+  **Previous behavior (v3.x):**
+  - Nested `@Transactional()` or `Propagation.Required` reused parent transaction
+  - Non-awaited child transactions could cause "Transaction already finished" errors
+  - Child and parent shared same transaction instance
+
+  **New behavior (v4.x+):**
+  - Nested `@Transactional()` or `Propagation.Required` creates **independent isolated transaction** when parent transaction exists
+  - Each nested call gets its own transaction that commits/rolls back independently
+  - Non-awaited child transactions now complete successfully without corrupting parent
+  - Prevents transaction context corruption in async scenarios
+
+  **Impact:**
+  - Code relying on nested transactions sharing the same physical transaction will now see separate transactions
+  - Rollbacks in child transactions no longer affect parent transactions
+  - Database queries in nested transactions now span multiple DB transactions instead of one
+
+  **If you need the old behavior:**
+  - Use `Propagation.Supports` or `Propagation.Mandatory` to reuse parent transaction
+  - Ensure child transactions are always awaited
+
+  **Why this change:**
+  - Fixes Issue #196: Non-awaited transactions no longer cause corruption
+  - Provides guaranteed isolation between parent and child transaction contexts
+  - Aligns with v7.0 Architectural Refactor (ROADMAP.md)
+
+### Features
+
+* **core**: add `isolated` mode to `ClsContextOptions` for transaction isolation (#12)
+
 ## [3.1.0](https://github.com/Papooch/nestjs-cls/compare/@nestjs-cls/transactional@3.0.3...@nestjs-cls/transactional@3.1.0) "@nestjs-cls/transactional" (2025-07-10)<a name="3.1.0"></a>
 
 ### Features

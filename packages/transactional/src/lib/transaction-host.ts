@@ -164,12 +164,12 @@ export class TransactionHost<TAdapter = never> {
         switch (propagation) {
             case Propagation.Required:
                 if (this.isTransactionActive()) {
-                    if (isNotEmpty(options)) {
-                        this.logger.warn(
-                            `Transaction options are ignored because a transaction is already active and the propagation mode is ${propagation} (for method ${fnName}).`,
-                        );
-                    }
-                    return this.cls.run({ ifNested: 'inherit' }, fn);
+                    // Use isolated context to prevent non-awaited child transactions
+                    // from holding references to parent transaction that may commit first.
+                    // This creates an independent transaction in an isolated context.
+                    return this.cls.run({ ifNested: 'isolated' }, () =>
+                        this.runWithTransaction(options, fn),
+                    );
                 } else {
                     return this.runWithTransaction(options, fn);
                 }
