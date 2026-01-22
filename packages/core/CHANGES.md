@@ -54,6 +54,15 @@
   - All tests complete in ~28s with individual detection <50ms
   - Addresses Issue #27
 
+* **core**: add comprehensive test suite for complex circular dependency scenarios (100 tests)
+  - Add 25 tests for nested cycles within larger dependency graphs
+  - Add 25 tests for multiple independent cycles in single graph
+  - Add 25 tests for long cycle chains (5-25 nodes) with performance validation
+  - Add 25 tests for mixed real-world scenarios (microservices, repositories, observers)
+  - All cycle detections complete in <10ms
+  - Achieves 96.87% line coverage on dependency-graph.ts
+  - Addresses Issue #28
+
 * **core**: ContextClsStoreMap now uses RequestIdentityResolver for HTTP requests
   - HTTP request identity is now resolved using Symbol tagging instead of `request.raw ?? request`
   - This change should be transparent to users, but custom code relying on the old behavior may need updates
