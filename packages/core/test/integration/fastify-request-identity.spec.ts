@@ -89,7 +89,6 @@ const identityTrackingSetup = (cls: ClsService, req: any) => {
     cls.set('HAS_REQUEST_RAW', 'raw' in req);
 };
 
-
 /**
  * Service used by controllers
  */
