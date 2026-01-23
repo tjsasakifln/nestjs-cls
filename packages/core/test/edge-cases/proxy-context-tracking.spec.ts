@@ -167,7 +167,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(originalObject, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? value.toUpperCase() : value;
+                        return typeof value === 'string'
+                            ? value.toUpperCase()
+                            : value;
                     },
                 });
 
@@ -222,7 +224,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                             return target[prop];
                         }
                         if (!allowedProps.includes(String(prop))) {
-                            throw new Error(`Property ${String(prop)} not allowed`);
+                            throw new Error(
+                                `Property ${String(prop)} not allowed`,
+                            );
                         }
                         return target[prop];
                     },
@@ -269,7 +273,11 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     get(target, prop) {
                         const value = target[prop];
                         // Don't wrap non-object values or Symbols
-                        if (typeof value !== 'object' || value === null || typeof prop === 'symbol') {
+                        if (
+                            typeof value !== 'object' ||
+                            value === null ||
+                            typeof prop === 'symbol'
+                        ) {
                             return value;
                         }
                         return new Proxy(value, handler);
@@ -315,7 +323,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
 
                 ContextClsStoreMap.setByRaw(revocable1.proxy, store);
 
-                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(
+                    store,
+                );
 
                 revocable1.revoke();
                 revocable2.revoke();
@@ -372,7 +382,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const revocable2 = Proxy.revocable(revocable1.proxy, {});
 
                 ContextClsStoreMap.setByRaw(revocable2.proxy, store);
-                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(
+                    store,
+                );
 
                 revocable2.revoke();
                 revocable1.revoke();
@@ -384,7 +396,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 revocable1.revoke();
 
                 const revocable2 = Proxy.revocable(originalObject, {});
-                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(
+                    store,
+                );
                 revocable2.revoke();
             });
         });
@@ -471,13 +485,17 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const layer1 = new Proxy(originalObject, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? value.toLowerCase() : value;
+                        return typeof value === 'string'
+                            ? value.toLowerCase()
+                            : value;
                     },
                 });
                 const layer2 = new Proxy(layer1, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? value.toUpperCase() : value;
+                        return typeof value === 'string'
+                            ? value.toUpperCase()
+                            : value;
                     },
                 });
 
@@ -491,7 +509,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const revocable2 = Proxy.revocable(revocable1.proxy, {});
 
                 ContextClsStoreMap.setByRaw(revocable2.proxy, store);
-                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(revocable2.proxy)).toBe(
+                    store,
+                );
 
                 revocable2.revoke();
                 revocable1.revoke();
@@ -502,7 +522,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const revocable = Proxy.revocable(layer1, {});
 
                 ContextClsStoreMap.setByRaw(revocable.proxy, store);
-                expect(ContextClsStoreMap.getByRaw(revocable.proxy)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(revocable.proxy)).toBe(
+                    store,
+                );
 
                 revocable.revoke();
             });
@@ -588,7 +610,12 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 let current = originalObject;
                 const traps = [
                     { get: (target: any, prop: string) => target[prop] },
-                    { set: (target: any, prop: string, value: any) => ((target[prop] = value), true) },
+                    {
+                        set: (target: any, prop: string, value: any) => (
+                            (target[prop] = value),
+                            true
+                        ),
+                    },
                     { has: (target: any, prop: string) => prop in target },
                     { get: (target: any, prop: string) => target[prop] },
                     { ownKeys: (target: any) => Reflect.ownKeys(target) },
@@ -608,7 +635,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     current = new Proxy(current, {
                         get(target, prop) {
                             const value = target[prop];
-                            return typeof value === 'string' ? `[${value}]` : value;
+                            return typeof value === 'string'
+                                ? `[${value}]`
+                                : value;
                         },
                     });
                 }
@@ -740,7 +769,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                             if (typeof prop === 'symbol') {
                                 return target[prop];
                             }
-                            if (!['id', 'url', 'method'].includes(String(prop))) {
+                            if (
+                                !['id', 'url', 'method'].includes(String(prop))
+                            ) {
                                 return undefined;
                             }
                             return target[prop];
@@ -765,7 +796,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(originalObject, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? value.toUpperCase() : value;
+                        return typeof value === 'string'
+                            ? value.toUpperCase()
+                            : value;
                     },
                 });
 
@@ -778,7 +811,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(originalObject, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? `prefix-${value}` : value;
+                        return typeof value === 'string'
+                            ? `prefix-${value}`
+                            : value;
                     },
                 });
 
@@ -791,7 +826,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(originalObject, {
                     get(target, prop) {
                         const value = target[prop];
-                        return typeof value === 'string' ? { raw: value, length: value.length } : value;
+                        return typeof value === 'string'
+                            ? { raw: value, length: value.length }
+                            : value;
                     },
                 });
 
@@ -801,12 +838,18 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
             });
 
             it('should track context when Proxy converts types', () => {
-                const proxy = new Proxy({ count: '42' }, {
-                    get(target, prop) {
-                        const value = target[prop];
-                        return typeof value === 'string' && !isNaN(Number(value)) ? Number(value) : value;
+                const proxy = new Proxy(
+                    { count: '42' },
+                    {
+                        get(target, prop) {
+                            const value = target[prop];
+                            return typeof value === 'string' &&
+                                !isNaN(Number(value))
+                                ? Number(value)
+                                : value;
+                        },
                     },
-                });
+                );
 
                 ContextClsStoreMap.setByRaw(proxy, store);
                 expect(proxy.count).toBe(42);
@@ -814,7 +857,10 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
             });
 
             it('should track context when Proxy sanitizes values', () => {
-                const sensitiveObj = { password: 'secret123', username: 'user' };
+                const sensitiveObj = {
+                    password: 'secret123',
+                    username: 'user',
+                };
                 const proxy = new Proxy(sensitiveObj, {
                     get(target, prop) {
                         if (prop === 'password') {
@@ -834,7 +880,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(dateObj, {
                     get(target, prop) {
                         if (prop === 'timestamp') {
-                            return new Date(target.timestamp * 1000).toISOString();
+                            return new Date(
+                                target.timestamp * 1000,
+                            ).toISOString();
                         }
                         return target[prop];
                     },
@@ -864,15 +912,18 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
             });
 
             it('should track context when Proxy validates and transforms', () => {
-                const proxy = new Proxy({ age: '25' }, {
-                    get(target, prop) {
-                        if (prop === 'age') {
-                            const age = Number(target.age);
-                            return age >= 0 && age <= 150 ? age : 0;
-                        }
-                        return target[prop];
+                const proxy = new Proxy(
+                    { age: '25' },
+                    {
+                        get(target, prop) {
+                            if (prop === 'age') {
+                                const age = Number(target.age);
+                                return age >= 0 && age <= 150 ? age : 0;
+                            }
+                            return target[prop];
+                        },
                     },
-                });
+                );
 
                 ContextClsStoreMap.setByRaw(proxy, store);
                 expect(proxy.age).toBe(25);
@@ -884,7 +935,10 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     get(target, prop) {
                         const value = target[prop];
                         if (typeof value === 'string') {
-                            return value.trim().toLowerCase().replace(/\s+/g, '-');
+                            return value
+                                .trim()
+                                .toLowerCase()
+                                .replace(/\s+/g, '-');
                         }
                         return value;
                     },
@@ -1017,7 +1071,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 const proxy = new Proxy(originalObject, {
                     set(target, prop, value) {
                         if (!allowedProps.includes(String(prop))) {
-                            throw new Error(`Property ${String(prop)} not allowed`);
+                            throw new Error(
+                                `Property ${String(prop)} not allowed`,
+                            );
                         }
                         target[prop] = value;
                         return true;
@@ -1101,7 +1157,11 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     },
                     getOwnPropertyDescriptor(target, prop) {
                         if (prop === 'virtualProp') {
-                            return { configurable: true, enumerable: true, value: 'virtual' };
+                            return {
+                                configurable: true,
+                                enumerable: true,
+                                value: 'virtual',
+                            };
                         }
                         return Reflect.getOwnPropertyDescriptor(target, prop);
                     },
@@ -1115,7 +1175,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
             it('should track context when Proxy filters ownKeys', () => {
                 const proxy = new Proxy(originalObject, {
                     ownKeys(target) {
-                        return Reflect.ownKeys(target).filter((key) => key !== 'id');
+                        return Reflect.ownKeys(target).filter(
+                            (key) => key !== 'id',
+                        );
                     },
                 });
 
@@ -1159,7 +1221,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     },
                     ownKeys(target) {
                         const targetKeys = Reflect.ownKeys(target);
-                        const addedKeys = Array.from(addedProps.keys()).filter((k) => typeof k !== 'symbol');
+                        const addedKeys = Array.from(addedProps.keys()).filter(
+                            (k) => typeof k !== 'symbol',
+                        );
                         return [...targetKeys, ...addedKeys];
                     },
                     getOwnPropertyDescriptor(target, prop) {
@@ -1216,7 +1280,10 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 ContextClsStoreMap.setByRaw(proxy, store);
                 expect(ContextClsStoreMap.getByRaw(proxy)).toBe(store);
 
-                const newStore = { requestId: 'req-456', user: 'new-user' } as any;
+                const newStore = {
+                    requestId: 'req-456',
+                    user: 'new-user',
+                } as any;
                 ContextClsStoreMap.setByRaw(proxy, newStore);
                 expect(ContextClsStoreMap.getByRaw(proxy)).toBe(newStore);
             });
@@ -1255,7 +1322,7 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
 
                 const stores = Array(5)
                     .fill(0)
-                    .map((_, i) => ({ requestId: `req-${i}` } as any));
+                    .map((_, i) => ({ requestId: `req-${i}` }) as any);
 
                 for (const s of stores) {
                     ContextClsStoreMap.setByRaw(proxy, s);
@@ -1271,7 +1338,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     .fill(0)
                     .map(() => new Proxy({ id: `obj-${Math.random()}` }, {}));
 
-                const stores = proxies.map((_, i) => ({ requestId: `req-${i}` } as any));
+                const stores = proxies.map(
+                    (_, i) => ({ requestId: `req-${i}` }) as any,
+                );
 
                 // Set stores concurrently
                 proxies.forEach((proxy, i) => {
@@ -1291,7 +1360,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                     .fill(0)
                     .map((_, i) => ({ id: `obj-${i}` }));
                 const proxies = objects.map((obj) => new Proxy(obj, {}));
-                const stores = proxies.map((_, i) => ({ requestId: `req-${i}` } as any));
+                const stores = proxies.map(
+                    (_, i) => ({ requestId: `req-${i}` }) as any,
+                );
 
                 // Set stores on all proxies
                 proxies.forEach((proxy, i) => {
@@ -1349,7 +1420,9 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 }
 
                 // Final store should be the last update
-                expect(ContextClsStoreMap.getByRaw(originalObject)).toBe(updates[9]);
+                expect(ContextClsStoreMap.getByRaw(originalObject)).toBe(
+                    updates[9],
+                );
                 expect(ContextClsStoreMap.getByRaw(proxy1)).toBe(updates[9]);
                 expect(ContextClsStoreMap.getByRaw(proxy2)).toBe(updates[9]);
             });
