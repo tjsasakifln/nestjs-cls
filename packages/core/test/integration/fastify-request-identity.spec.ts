@@ -1,7 +1,6 @@
 import {
     Controller,
     Get,
-    INestApplication,
     Injectable,
     MiddlewareConsumer,
     Module,
@@ -15,7 +14,7 @@ import {
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClsMiddleware, ClsModule, ClsService } from '../../src';
+import { ClsModule, ClsService } from '../../src';
 import { RequestIdentityResolver } from '../../src/lib/cls-initializers/utils/request-identity-resolver';
 import { TestGuard } from '../common/test.guard';
 import { TestInterceptor } from '../common/test.interceptor';
@@ -90,32 +89,6 @@ const identityTrackingSetup = (cls: ClsService, req: any) => {
     cls.set('HAS_REQUEST_RAW', 'raw' in req);
 };
 
-/**
- * Middleware that tracks request identity via Symbol tagging
- * CRITICAL: Verifies that Symbol tagging works WITHOUT relying on request.raw hack
- */
-@Injectable()
-class IdentityTrackingMiddleware implements NestMiddleware {
-    constructor(private readonly cls: ClsService) {}
-
-    use(req: any, _res: any, next: (error?: any) => void) {
-        // Only track if CLS context is active
-        if (this.cls.isActive()) {
-            // Verify Symbol tagging works directly on Fastify request
-            // WITHOUT the old `request.raw ?? request` hack
-            const identity = RequestIdentityResolver.getIdentity(req);
-            expect(identity).toBeDefined();
-            expect(typeof identity).toBe('object');
-
-            // Verify that request.raw is NOT being used
-            // (it may exist, but we shouldn't rely on it)
-            this.cls.set('FROM_MIDDLEWARE', this.cls.getId());
-            this.cls.set('REQUEST_IDENTITY', identity);
-            this.cls.set('HAS_REQUEST_RAW', 'raw' in req);
-        }
-        return next();
-    }
-}
 
 /**
  * Service used by controllers
