@@ -1097,7 +1097,9 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             const results = await Promise.allSettled(promises);
 
             const successfulResponses = results
-                .filter((r) => r.status === 'fulfilled' && r.value.status === 200)
+                .filter(
+                    (r) => r.status === 'fulfilled' && r.value.status === 200,
+                )
                 .map((r) => (r as PromiseFulfilledResult<any>).value);
 
             // Allow for occasional ECONNRESET on Node 22 with high concurrency
