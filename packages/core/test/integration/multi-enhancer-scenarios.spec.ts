@@ -13,7 +13,7 @@ import {
     NestFastifyApplication,
 } from '@nestjs/platform-fastify';
 import request from 'supertest';
-import { ClsMiddleware, ClsModule, ClsService } from '../../src';
+import { ClsModule, ClsService } from '../../src';
 import { RequestIdentityResolver } from '../../src/lib/cls-initializers/utils/request-identity-resolver';
 import { TestGuard } from '../common/test.guard';
 import { TestInterceptor } from '../common/test.interceptor';
