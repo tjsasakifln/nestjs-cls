@@ -843,9 +843,7 @@ describe('Section 1: Basic Koa Integration (30 tests)', () => {
                 await new Promise((resolve) => setTimeout(resolve, 5));
                 cls.set('POST_HANDLER', cls.getId());
 
-                expect(cls.get('PRE_HANDLER')).toEqual(
-                    cls.get('POST_HANDLER'),
-                );
+                expect(cls.get('PRE_HANDLER')).toEqual(cls.get('POST_HANDLER'));
             });
         });
 
@@ -1440,7 +1438,10 @@ describe('Section 2: Koa Middleware Compatibility (30 tests)', () => {
 
             await cls.run(async () => {
                 const ctx = {
-                    request: { url: '/static/file.js', path: '/static/file.js' },
+                    request: {
+                        url: '/static/file.js',
+                        path: '/static/file.js',
+                    },
                     response: {},
                 };
 
