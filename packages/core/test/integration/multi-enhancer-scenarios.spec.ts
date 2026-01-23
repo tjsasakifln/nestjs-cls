@@ -742,11 +742,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                     request(app.getHttpServer()).get(`/concurrent/${i}`),
                 );
 
-            const responses = await Promise.all(promises);
+            const results = await Promise.allSettled(promises);
 
-            const successfulResponses = responses.filter(
-                (r) => r.status === 200,
-            );
+            const successfulResponses = results
+                .filter(
+                    (r) => r.status === 'fulfilled' && r.value.status === 200,
+                )
+                .map((r) => (r as PromiseFulfilledResult<any>).value);
+
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190); // Allow some failures
 
             const ids = successfulResponses.map((r) => r.body.middlewareId);
@@ -944,11 +947,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                     request(app.getHttpServer()).get(`/concurrent/${i}`),
                 );
 
-            const responses = await Promise.all(promises);
+            const results = await Promise.allSettled(promises);
 
-            const successfulResponses = responses.filter(
-                (r) => r.status === 200,
-            );
+            const successfulResponses = results
+                .filter(
+                    (r) => r.status === 'fulfilled' && r.value.status === 200,
+                )
+                .map((r) => (r as PromiseFulfilledResult<any>).value);
+
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
 
             const ids = successfulResponses.map((r) => r.body.middlewareId);
@@ -1152,11 +1158,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                     request(app.getHttpServer()).get(`/concurrent/${i}`),
                 );
 
-            const responses = await Promise.all(promises);
+            const results = await Promise.allSettled(promises);
 
-            const successfulResponses = responses.filter(
-                (r) => r.status === 200,
-            );
+            const successfulResponses = results
+                .filter(
+                    (r) => r.status === 'fulfilled' && r.value.status === 200,
+                )
+                .map((r) => (r as PromiseFulfilledResult<any>).value);
+
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
 
             const ids = successfulResponses.map((r) => r.body.middlewareId);
