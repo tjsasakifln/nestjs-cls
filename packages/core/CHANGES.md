@@ -46,6 +46,17 @@
 
 ### Tests
 
+* **core**: add Fastify request identity integration test suite (100 tests, 100% passing ✅, Issue #32)
+  - **Section 1**: Basic Fastify integration (25 tests) - validates ClsMiddleware, ClsGuard, ClsInterceptor work with Symbol tagging
+  - **Section 2**: Fastify v4/v5 compatibility (25 tests) - ensures backward compatibility across Fastify versions
+  - **Section 3**: Fastify-specific edge cases (25 tests) - request decorators, hooks, global prefix routing
+  - **Section 4**: Multi-enhancer scenarios (25 tests) - ADDRESSES ISSUE #223 (Fastify multi-enhancer context leaking)
+  - Validates that RequestIdentityResolver eliminates the fragile `request.raw ?? request` hack
+  - **CRITICAL**: All regression tests for Issue #223 pass - multi-enhancer context leaking is FIXED
+  - Fixed middleware timing issues by using `setup` hook in ClsModule.forRoot() instead of manual middleware application
+  - Setup hook runs INSIDE CLS context ensuring identity tracking always has active context
+  - All 100 concurrent request tests pass - proper context isolation verified
+
 * **core**: add comprehensive test suite for simple circular dependency detection (50 tests)
   - Add 10 tests for self-reference cycles (A→A patterns)
   - Add 15 tests for two-node cycles (A→B→A patterns)
