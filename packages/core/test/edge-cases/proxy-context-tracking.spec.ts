@@ -158,7 +158,7 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 });
 
                 ContextClsStoreMap.setByRaw(proxy, store);
-                const id = proxy.id; // Trigger get trap
+                void proxy.id; // Trigger get trap
                 expect(accessLog).toContain('id');
                 expect(ContextClsStoreMap.getByRaw(proxy)).toBe(store);
             });
@@ -700,7 +700,7 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 }
 
                 ContextClsStoreMap.setByRaw(current, store);
-                const id = current.id; // Trigger all get traps
+                void current.id; // Trigger all get traps
                 expect(accessLog.length).toBeGreaterThan(0);
                 expect(ContextClsStoreMap.getByRaw(current)).toBe(store);
             });
@@ -1143,7 +1143,7 @@ describe('Proxy Context Tracking - Edge Cases (Issue #35)', () => {
                 // So we test that the property is still there instead
                 try {
                     delete proxy.id;
-                } catch (e) {
+                } catch (_e) {
                     // Expected in strict mode
                 }
                 expect(originalObject.id).toBe('test-request');
