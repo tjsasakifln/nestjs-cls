@@ -2,10 +2,7 @@ import {
     Controller,
     Get,
     Injectable,
-    MiddlewareConsumer,
     Module,
-    NestMiddleware,
-    NestModule,
     UseGuards,
     UseInterceptors,
 } from '@nestjs/common';
@@ -14,9 +11,6 @@ import { ClsModule, ClsService } from '../../src';
 import { RequestIdentityResolver } from '../../src/lib/cls-initializers/utils/request-identity-resolver';
 import { TestGuard } from '../common/test.guard';
 import { TestInterceptor } from '../common/test.interceptor';
-import Koa from 'koa';
-import Router from '@koa/router';
-import bodyParser from 'koa-bodyparser';
 
 /**
  * Comprehensive Koa request identity integration test suite for Issue #33.
@@ -53,53 +47,55 @@ interface RequestIdResponse {
     ctxStateValue?: string;
 }
 
-/**
- * Helper to extract request ID from various enhancer points
- */
-function expectConsistentIds(
-    body: RequestIdResponse,
-    expectedId?: string,
-): void {
-    const firstId =
-        expectedId ?? body.middlewareId ?? body.guardId ?? body.interceptorId;
+// Removed unused helper functions and classes to satisfy ESLint no-unused-vars
 
-    if (body.middlewareId) {
-        expect(body.middlewareId).toEqual(firstId);
-    }
-    if (body.guardId) {
-        expect(body.guardId).toEqual(firstId);
-    }
-    if (body.interceptorId) {
-        expect(body.interceptorId).toEqual(firstId);
-    }
-    if (body.controllerId) {
-        expect(body.controllerId).toEqual(firstId);
-    }
-    if (body.serviceId) {
-        expect(body.serviceId).toEqual(firstId);
-    }
-}
+// /**
+//  * Helper to extract request ID from various enhancer points
+//  */
+// function expectConsistentIds(
+//     body: RequestIdResponse,
+//     expectedId?: string,
+// ): void {
+//     const firstId =
+//         expectedId ?? body.middlewareId ?? body.guardId ?? body.interceptorId;
+//
+//     if (body.middlewareId) {
+//         expect(body.middlewareId).toEqual(firstId);
+//     }
+//     if (body.guardId) {
+//         expect(body.guardId).toEqual(firstId);
+//     }
+//     if (body.interceptorId) {
+//         expect(body.interceptorId).toEqual(firstId);
+//     }
+//     if (body.controllerId) {
+//         expect(body.controllerId).toEqual(firstId);
+//     }
+//     if (body.serviceId) {
+//         expect(body.serviceId).toEqual(firstId);
+//     }
+// }
 
-/**
- * Middleware that tracks request identity via Symbol tagging
- * Koa-specific: receives ctx instead of req/res
- */
-@Injectable()
-class IdentityTrackingMiddleware implements NestMiddleware {
-    constructor(private readonly cls: ClsService) {}
-
-    use(req: any, _res: any, next: (error?: any) => void) {
-        // In Koa adapter, NestJS middleware still receives req/res
-        // But the underlying Koa ctx is accessible
-        const identity = RequestIdentityResolver.getIdentity(req);
-        expect(identity).toBeDefined();
-        expect(typeof identity).toBe('object');
-
-        this.cls.set('FROM_MIDDLEWARE', this.cls.getId());
-        this.cls.set('REQUEST_IDENTITY', identity);
-        return next();
-    }
-}
+// /**
+//  * Middleware that tracks request identity via Symbol tagging
+//  * Koa-specific: receives ctx instead of req/res
+//  */
+// @Injectable()
+// class IdentityTrackingMiddleware implements NestMiddleware {
+//     constructor(private readonly cls: ClsService) {}
+//
+//     use(req: any, _res: any, next: (error?: any) => void) {
+//         // In Koa adapter, NestJS middleware still receives req/res
+//         // But the underlying Koa ctx is accessible
+//         const identity = RequestIdentityResolver.getIdentity(req);
+//         expect(identity).toBeDefined();
+//         expect(typeof identity).toBe('object');
+//
+//         this.cls.set('FROM_MIDDLEWARE', this.cls.getId());
+//         this.cls.set('REQUEST_IDENTITY', identity);
+//         return next();
+//     }
+// }
 
 /**
  * Service used by controllers
@@ -166,7 +162,6 @@ describe('Section 1: Basic Koa Integration (30 tests)', () => {
      * the setup hook runs inside CLS context for proper identity tracking.
      */
     describe('1.1 ClsMiddleware + setup hook (10 tests)', () => {
-        let app: Koa;
         let moduleRef: TestingModule;
 
         @Module({
@@ -193,7 +188,6 @@ describe('Section 1: Basic Koa Integration (30 tests)', () => {
                 imports: [TestModule],
             }).compile();
 
-            app = new Koa();
             // Note: In real Koa integration, NestJS would handle the adapter
             // For this test, we're simulating the behavior
         });
@@ -534,7 +528,7 @@ describe('Section 1: Basic Koa Integration (30 tests)', () => {
                 // Simulate guard rejection
                 try {
                     throw new Error('Guard rejected');
-                } catch (e) {
+                } catch (_e) {
                     // Context should still be maintained
                     expect(cls.get('BEFORE_GUARD')).toEqual(cls.getId());
                 }
@@ -763,7 +757,7 @@ describe('Section 1: Basic Koa Integration (30 tests)', () => {
 
                 try {
                     throw new Error('Interceptor error');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_ERROR')).toEqual(cls.getId());
                 }
             });
@@ -1235,7 +1229,7 @@ describe('Section 2: Koa Middleware Compatibility (30 tests)', () => {
                 // Simulate parsing error
                 try {
                     throw new Error('Invalid JSON');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_ERROR')).toEqual(cls.getId());
                 }
 
@@ -1571,7 +1565,7 @@ describe('Section 2: Koa Middleware Compatibility (30 tests)', () => {
 
                 try {
                     throw new Error('Middleware error');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_ERROR')).toEqual(cls.getId());
                 }
             });
@@ -1947,8 +1941,8 @@ describe('Section 3: Koa-Specific Edge Cases (20 tests)', () => {
                     request: { url: '/test' },
                     response: {},
                     cookies: {
-                        get: (name: string) => 'cookie-value',
-                        set: (name: string, value: string) => {},
+                        get: (_name: string) => 'cookie-value',
+                        set: (_name: string, _value: string) => {},
                     },
                 };
 
@@ -1980,7 +1974,7 @@ describe('Section 3: Koa-Specific Edge Cases (20 tests)', () => {
 
                 try {
                     ctx.throw(400, 'Bad Request');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_THROW')).toEqual(cls.getId());
                 }
 
@@ -2117,7 +2111,7 @@ describe('Section 3: Koa-Specific Edge Cases (20 tests)', () => {
 
                 try {
                     throw new Error('Test error');
-                } catch (e) {
+                } catch (_e) {
                     // Error handling middleware
                     cls.set('IN_ERROR_HANDLER', cls.getId());
                 }
@@ -2137,7 +2131,7 @@ describe('Section 3: Koa-Specific Edge Cases (20 tests)', () => {
                 const ctx = {
                     request: { url: '/test' },
                     response: { status: 200 },
-                    onerror: (err: Error) => {
+                    onerror: (_err: Error) => {
                         errorHandled = true;
                     },
                 };
@@ -2333,7 +2327,7 @@ describe('Section 4: Multi-Enhancer with Koa (20 tests)', () => {
 
                 try {
                     throw new Error('Guard error');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_ERROR')).toEqual(cls.getId());
                 }
             });
@@ -2554,7 +2548,7 @@ describe('Section 4: Multi-Enhancer with Koa (20 tests)', () => {
 
                 try {
                     throw new Error('Guard rejected');
-                } catch (e) {
+                } catch (_e) {
                     expect(cls.get('BEFORE_GUARD')).toEqual(cls.getId());
                 }
             });
@@ -2784,7 +2778,7 @@ describe('Section 4: Multi-Enhancer with Koa (20 tests)', () => {
 
                 try {
                     throw new Error('Interceptor error');
-                } catch (e) {
+                } catch (_e) {
                     cls.set('ERROR_HANDLED', true);
                 }
 
