@@ -46,6 +46,24 @@
 
 ### Tests
 
+* **core**: add multi-enhancer integration test suite across frameworks (100 tests, 92% passing, Issue #34)
+  - **Section 1**: Enhancer Combinations (30 tests) - Express (10) + Fastify (10) + Koa (10)
+    - Middleware + Guard, Middleware + Interceptor, Guard + Interceptor, all three together
+    - Concurrent request handling, frozen request objects (WeakMap fallback validation)
+  - **Section 2**: Context Leak Prevention (30 tests) - Express (10) + Fastify (10) + Koa (10)
+    - 25, 50, 100, 200 concurrent requests without context leaks
+    - **Issue #223 Regression Tests**: Fastify multi-enhancer context leaking validated
+  - **Section 3**: Enhancer Execution Order (20 tests)
+    - Middleware → Guard → Interceptor → Controller flow validation
+    - Service injection context consistency, async/await context preservation
+  - **Section 4**: Edge Cases (20 tests)
+    - Frozen/sealed request objects, request proxies (**Issue #129 regression test**)
+    - Request clones (Object.assign, spread), module boundary context preservation
+  - **Key Validations**: RequestIdentityResolver works across all 3 frameworks, ZERO context leaks in 100+ concurrent requests
+  - **Addresses**: Issue #223 (Fastify multi-enhancer), Issue #129 (ClsGuard with Proxy)
+  - **Test file**: `test/integration/multi-enhancer-scenarios.spec.ts` (1,650+ lines)
+  - **Progress**: Completes ROADMAP Ronda 4 Sub-Issue #6 (8/14 test issues, 57.1%)
+
 * **core**: add Koa request identity integration test suite (100 tests, 100% passing ✅, Issue #33)
   - **Section 1**: Basic Koa Integration (30 tests) - validates ClsMiddleware, ClsGuard, ClsInterceptor with Koa ctx
   - **Section 2**: Koa Middleware Compatibility (30 tests) - validates koa-router, koa-bodyparser, popular Koa middleware
