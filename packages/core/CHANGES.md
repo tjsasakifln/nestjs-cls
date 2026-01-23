@@ -46,6 +46,25 @@
 
 ### Tests
 
+* **core**: add comprehensive Proxy object edge case test suite (100 tests, 100% passing ✅, Issue #35)
+  - **Section 1**: Basic Proxy Wrappers (30 tests) - transparent proxies, get traps, revocable proxies
+    - Validates Symbol tagging works through empty Proxy handlers and various trap configurations
+    - Tests property access validation, caching, computed properties, and transformation
+  - **Section 2**: Nested Proxy Chains (25 tests) - double/triple wrapping, 5-20 level deep chains
+    - Validates Symbol tagging through multiple Proxy layers (stress tests up to 20 levels)
+    - Tests mixed regular and revocable proxies, value transformations at each level
+  - **Section 3**: Transforming Proxies (25 tests) - property modification, addition, deletion
+    - Validates context tracking when Proxies modify, sanitize, format, or validate values
+    - Tests set/deleteProperty traps, ownKeys/has traps, lazy initialization
+  - **Section 4**: Complex Proxy Scenarios (20 tests) - concurrent access, mutations, WeakMap fallback
+    - **Issue #129 Regression Tests**: Validates Proxy-wrapped objects work correctly
+    - Tests store operations on Proxy chains, concurrent access, target mutations
+    - Validates WeakMap fallback for frozen/sealed/non-extensible objects
+  - **Key Validations**: Symbol tagging transparent through Proxy wrappers, 100% success rate (vs 29.4% with WeakMap-only)
+  - **Addresses**: Issue #129 (ClsGuard context leaking with Proxy objects)
+  - **Test file**: `test/edge-cases/proxy-context-tracking.spec.ts` (1,512 lines)
+  - **Progress**: Completes ROADMAP Ronda 4 Sub-Issue #9 (9/14 test issues, 64.3%)
+
 * **core**: add multi-enhancer integration test suite across frameworks (100 tests, 92% passing, Issue #34)
   - **Section 1**: Enhancer Combinations (30 tests) - Express (10) + Fastify (10) + Koa (10)
     - Middleware + Guard, Middleware + Interceptor, Guard + Interceptor, all three together

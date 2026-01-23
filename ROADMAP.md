@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (23 active after cleanup)       |
-| **Progress**        | 21/27 completed (77.8%) - Ronda 4 in progress (57.1%) 🎉 |
+| **Progress**        | 22/27 completed (81.5%) - Ronda 4 in progress (64.3%) 🎉 |
 | **Timeline**        | ~1.5 weeks remaining (4-5 weeks ahead of schedule)       |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -222,7 +222,7 @@ const { ProxyProviderManager } =
 
 | Issue | Title                                     | Package | Test Count | Status |
 | ----- | ----------------------------------------- | ------- | ---------- | ------ |
-| #35   | Proxy object edge cases                   | core    | 100        | OPEN   |
+| ✅ #35   | Proxy object edge cases                   | core    | 100        | **COMPLETED** (2026-01-23) - 100% passing (100/100), validates Symbol tagging through Proxy wrappers ✅ |
 | #36   | Frozen/sealed objects                     | core    | 100        | OPEN   |
 | #37   | Mock objects and test doubles             | core    | 100        | OPEN   |
 
@@ -436,12 +436,26 @@ This roadmap is considered **COMPLETE** when:
 
 ---
 
-**Last Updated:** 2026-01-22
-**Status:** Ronda 4 - **IN PROGRESS** (8/14 test issues complete, 57.1%) 🚀 **PAST HALFWAY!**
-**Milestone Progress:** 21/27 completed (77.8%) - 6 issues remaining
+**Last Updated:** 2026-01-23
+**Status:** Ronda 4 - **IN PROGRESS** (9/14 test issues complete, 64.3%) 🚀 **PAST HALFWAY!**
+**Milestone Progress:** 22/27 completed (81.5%) - 5 issues remaining
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- ✅ **2026-01-23**: Issue #35 completed - **Proxy object edge cases for context tracking (100/100 tests passing ✅)** 🎉
+    - Created comprehensive test suite for Proxy edge cases with context tracking
+    - All 100 tests implemented and passing: Section 1 (30) + Section 2 (25) + Section 3 (25) + Section 4 (20)
+    - **Section 1: Basic Proxy Wrappers (30 tests)** - Transparent proxies, get traps, revocable proxies
+    - **Section 2: Nested Proxy Chains (25 tests)** - Double/triple wrapping, deep chains (5-20 levels)
+    - **Section 3: Transforming Proxies (25 tests)** - Property modification, addition, deletion
+    - **Section 4: Complex Proxy Scenarios (20 tests)** - Concurrent access, mutations, WeakMap fallback
+    - **CRITICAL**: Validates Symbol tagging works transparently through Proxy wrappers (100% success vs 29.4% with WeakMap-only)
+    - **Issue #129 Regression Tests**: ClsGuard with Proxy-wrapped request objects validated ✅
+    - Test file: `packages/core/test/edge-cases/proxy-context-tracking.spec.ts` (1,512 lines)
+    - Completes ROADMAP Ronda 4 Sub-Issue #9 (first test issue, 33.3%)
+    - Ronda 4 progress: 9/14 test issues complete (64.3%)
+    - Next: Issue #36 (Frozen/sealed objects, 100 tests) or Issue #38 (Propagation.Required isolation, 100 tests)
 
 - ✅ **2026-01-23**: Issue #34 completed - **Multi-enhancer scenarios across frameworks (92/100 tests passing ✅)** 🎉
     - Created comprehensive test suite for multi-enhancer integration testing
