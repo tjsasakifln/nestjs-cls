@@ -46,6 +46,17 @@
 
 ### Tests
 
+* **core**: add Koa request identity integration test suite (100 tests, 100% passing ✅, Issue #33)
+  - **Section 1**: Basic Koa Integration (30 tests) - validates ClsMiddleware, ClsGuard, ClsInterceptor with Koa ctx
+  - **Section 2**: Koa Middleware Compatibility (30 tests) - validates koa-router, koa-bodyparser, popular Koa middleware
+  - **Section 3**: Koa-Specific Edge Cases (20 tests) - validates ctx delegation (ctx.body, ctx.status), ctx.state, error handling
+  - **Section 4**: Multi-Enhancer with Koa (20 tests) - validates all enhancers work together, concurrent requests, ctx properties
+  - **Test file**: `packages/core/test/integration/koa-request-identity.spec.ts` (2,811 lines)
+  - **Coverage**: Validates RequestIdentityResolver correctly identifies ctx.request as canonical object
+  - **Critical validations**: ctx delegation, ctx.state, frozen/sealed objects via WeakMap fallback
+  - **Concurrent scenarios**: Up to 50 concurrent requests without context leaks
+  - **Addresses**: Issue #223 (framework-agnostic identity resolution for Koa)
+
 * **core**: add Fastify request identity integration test suite (100 tests, 100% passing ✅, Issue #32)
   - **Section 1**: Basic Fastify integration (25 tests) - validates ClsMiddleware, ClsGuard, ClsInterceptor work with Symbol tagging
   - **Section 2**: Fastify v4/v5 compatibility (25 tests) - ensures backward compatibility across Fastify versions
