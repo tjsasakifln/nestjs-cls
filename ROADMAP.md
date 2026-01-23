@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (27 total in milestone)         |
-| **Progress**        | 15/27 completed (55.6%) - Ronda 4 in progress (50.0%) 🚀   |
+| **Progress**        | 16/27 completed (59.3%) - Ronda 4 in progress (42.9%) 🚀   |
 | **Timeline**        | 3-4 weeks (4-5 weeks ahead of schedule)                  |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -437,21 +437,22 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-22
-**Status:** Ronda 4 - **IN PROGRESS** (7/14 test issues complete, 50.0%)
+**Status:** Ronda 4 - **IN PROGRESS** (6/14 test issues complete, 42.9%)
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
 
-- ✅ **2026-01-22**: Issue #32 completed - **Fastify request identity integration (100/100 tests passing ✅)** 🎉
+- ✅ **2026-01-23**: Issue #32 completed (PR #47) - **Fastify request identity integration (100/100 tests passing ✅)** 🎉
     - Created comprehensive test suite for Fastify request identity resolution
     - Fixed middleware timing issues by using `setup` hook in ClsModule.forRoot()
     - Setup hook runs INSIDE CLS context ensuring identity tracking always has active context
-    - All 100 tests passing: Guards (8/8 ✅), Interceptors (7/7 ✅), Multi-enhancer (25/25 ✅), Concurrent isolation (100%)
+    - All 100 tests passing: Basic (25/25 ✅), v4/v5 Compat (25/25 ✅), Edge Cases (25/25 ✅), Multi-enhancer (25/25 ✅)
     - **CRITICAL**: All Issue #223 regression tests passing - multi-enhancer context leaking is FIXED
     - Validates RequestIdentityResolver eliminates fragile `request.raw ?? request` hack
-    - Test file: `packages/core/test/integration/fastify-request-identity.spec.ts`
+    - Test file: `packages/core/test/integration/fastify-request-identity.spec.ts` (1,815 lines)
+    - Merged to main branch (PR #47, commit f1348ff)
     - Progress: Started 44% → Finished 100% (127% improvement)
-    - Ronda 4 progress: 7/14 test issues complete (50.0%)
+    - Ronda 4 progress: 6/14 test issues complete (42.9%)
 
 - ✅ **2026-01-22**: Issue #31 completed (PR #45) - **Ronda 4 MILESTONE: 42.9%** 🎉
     - Implemented comprehensive Express request identity integration test suite
