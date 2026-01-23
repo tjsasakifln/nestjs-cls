@@ -175,7 +175,8 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -260,9 +261,7 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
         it('should handle rapid sequential requests (Express)', async () => {
             const promises = Array(5)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -321,7 +320,8 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -407,9 +407,7 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
         it('should handle rapid sequential requests (Fastify)', async () => {
             const promises = Array(5)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -475,7 +473,8 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -559,9 +558,7 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
         it('should handle rapid sequential requests (Koa)', async () => {
             const promises = Array(5)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -601,9 +598,7 @@ describe('Multi-Enhancer Scenarios - Section 1: Enhancer Combinations', () => {
         it('should handle concurrent requests (Koa)', async () => {
             const promises = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -634,7 +629,8 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -721,14 +717,10 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         it('should maintain separate contexts for overlapping requests (Express)', async () => {
             const batch1 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
             const batch2 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const [responses1, responses2] = await Promise.all([
                 Promise.all(batch1),
@@ -757,18 +749,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             );
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190); // Allow some failures
 
-            const ids = successfulResponses.map(
-                (r) => r.body.middlewareId,
-            );
+            const ids = successfulResponses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
         }, 30000);
 
         it('should prevent leak after error recovery (Express)', async () => {
             const promises = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -840,7 +828,8 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -930,14 +919,10 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         it('should maintain separate contexts for overlapping requests (Fastify)', async () => {
             const batch1 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
             const batch2 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const [responses1, responses2] = await Promise.all([
                 Promise.all(batch1),
@@ -966,18 +951,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             );
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
 
-            const ids = successfulResponses.map(
-                (r) => r.body.middlewareId,
-            );
+            const ids = successfulResponses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
         }, 30000);
 
         it('should prevent leak after error recovery (Fastify)', async () => {
             const promises = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -1049,7 +1030,8 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
                         mount: true,
                         generateId: true,
                         setup: (cls, req) => {
-                            const identity = RequestIdentityResolver.getIdentity(req);
+                            const identity =
+                                RequestIdentityResolver.getIdentity(req);
                             cls.set('REQUEST_IDENTITY', identity);
                             cls.set('FROM_MIDDLEWARE', cls.getId());
                         },
@@ -1136,14 +1118,10 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         it('should maintain separate contexts for overlapping requests (Koa)', async () => {
             const batch1 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
             const batch2 = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const [responses1, responses2] = await Promise.all([
                 Promise.all(batch1),
@@ -1172,18 +1150,14 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             );
             expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
 
-            const ids = successfulResponses.map(
-                (r) => r.body.middlewareId,
-            );
+            const ids = successfulResponses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
         }, 30000);
 
         it('should prevent leak after error recovery (Koa)', async () => {
             const promises = Array(10)
                 .fill(0)
-                .map(() =>
-                    request(app.getHttpServer()).get('/all-enhancers'),
-                );
+                .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
             const responses = await Promise.all(promises);
 
@@ -1260,7 +1234,8 @@ describe('Multi-Enhancer Scenarios - Section 3: Enhancer Execution Order', () =>
                     mount: true,
                     generateId: true,
                     setup: (cls, req) => {
-                        const identity = RequestIdentityResolver.getIdentity(req);
+                        const identity =
+                            RequestIdentityResolver.getIdentity(req);
                         cls.set('REQUEST_IDENTITY', identity);
                         cls.set('FROM_MIDDLEWARE', cls.getId());
                     },
@@ -1385,9 +1360,7 @@ describe('Multi-Enhancer Scenarios - Section 3: Enhancer Execution Order', () =>
     it('should handle parallel async operations', async () => {
         const promises = Array(5)
             .fill(0)
-            .map(() =>
-                request(app.getHttpServer()).get('/all-enhancers'),
-            );
+            .map(() => request(app.getHttpServer()).get('/all-enhancers'));
 
         const responses = await Promise.all(promises);
 
@@ -1467,7 +1440,8 @@ describe('Multi-Enhancer Scenarios - Section 4: Edge Cases', () => {
                     mount: true,
                     generateId: true,
                     setup: (cls, req) => {
-                        const identity = RequestIdentityResolver.getIdentity(req);
+                        const identity =
+                            RequestIdentityResolver.getIdentity(req);
                         cls.set('REQUEST_IDENTITY', identity);
                         cls.set('FROM_MIDDLEWARE', cls.getId());
                     },
