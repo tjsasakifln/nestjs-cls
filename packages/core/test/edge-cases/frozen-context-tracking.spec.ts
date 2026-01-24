@@ -144,7 +144,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(frozenRequest, store);
 
                 // Simulate ClsGuard accessing same frozen object
-                const retrievedInGuard = ContextClsStoreMap.getByRaw(frozenRequest);
+                const retrievedInGuard =
+                    ContextClsStoreMap.getByRaw(frozenRequest);
                 expect(retrievedInGuard).toBe(store);
             });
 
@@ -153,7 +154,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(frozenRequest, store);
 
                 // Simulate ClsInterceptor accessing same frozen object
-                const retrievedInInterceptor = ContextClsStoreMap.getByRaw(frozenRequest);
+                const retrievedInInterceptor =
+                    ContextClsStoreMap.getByRaw(frozenRequest);
                 expect(retrievedInInterceptor).toBe(store);
             });
 
@@ -176,7 +178,9 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
 
                 // Simulate multiple enhancer passes
                 for (let i = 0; i < 5; i++) {
-                    expect(ContextClsStoreMap.getByRaw(frozenRequest)).toBe(store);
+                    expect(ContextClsStoreMap.getByRaw(frozenRequest)).toBe(
+                        store,
+                    );
                 }
             });
 
@@ -226,7 +230,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(frozenRequest, store);
 
                 // Simulate exception filter accessing context
-                const retrievedInFilter = ContextClsStoreMap.getByRaw(frozenRequest);
+                const retrievedInFilter =
+                    ContextClsStoreMap.getByRaw(frozenRequest);
                 expect(retrievedInFilter).toBe(store);
             });
 
@@ -235,7 +240,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(frozenRequest, store);
 
                 // Simulate pipe transformation
-                const retrievedInPipe = ContextClsStoreMap.getByRaw(frozenRequest);
+                const retrievedInPipe =
+                    ContextClsStoreMap.getByRaw(frozenRequest);
                 expect(retrievedInPipe).toBe(store);
             });
 
@@ -244,7 +250,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(frozenRequest, store);
 
                 // Simulate service layer accessing context
-                const retrievedInService = ContextClsStoreMap.getByRaw(frozenRequest);
+                const retrievedInService =
+                    ContextClsStoreMap.getByRaw(frozenRequest);
                 expect(retrievedInService).toBe(store);
             });
         });
@@ -311,7 +318,9 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
             });
 
             it('1.3.8: Should handle frozen object created via Object.assign', () => {
-                const assigned = Object.freeze(Object.assign({}, originalObject));
+                const assigned = Object.freeze(
+                    Object.assign({}, originalObject),
+                );
                 ContextClsStoreMap.setByRaw(assigned, store);
 
                 expect(ContextClsStoreMap.getByRaw(assigned)).toBe(store);
@@ -330,7 +339,9 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
             it('1.3.10: Should track frozen object with filtered properties', () => {
                 const filtered = Object.freeze(
                     Object.fromEntries(
-                        Object.entries(originalObject).filter(([key]) => key !== 'url'),
+                        Object.entries(originalObject).filter(
+                            ([key]) => key !== 'url',
+                        ),
                     ),
                 );
 
@@ -503,7 +514,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 const sealedRequest = Object.seal({ ...originalObject });
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
-                const retrievedInGuard = ContextClsStoreMap.getByRaw(sealedRequest);
+                const retrievedInGuard =
+                    ContextClsStoreMap.getByRaw(sealedRequest);
                 expect(retrievedInGuard).toBe(store);
             });
 
@@ -511,7 +523,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 const sealedRequest = Object.seal({ ...originalObject });
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
-                const retrievedInInterceptor = ContextClsStoreMap.getByRaw(sealedRequest);
+                const retrievedInInterceptor =
+                    ContextClsStoreMap.getByRaw(sealedRequest);
                 expect(retrievedInInterceptor).toBe(store);
             });
 
@@ -528,7 +541,9 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
                 for (let i = 0; i < 5; i++) {
-                    expect(ContextClsStoreMap.getByRaw(sealedRequest)).toBe(store);
+                    expect(ContextClsStoreMap.getByRaw(sealedRequest)).toBe(
+                        store,
+                    );
                 }
             });
 
@@ -575,7 +590,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 const sealedRequest = Object.seal({ ...originalObject });
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
-                const retrievedInFilter = ContextClsStoreMap.getByRaw(sealedRequest);
+                const retrievedInFilter =
+                    ContextClsStoreMap.getByRaw(sealedRequest);
                 expect(retrievedInFilter).toBe(store);
             });
 
@@ -583,7 +599,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 const sealedRequest = Object.seal({ ...originalObject });
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
-                const retrievedInPipe = ContextClsStoreMap.getByRaw(sealedRequest);
+                const retrievedInPipe =
+                    ContextClsStoreMap.getByRaw(sealedRequest);
                 expect(retrievedInPipe).toBe(store);
             });
 
@@ -591,7 +608,8 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 const sealedRequest = Object.seal({ ...originalObject });
                 ContextClsStoreMap.setByRaw(sealedRequest, store);
 
-                const retrievedInService = ContextClsStoreMap.getByRaw(sealedRequest);
+                const retrievedInService =
+                    ContextClsStoreMap.getByRaw(sealedRequest);
                 expect(retrievedInService).toBe(store);
             });
         });
@@ -799,7 +817,10 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
             });
 
             it('3.1.5: Should allow property modification on non-extensible object', () => {
-                const nonExt = Object.preventExtensions({ id: 'test', value: 1 });
+                const nonExt = Object.preventExtensions({
+                    id: 'test',
+                    value: 1,
+                });
                 ContextClsStoreMap.setByRaw(nonExt, store);
 
                 nonExt.value = 2;
@@ -808,7 +829,10 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
             });
 
             it('3.1.6: Should allow property deletion on non-extensible object', () => {
-                const nonExt: any = Object.preventExtensions({ id: 'test', temp: 'delete-me' });
+                const nonExt: any = Object.preventExtensions({
+                    id: 'test',
+                    temp: 'delete-me',
+                });
                 ContextClsStoreMap.setByRaw(nonExt, store);
 
                 delete nonExt.temp;
@@ -833,7 +857,11 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
             });
 
             it('3.1.9: Should work with non-extensible array-like object', () => {
-                const arrayLike = Object.preventExtensions({ 0: 'a', 1: 'b', length: 2 });
+                const arrayLike = Object.preventExtensions({
+                    0: 'a',
+                    1: 'b',
+                    length: 2,
+                });
                 ContextClsStoreMap.setByRaw(arrayLike, store);
 
                 expect(ContextClsStoreMap.getByRaw(arrayLike)).toBe(store);
