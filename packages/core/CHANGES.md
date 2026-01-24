@@ -46,6 +46,30 @@
 
 ### Tests
 
+* **core**: add comprehensive frozen/sealed object edge case test suite (100 tests, 100% passing ✅, Issue #36)
+  - **Section 1**: Frozen Objects (35 tests) - Object.freeze() prevents Symbol tagging
+    - Basic frozen objects, frozen objects across enhancers (middleware → guard → interceptor)
+    - Partial properties (spread, destructuring, Object.assign), edge cases (circular refs, Symbol props)
+    - **Key Validation**: WeakMap fallback when Symbol tagging fails (frozen objects cannot be extended)
+  - **Section 2**: Sealed Objects (35 tests) - Object.seal() prevents new properties
+    - Basic sealed objects, sealed objects across enhancers, partially sealed objects
+    - Property modification allowed (unlike frozen), edge cases (circular refs, WeakMap compatibility)
+  - **Section 3**: Non-Extensible Objects (15 tests) - Object.preventExtensions()
+    - Property modification and deletion allowed (unlike sealed/frozen)
+    - WeakMap fallback validation for non-extensible objects
+  - **Section 4**: Mixed Scenarios (15 tests) - combining frozen/sealed/extensible
+    - Transition scenarios (extensible → frozen/sealed), concurrent mixed requests (50+ concurrent)
+    - Complex nesting and composition (deeply nested frozen/sealed hierarchies)
+  - **Key Validations**:
+    - ✅ WeakMap fallback works for all non-extensible object types
+    - ✅ Concurrent frozen requests (25 requests) maintain isolation
+    - ✅ Mixed concurrent requests (50 total: 15 frozen + 15 sealed + 20 extensible)
+    - ✅ Transition from extensible → frozen/sealed mid-request maintains context
+    - ✅ **Issue #129 Regression Tests**: ClsGuard with frozen request objects
+  - **Addresses**: Issue #129 (ClsGuard context leaking), WeakMap fallback for non-extensible objects
+  - **Test file**: `test/edge-cases/frozen-context-tracking.spec.ts` (1,073 lines)
+  - **Progress**: Completes ROADMAP Ronda 4 Sub-Issue #9 (10/14 test issues, 71.4%)
+
 * **core**: add comprehensive Proxy object edge case test suite (100 tests, 100% passing ✅, Issue #35)
   - **Section 1**: Basic Proxy Wrappers (30 tests) - transparent proxies, get traps, revocable proxies
     - Validates Symbol tagging works through empty Proxy handlers and various trap configurations
