@@ -882,7 +882,7 @@ describe('Section 2: Express v4 vs v5 Compatibility (25 tests)', () => {
 
             // Should complete in reasonable time (< 15 seconds for 50 requests with batching + delays)
             expect(duration).toBeLessThan(15000);
-        });
+        }, 20000);
 
         it('should work with standard HTTP methods', async () => {
             await request(app.getHttpServer()).get('/hello').expect(200);
