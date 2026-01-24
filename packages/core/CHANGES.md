@@ -46,6 +46,36 @@
 
 ### Tests
 
+* **core**: add comprehensive mock objects and test doubles test suite (100 tests, 100% passing ✅, Issue #37)
+  - **Section 1**: Jest Mock Objects (30 tests) - jest.fn(), jest.spyOn(), jest.mock()
+    - jest.fn() spy objects: mockReturnValue, mockImplementation, mockResolvedValue
+    - jest.spyOn() scenarios: method spying, getter/setter spying, class methods, static methods
+    - jest.mock() module mocks: mocked functions, mocked classes, async functions, partial mocks
+    - **Key Validation**: Symbol tagging works through Jest mocking utilities
+  - **Section 2**: Object.create() Clones (30 tests) - prototype chain identity
+    - Basic Object.create() scenarios: Object.create(null), Object.create(prototype)
+    - Property descriptors: data descriptors, getter/setter descriptors, non-enumerable/writable/configurable
+    - Prototype chain identity: deep chains, mixed prototypes, prototype changes
+    - **Key Validation**: Symbol tagging through prototype chain, separate identity from original
+  - **Section 3**: Object.assign() and Spread Operator (20 tests) - shallow cloning
+    - Object.assign() scenarios: basic copying, multiple sources, property overrides
+    - Spread operator: basic spread, nested spread, conditional spread, destructuring
+    - **Key Validation**: New objects have separate identity, Symbol tagging preserved
+  - **Section 4**: Testing Library Compatibility (20 tests) - NestJS testing, supertest, custom doubles
+    - @nestjs/testing integration: providers (useValue, useFactory, useClass), module.get() resolution
+    - Supertest request objects: request/response mocks, chained builders, headers, authentication
+    - Custom test doubles: stubs, spies, fakes, builder pattern, fixtures
+    - **Key Validation**: CLS context tracking works with all common testing patterns
+  - **Key Validations**:
+    - ✅ 100% success rate with mock objects (Jest, testing frameworks)
+    - ✅ Symbol tagging works through Object.create(), Object.assign(), spread operator
+    - ✅ Compatible with @nestjs/testing, supertest, and custom test doubles
+    - ✅ Improves testing DX - developers can safely use mocks with CLS
+    - ✅ **Issue #129 Regression Tests**: ClsGuard with mock request objects
+  - **Addresses**: Issue #129 (ClsGuard context leaking), Testing DX improvement
+  - **Test file**: `test/edge-cases/mock-context-tracking.spec.ts` (1,025 lines)
+  - **Progress**: Completes ROADMAP Ronda 4 Sub-Issue #9 (12/14 test issues, 85.7%) 🎉
+
 * **core**: add comprehensive frozen/sealed object edge case test suite (100 tests, 100% passing ✅, Issue #36)
   - **Section 1**: Frozen Objects (35 tests) - Object.freeze() prevents Symbol tagging
     - Basic frozen objects, frozen objects across enhancers (middleware → guard → interceptor)
