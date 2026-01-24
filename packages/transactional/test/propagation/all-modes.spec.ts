@@ -26,7 +26,6 @@ import {
 import {
     MockDbConnection,
     TransactionAdapterMock,
-    MockDbClient,
 } from '../transaction-adapter-mock';
 
 // ============================================================================
@@ -318,7 +317,6 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
     let module: TestingModule;
     let txHost: TransactionHost<TransactionAdapterMock>;
     let mockDbConnection: MockDbConnection;
-    let baseService: BaseService;
     let requiresNewService: RequiresNewService;
     let nestedService: NestedService;
     let supportsService: SupportsService;
@@ -335,7 +333,6 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
         txHost = module.get(TransactionHost);
         mockDbConnection = module.get(MockDbConnection);
-        baseService = module.get(BaseService);
         requiresNewService = module.get(RequiresNewService);
         nestedService = module.get(NestedService);
         supportsService = module.get(SupportsService);
@@ -758,8 +755,6 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             });
 
             it('1.25: should maintain parent transaction isolation during suspension', async () => {
-                const parentClient = mockDbConnection.clients[0];
-
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('Parent 1');
                     const clientBeforeSuspend = txHost.tx;
