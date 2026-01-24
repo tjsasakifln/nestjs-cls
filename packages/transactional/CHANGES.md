@@ -41,6 +41,16 @@
 
 ### Tests
 
+* **transactional**: comprehensive test suite for transaction race conditions and edge cases (100 tests) (#40)
+  - Race Conditions: 40 tests covering parent complete before child, concurrent children racing, complex race patterns
+  - Parallel Scenarios: 30 tests covering 100+ concurrent independent transactions, 100+ concurrent nested trees
+  - Error Handling: 15 tests covering adapter failures, application errors, edge case scenarios
+  - Performance Stress: 15 tests covering 1000 tx/sec throughput, deep nesting (25 levels), memory leak detection
+  - **Validates Issue #196 fix**: Non-awaited child transactions complete successfully without "Transaction already finished" errors
+  - **COMPLETES ROADMAP Ronda 4 Sub-Issue #12** (3/3) and **Architectural Refactor v7.0 Milestone** (27/27 issues) 🎉
+  - Full transactional test suite: 250 tests passing (150 existing + 100 new)
+  - Coverage: 93.33% (exceeds >80% target)
+
 * **transactional**: comprehensive test suite for all propagation modes (100 tests) (#39)
   - RequiresNew: 25 tests covering new transaction creation, nesting, suspension, error handling
   - Nested: 20 tests covering savepoints, rollback, deep nesting, mixed outcomes
