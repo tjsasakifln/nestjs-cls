@@ -46,6 +46,13 @@
 
 ### Tests
 
+* **core**: fix flaky performance test by relaxing CI-sensitive threshold (Issue #55)
+  - Update 10000-provider DAG performance test to allow for CI environment variability
+  - Change threshold from strict 1000ms to relaxed 5000ms to prevent false failures
+  - Add warning when performance degrades beyond 1000ms (expected baseline)
+  - Test remains valuable for detecting severe performance regressions (5x slower)
+  - Eliminates intermittent CI failures on resource-constrained runners
+
 * **core**: add comprehensive mock objects and test doubles test suite (100 tests, 100% passing ✅, Issue #37)
   - **Section 1**: Jest Mock Objects (30 tests) - jest.fn(), jest.spyOn(), jest.mock()
     - jest.fn() spy objects: mockReturnValue, mockImplementation, mockResolvedValue
