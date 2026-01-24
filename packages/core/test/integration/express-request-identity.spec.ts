@@ -18,14 +18,6 @@ import { TestGuard } from '../common/test.guard';
 import { TestInterceptor } from '../common/test.interceptor';
 
 /**
- * Helper: Detect Node 22 in CI environment
- * GitHub Actions Node 22 runners have limited ephemeral port ranges that cause
- * intermittent ECONNRESET errors during high-concurrency HTTP tests.
- * See Issue #57 for details.
- */
-const isNode22CI = process.version.startsWith('v22') && process.env.CI === 'true';
-
-/**
  * Comprehensive Express request identity integration test suite for Issue #31.
  *
  * This test suite validates that RequestIdentityResolver works correctly with Express
@@ -226,11 +218,10 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
             expect(uniqueIds.size).toBe(10);
         });
 
-        // Skip on Node 22 CI due to GitHub Actions runner port exhaustion (Issue #57)
-        // Tests pass reliably on Node 20 CI and all local environments
-        (isNode22CI ? it.skip : it)('should handle concurrent requests without context leak (50 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+        it('should handle concurrent requests without context leak (50 requests)', async () => {
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            // Batch size 5 with 50ms delays prevents ECONNRESET on Node 22 CI (Issue #48)
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 50; i += batchSize) {
@@ -239,16 +230,22 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                // Small delay between batches to allow port cleanup
+                if (i + batchSize < 50) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.middlewareId);
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(50);
-        }, 15000);
+        }, 20000);
 
         it('should handle concurrent requests without context leak (100 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            // Batch size 5 with 50ms delays prevents ECONNRESET on Node 22 CI (Issue #48)
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 100; i += batchSize) {
@@ -257,12 +254,17 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                // Small delay between batches to allow port cleanup
+                if (i + batchSize < 100) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.middlewareId);
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(100);
-        }, 20000);
+        }, 30000);
 
         it('should handle rapid sequential requests', async () => {
             const ids: string[] = [];
@@ -350,8 +352,8 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         });
 
         it('should handle concurrent requests with guard (50 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 50; i += batchSize) {
@@ -360,16 +362,20 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                if (i + batchSize < 50) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.guardId);
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(50);
-        }, 15000);
+        }, 20000);
 
         it('should handle concurrent requests with guard (100 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 100; i += batchSize) {
@@ -378,12 +384,16 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                if (i + batchSize < 100) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.guardId);
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(100);
-        }, 20000);
+        }, 30000);
 
         it('should maintain context consistency', async () => {
             const response = await request(app.getHttpServer())
@@ -465,8 +475,8 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
         });
 
         it('should handle concurrent requests with interceptor (25 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 25; i += batchSize) {
@@ -476,16 +486,20 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                if (i + batchSize < 25) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.interceptorId);
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(25);
-        }, 15000);
+        }, 20000);
 
         it('should handle concurrent requests with interceptor (100 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 100; i += batchSize) {
@@ -494,13 +508,17 @@ describe('Section 1: Basic Express Integration (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+
+                if (i + batchSize < 100) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const ids = responses.map((r) => r.body.interceptorId);
 
             const uniqueIds = new Set(ids);
             expect(uniqueIds.size).toBe(100);
-        }, 20000);
+        }, 30000);
 
         it('should maintain context through interceptor chain', async () => {
             const response = await request(app.getHttpServer())
@@ -847,19 +865,23 @@ describe('Section 2: Express v4 vs v5 Compatibility (25 tests)', () => {
         it('should maintain performance with Symbol tagging', async () => {
             const start = Date.now();
 
-            // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            // Use smaller batches with delays to avoid port exhaustion in CI
+            const batchSize = 5;
             for (let i = 0; i < 50; i += batchSize) {
                 const batch = Array.from({ length: batchSize }, () =>
                     request(app.getHttpServer()).get('/hello').expect(200),
                 );
                 await Promise.all(batch);
+
+                if (i + batchSize < 50) {
+                    await new Promise((resolve) => setTimeout(resolve, 50));
+                }
             }
 
             const duration = Date.now() - start;
 
-            // Should complete in reasonable time (< 10 seconds for 50 requests with batching)
-            expect(duration).toBeLessThan(10000);
+            // Should complete in reasonable time (< 15 seconds for 50 requests with batching + delays)
+            expect(duration).toBeLessThan(15000);
         });
 
         it('should work with standard HTTP methods', async () => {
@@ -1330,7 +1352,7 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
         });
 
         it('should handle concurrent requests without leaking (50 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
+            // Use smaller batches with delays to avoid port exhaustion in CI
             const batchSize = 5;
             const responses: request.Response[] = [];
 
@@ -1340,19 +1362,20 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
-                // Small delay to prevent port exhaustion
+
+                // Small delay between batches to allow port cleanup
                 if (i + batchSize < 50) {
-                    await new Promise((resolve) => setTimeout(resolve, 10));
+                    await new Promise((resolve) => setTimeout(resolve, 50));
                 }
             }
 
             responses.forEach((r) => {
                 expectConsistentIds(r.body, 'middleware-id');
             });
-        }, 20000);
+        }, 25000);
 
         it('should handle concurrent requests without leaking (100 requests)', async () => {
-            // Use batching to avoid port exhaustion in CI
+            // Use smaller batches with delays to avoid port exhaustion in CI
             const batchSize = 5;
             const responses: request.Response[] = [];
 
@@ -1362,16 +1385,17 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
-                // Small delay to prevent port exhaustion
+
+                // Small delay between batches to allow port cleanup
                 if (i + batchSize < 100) {
-                    await new Promise((resolve) => setTimeout(resolve, 10));
+                    await new Promise((resolve) => setTimeout(resolve, 50));
                 }
             }
 
             responses.forEach((r) => {
                 expectConsistentIds(r.body, 'middleware-id');
             });
-        }, 30000);
+        }, 40000);
 
         it('should track request identity through all enhancers', async () => {
             const response = await request(app.getHttpServer())
