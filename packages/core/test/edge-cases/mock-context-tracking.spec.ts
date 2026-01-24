@@ -537,11 +537,10 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             });
 
             it('2.2.3: Should track context with setter descriptors', () => {
-                let internalValue = '';
                 const clone = Object.create(originalObject, {
                     customProp: {
-                        set(val: string) {
-                            internalValue = val;
+                        set(_val: string) {
+                            // Setter validates property descriptor support
                         },
                         enumerable: true,
                     },
@@ -594,14 +593,14 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             });
 
             it('2.2.8: Should work with accessor descriptors', () => {
-                let storage = 'initial';
+                let _storage = 'initial';
                 const clone = Object.create(originalObject, {
                     accessor: {
                         get() {
-                            return storage;
+                            return _storage;
                         },
                         set(val: string) {
-                            storage = val;
+                            _storage = val;
                         },
                     },
                 });
