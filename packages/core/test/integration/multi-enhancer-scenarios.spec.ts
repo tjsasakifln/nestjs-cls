@@ -674,26 +674,34 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should prevent leak with 50 concurrent requests (Express)', async () => {
-            const promises = Array(50)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
-                );
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
 
-            const responses = await Promise.all(promises);
+            for (let i = 0; i < 50; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
+                );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
             const ids = responses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBe(50);
-        }, 15000);
+        }, 20000);
 
         it('should prevent leak with 100 concurrent requests (Express)', async () => {
-            const promises = Array(100)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
-                );
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
 
-            const responses = await Promise.all(promises);
+            for (let i = 0; i < 100; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
+                );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
             const ids = responses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBe(100);
@@ -736,25 +744,21 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should handle stress test (200 requests) (Express)', async () => {
-            const promises = Array(200)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
+
+            for (let i = 0; i < 200; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
                 );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
-            const results = await Promise.allSettled(promises);
-
-            const successfulResponses = results
-                .filter(
-                    (r) => r.status === 'fulfilled' && r.value.status === 200,
-                )
-                .map((r) => (r as PromiseFulfilledResult<any>).value);
-
-            expect(successfulResponses.length).toBeGreaterThanOrEqual(190); // Allow some failures
-
-            const ids = successfulResponses.map((r) => r.body.middlewareId);
-            expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
-        }, 30000);
+            const ids = responses.map((r) => r.body.middlewareId);
+            expect(new Set(ids).size).toBe(200);
+        }, 40000);
 
         it('should prevent leak after error recovery (Express)', async () => {
             const promises = Array(10)
@@ -879,26 +883,34 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should prevent leak with 50 concurrent requests (Fastify)', async () => {
-            const promises = Array(50)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
-                );
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
 
-            const responses = await Promise.all(promises);
+            for (let i = 0; i < 50; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
+                );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
             const ids = responses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBe(50);
-        }, 15000);
+        }, 20000);
 
         it('should prevent leak with 100 concurrent requests (Fastify) - Issue #223 regression', async () => {
-            const promises = Array(100)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
-                );
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
 
-            const responses = await Promise.all(promises);
+            for (let i = 0; i < 100; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
+                );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
             const ids = responses.map((r) => r.body.middlewareId);
             expect(new Set(ids).size).toBe(100);
@@ -941,25 +953,21 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should handle stress test (200 requests) (Fastify)', async () => {
-            const promises = Array(200)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
+
+            for (let i = 0; i < 200; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
                 );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
-            const results = await Promise.allSettled(promises);
-
-            const successfulResponses = results
-                .filter(
-                    (r) => r.status === 'fulfilled' && r.value.status === 200,
-                )
-                .map((r) => (r as PromiseFulfilledResult<any>).value);
-
-            expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
-
-            const ids = successfulResponses.map((r) => r.body.middlewareId);
-            expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
-        }, 30000);
+            const ids = responses.map((r) => r.body.middlewareId);
+            expect(new Set(ids).size).toBe(200);
+        }, 40000);
 
         it('should prevent leak after error recovery (Fastify)', async () => {
             const promises = Array(10)
@@ -1081,46 +1089,37 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should prevent leak with 50 concurrent requests (Koa)', async () => {
-            const promises = Array(50)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
+
+            for (let i = 0; i < 50; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
                 );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
-            const results = await Promise.allSettled(promises);
-
-            const successfulResponses = results
-                .filter(
-                    (r) => r.status === 'fulfilled' && r.value.status === 200,
-                )
-                .map((r) => (r as PromiseFulfilledResult<any>).value);
-
-            expect(successfulResponses.length).toBeGreaterThanOrEqual(48); // Allow 2 failures out of 50
-
-            const ids = successfulResponses.map((r) => r.body.middlewareId);
-            expect(new Set(ids).size).toBeGreaterThanOrEqual(48);
-        }, 15000);
+            const ids = responses.map((r) => r.body.middlewareId);
+            expect(new Set(ids).size).toBe(50);
+        }, 20000);
 
         it('should prevent leak with 100 concurrent requests (Koa)', async () => {
-            const promises = Array(100)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
+
+            for (let i = 0; i < 100; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
                 );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
-            const results = await Promise.allSettled(promises);
-
-            const successfulResponses = results
-                .filter(
-                    (r) => r.status === 'fulfilled' && r.value.status === 200,
-                )
-                .map((r) => (r as PromiseFulfilledResult<any>).value);
-
-            // Allow for occasional ECONNRESET on Node 22 with high concurrency
-            expect(successfulResponses.length).toBeGreaterThanOrEqual(95);
-
-            const ids = successfulResponses.map((r) => r.body.middlewareId);
-            expect(new Set(ids).size).toBe(successfulResponses.length);
+            const ids = responses.map((r) => r.body.middlewareId);
+            expect(new Set(ids).size).toBe(100);
         }, 30000);
 
         it('should prevent leak with rapid sequential requests (Koa)', async () => {
@@ -1136,7 +1135,7 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             }
 
             expect(ids.size).toBe(50);
-        }, 30000);
+        }, 60000);
 
         it('should maintain separate contexts for overlapping requests (Koa)', async () => {
             const batch1 = Array(10)
@@ -1160,25 +1159,21 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
         });
 
         it('should handle stress test (200 requests) (Koa)', async () => {
-            const promises = Array(200)
-                .fill(0)
-                .map((_, i) =>
-                    request(app.getHttpServer()).get(`/concurrent/${i}`),
+            // Use batching to avoid port exhaustion in CI
+            const batchSize = 10;
+            const responses: any[] = [];
+
+            for (let i = 0; i < 200; i += batchSize) {
+                const batch = Array.from({ length: batchSize }, (_, j) =>
+                    request(app.getHttpServer()).get(`/concurrent/${i + j}`),
                 );
+                const batchResponses = await Promise.all(batch);
+                responses.push(...batchResponses);
+            }
 
-            const results = await Promise.allSettled(promises);
-
-            const successfulResponses = results
-                .filter(
-                    (r) => r.status === 'fulfilled' && r.value.status === 200,
-                )
-                .map((r) => (r as PromiseFulfilledResult<any>).value);
-
-            expect(successfulResponses.length).toBeGreaterThanOrEqual(190);
-
-            const ids = successfulResponses.map((r) => r.body.middlewareId);
-            expect(new Set(ids).size).toBeGreaterThanOrEqual(190);
-        }, 30000);
+            const ids = responses.map((r) => r.body.middlewareId);
+            expect(new Set(ids).size).toBe(200);
+        }, 40000);
 
         it('should prevent leak after error recovery (Koa)', async () => {
             const promises = Array(10)
