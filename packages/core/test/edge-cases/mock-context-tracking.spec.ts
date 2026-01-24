@@ -130,7 +130,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             });
 
             it('1.1.9: Should track context with jest.fn() mockImplementation', () => {
-                const mockFn = jest.fn().mockImplementation(() => originalObject);
+                const mockFn = jest
+                    .fn()
+                    .mockImplementation(() => originalObject);
                 const result = mockFn();
 
                 ContextClsStoreMap.setByRaw(result, store);
@@ -170,7 +172,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
                     getRequest: () => ({ id: 'wrong' }),
                 };
 
-                jest.spyOn(service, 'getRequest').mockReturnValue(originalObject);
+                jest.spyOn(service, 'getRequest').mockReturnValue(
+                    originalObject,
+                );
                 const result = service.getRequest();
 
                 ContextClsStoreMap.setByRaw(result, store);
@@ -370,7 +374,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             });
 
             it('1.3.8: Should maintain context with mocked singleton', () => {
-                const singleton = { getInstance: jest.fn().mockReturnValue(originalObject) };
+                const singleton = {
+                    getInstance: jest.fn().mockReturnValue(originalObject),
+                };
 
                 const result1 = singleton.getInstance();
                 const result2 = singleton.getInstance();
@@ -634,7 +640,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
 
                 // Clone has own identity
                 expect(ContextClsStoreMap.getByRaw(clone)).toBe(store);
-                expect(ContextClsStoreMap.getByRaw(originalObject)).toBeUndefined();
+                expect(
+                    ContextClsStoreMap.getByRaw(originalObject),
+                ).toBeUndefined();
             });
 
             it('2.3.2: Should track context in deep prototype chain', () => {
@@ -762,7 +770,12 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             it('3.1.4: Should track context with multiple sources', () => {
                 const source1 = { a: 1 };
                 const source2 = { b: 2 };
-                const copy = Object.assign({}, source1, originalObject, source2);
+                const copy = Object.assign(
+                    {},
+                    source1,
+                    originalObject,
+                    source2,
+                );
 
                 ContextClsStoreMap.setByRaw(copy, store);
                 expect(ContextClsStoreMap.getByRaw(copy)).toBe(store);
@@ -785,7 +798,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
             });
 
             it('3.1.7: Should work with Object.assign() and property overrides', () => {
-                const copy = Object.assign({}, originalObject, { id: 'overridden' });
+                const copy = Object.assign({}, originalObject, {
+                    id: 'overridden',
+                });
 
                 ContextClsStoreMap.setByRaw(copy, store);
                 expect(ContextClsStoreMap.getByRaw(copy)).toBe(store);
@@ -927,7 +942,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
                 };
 
                 ContextClsStoreMap.setByRaw(provider.useValue, store);
-                expect(ContextClsStoreMap.getByRaw(provider.useValue)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(provider.useValue)).toBe(
+                    store,
+                );
             });
 
             it('4.1.2: Should work with useFactory provider', () => {
@@ -962,7 +979,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
                 };
 
                 ContextClsStoreMap.setByRaw(provider.useExisting, store);
-                expect(ContextClsStoreMap.getByRaw(provider.useExisting)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(provider.useExisting)).toBe(
+                    store,
+                );
             });
 
             it('4.1.5: Should track context with overrideProvider', () => {
@@ -1062,7 +1081,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
                 };
 
                 ContextClsStoreMap.setByRaw(requestWithHeaders, store);
-                expect(ContextClsStoreMap.getByRaw(requestWithHeaders)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(requestWithHeaders)).toBe(
+                    store,
+                );
             });
 
             it('4.2.7: Should track context with supertest auth', () => {
@@ -1073,7 +1094,9 @@ describe('Mock Context Tracking - Edge Cases (Issue #37)', () => {
                 };
 
                 ContextClsStoreMap.setByRaw(authenticatedRequest, store);
-                expect(ContextClsStoreMap.getByRaw(authenticatedRequest)).toBe(store);
+                expect(ContextClsStoreMap.getByRaw(authenticatedRequest)).toBe(
+                    store,
+                );
             });
         });
 
