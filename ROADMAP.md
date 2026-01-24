@@ -12,7 +12,7 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (23 active after cleanup)       |
-| **Progress**        | 25/27 completed (92.6%) - Ronda 4 in progress (85.7%) 🎉 |
+| **Progress**        | 26/27 completed (96.3%) - Ronda 4 in progress (92.9%) 🎉 |
 | **Timeline**        | <1 week remaining (4-5 weeks ahead of schedule)          |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
@@ -231,7 +231,7 @@ const { ProxyProviderManager } =
 | Issue | Title                                           | Package       | Test Count | Status |
 | ----- | ----------------------------------------------- | ------------- | ---------- | ------ |
 | ✅ #38   | Propagation.Required isolation scenarios        | transactional | 100        | **COMPLETED** (commit eda1250, 2026-01-23) - 100% passing (100/100), Issue #196 regression tests ✅ |
-| #39   | Propagation.RequiresNew and other modes         | transactional | 100        | OPEN   |
+| ✅ #39   | Propagation.RequiresNew and other modes         | transactional | 100        | **COMPLETED** (2026-01-23) - 100% passing (100/100), all 6 propagation modes validated ✅ |
 | #40   | Race conditions and edge cases                  | transactional | 100        | OPEN   |
 
 **Exit Criteria:**
@@ -436,12 +436,32 @@ This roadmap is considered **COMPLETE** when:
 
 ---
 
-**Last Updated:** 2026-01-24
-**Status:** Ronda 4 - **IN PROGRESS** (12/14 test issues complete, 85.7%) 🚀 **SUB-ISSUE #9 COMPLETE!**
-**Milestone Progress:** 25/27 completed (92.6%) - 2 issues remaining
-**Next Milestone:** Complete Ronda 4 validation tests - final 2 transactional tests
+**Last Updated:** 2026-01-23
+**Status:** Ronda 4 - **IN PROGRESS** (13/14 test issues complete, 92.9%) 🚀 **SUB-ISSUE #12 at 66.7%!**
+**Milestone Progress:** 26/27 completed (96.3%) - 1 issue remaining
+**Next Milestone:** Complete Ronda 4 validation tests - final transactional test (#40)
 
 ### Recent Progress
+
+- ✅ **2026-01-23**: Issue #39 completed - **Propagation.RequiresNew and other modes (100/100 tests passing ✅)** 🎉
+    - Created comprehensive test suite for all 6 propagation modes
+    - All 100 tests passing: RequiresNew (25), Nested (20), Supports (15), NotSupported (15), Never (15), Mandatory (10)
+    - **Section 1: RequiresNew (25 tests)** - New transaction creation, nesting, suspension, error handling
+    - **Section 2: Nested (20 tests)** - Savepoints, rollback, deep nesting, mixed outcomes
+    - **Section 3: Supports (15 tests)** - Optional transaction participation
+    - **Section 4: NotSupported (15 tests)** - Transaction suspension and resumption
+    - **Section 5: Never (15 tests)** - Transaction prohibition enforcement
+    - **Section 6: Mandatory (10 tests)** - Required transaction validation
+    - **CRITICAL**: All modes validate v7.0 isolated context behavior
+    - **CRITICAL**: Confirms RequiresNew creates independent transactions (not nested savepoints)
+    - **CRITICAL**: Validates Nested uses savepoints within parent transaction
+    - **CRITICAL**: Supports/Mandatory/Never/NotSupported error handling correct
+    - Test file: `packages/transactional/test/propagation/all-modes.spec.ts` (1,677 lines)
+    - **Advances ROADMAP Ronda 4 Sub-Issue #12** (Propagation Mode Tests) to 66.7% (2/3 complete)
+    - Full transactional suite: 150 tests passing (100 new + 50 existing)
+    - Ronda 4 progress: 13/14 test issues complete (92.9%)
+    - **Sub-Issue #12: 2/3 test issues complete (66.7%)** - Issues #38, #39 ✅, remaining: #40
+    - Next: Issue #40 (Race conditions and edge cases, 100 tests) to complete Sub-Issue #12
 
 - ✅ **2026-01-24**: Issue #37 completed (PR #53) - **Mock objects and test doubles for context tracking (100/100 tests passing ✅)** 🎉
     - Created comprehensive test suite for mock objects, test doubles, and object transformations
