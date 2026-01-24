@@ -12,8 +12,8 @@ Replace fragile workarounds with robust structural solutions across 4 critical i
 | ------------------- | -------------------------------------------------------- |
 | **Total Issues**    | 4 critical (#169, #223, #129, #196) + 1 internal cleanup |
 | **Sub-Issues**      | 13 core + 14 test issues (23 active after cleanup)       |
-| **Progress**        | 22/27 completed (81.5%) - Ronda 4 in progress (64.3%) 🎉 |
-| **Timeline**        | ~1.5 weeks remaining (4-5 weeks ahead of schedule)       |
+| **Progress**        | 24/27 completed (88.9%) - Ronda 4 in progress (78.6%) 🎉 |
+| **Timeline**        | <1 week remaining (4-5 weeks ahead of schedule)          |
 | **Expected Impact** | Major version bump (v7.0)                                |
 | **New Tests**       | 1200+ comprehensive tests                                |
 | **Coverage Target** | >90% on modified files                                   |
@@ -223,14 +223,14 @@ const { ProxyProviderManager } =
 | Issue | Title                                     | Package | Test Count | Status |
 | ----- | ----------------------------------------- | ------- | ---------- | ------ |
 | ✅ #35   | Proxy object edge cases                   | core    | 100        | **COMPLETED** (2026-01-23) - 100% passing (100/100), validates Symbol tagging through Proxy wrappers ✅ |
-| #36   | Frozen/sealed objects                     | core    | 100        | OPEN   |
+| ✅ #36   | Frozen/sealed objects                     | core    | 100        | **COMPLETED** (commit 529263b, 2026-01-23) - 100% passing (100/100), WeakMap fallback validation ✅ |
 | #37   | Mock objects and test doubles             | core    | 100        | OPEN   |
 
 #### Sub-Issue #12: Propagation Mode Tests (300 tests)
 
 | Issue | Title                                           | Package       | Test Count | Status |
 | ----- | ----------------------------------------------- | ------------- | ---------- | ------ |
-| #38   | Propagation.Required isolation scenarios        | transactional | 100        | OPEN   |
+| ✅ #38   | Propagation.Required isolation scenarios        | transactional | 100        | **COMPLETED** (commit eda1250, 2026-01-23) - 100% passing (100/100), Issue #196 regression tests ✅ |
 | #39   | Propagation.RequiresNew and other modes         | transactional | 100        | OPEN   |
 | #40   | Race conditions and edge cases                  | transactional | 100        | OPEN   |
 
@@ -437,11 +437,44 @@ This roadmap is considered **COMPLETE** when:
 ---
 
 **Last Updated:** 2026-01-23
-**Status:** Ronda 4 - **IN PROGRESS** (9/14 test issues complete, 64.3%) 🚀 **PAST HALFWAY!**
-**Milestone Progress:** 22/27 completed (81.5%) - 5 issues remaining
+**Status:** Ronda 4 - **IN PROGRESS** (11/14 test issues complete, 78.6%) 🚀 **APPROACHING 80%!**
+**Milestone Progress:** 24/27 completed (88.9%) - 3 issues remaining
 **Next Milestone:** Complete Ronda 4 validation tests (1200+ tests)
 
 ### Recent Progress
+
+- ✅ **2026-01-23**: Issue #36 completed - **Frozen/sealed objects for context tracking (100/100 tests passing ✅)** 🎉
+    - Created comprehensive test suite for frozen, sealed, and non-extensible objects
+    - All 100 tests implemented and passing: Section 1 (35) + Section 2 (35) + Section 3 (15) + Section 4 (15)
+    - **Section 1: Frozen Objects (35 tests)** - Object.freeze() scenarios, WeakMap fallback validation
+    - **Section 2: Sealed Objects (35 tests)** - Object.seal() scenarios, property modification allowed
+    - **Section 3: Non-Extensible Objects (15 tests)** - Object.preventExtensions(), mod/delete allowed
+    - **Section 4: Mixed Scenarios (15 tests)** - Transitions and concurrent requests (50+ concurrent)
+    - **CRITICAL**: WeakMap fallback works when Symbol tagging impossible (frozen/sealed/non-extensible)
+    - **CRITICAL**: Concurrent frozen requests (25) maintain isolation without Symbol tagging
+    - **CRITICAL**: Transition from extensible → frozen/sealed mid-request maintains context
+    - **Issue #129 Regression Tests**: ClsGuard with frozen request objects ✅
+    - Test file: `packages/core/test/edge-cases/frozen-context-tracking.spec.ts` (1,073 lines)
+    - Completes ROADMAP Ronda 4 Sub-Issue #9 (second test issue, 66.7%)
+    - Full core suite: 641 tests passing (100 new + 541 existing)
+    - Ronda 4 progress: 11/14 test issues complete (78.6%) - **APPROACHING 80% MILESTONE!**
+    - Next: Issue #37 (Mock objects and test doubles, 100 tests) to complete Sub-Issue #9 (edge case tests)
+
+- ✅ **2026-01-23**: Issue #38 completed - **Propagation.Required isolation scenarios (100/100 tests passing ✅)** 🎉
+    - Created comprehensive test suite for Propagation.Required transaction isolation
+    - All 100 tests implemented and passing: Section 1 (25) + Section 2 (25) + Section 3 (25) + Section 4 (25)
+    - **Section 1: Basic Propagation.Required (25 tests)** - Creates new/isolated transactions
+    - **Section 2: Nested Awaited Transactions (25 tests)** - Parent/child independence, rollback isolation
+    - **Section 3: Nested NON-Awaited Transactions (25 tests)** - **Issue #196 regression tests** ✅
+    - **Section 4: Multiple Nesting Levels (25 tests)** - 3-level to 20-level deep nesting without stack overflow
+    - **CRITICAL**: Validates Issue #196 fix (non-awaited transactions no longer cause "Transaction already finished")
+    - **CRITICAL**: All nested scenarios work with isolated contexts (no transaction corruption)
+    - **Performance**: 20-level nesting completes in <5s, no memory leaks
+    - Test file: `packages/transactional/test/propagation/required-isolation.spec.ts` (1,665 lines)
+    - Completes ROADMAP Ronda 4 Sub-Issue #12 (first test issue, 33.3%)
+    - Full transactional suite: 150 tests passing (100 new + 50 existing)
+    - Ronda 4 progress: 10/14 test issues complete (71.4%) - **PAST 70% MILESTONE!**
+    - Next: Issue #39 (Propagation.RequiresNew and other modes, 100 tests) or Issue #36 (Frozen/sealed objects, 100 tests)
 
 - ✅ **2026-01-23**: Issue #35 completed - **Proxy object edge cases for context tracking (100/100 tests passing ✅)** 🎉
     - Created comprehensive test suite for Proxy edge cases with context tracking
