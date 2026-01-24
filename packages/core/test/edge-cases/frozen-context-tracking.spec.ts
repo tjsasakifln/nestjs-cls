@@ -218,7 +218,7 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
                 // Simulate error in enhancer
                 try {
                     throw new Error('Enhancer error');
-                } catch (err) {
+                } catch (_err) {
                     // Context should still be retrievable
                 }
 
@@ -579,7 +579,7 @@ describe('Frozen/Sealed Context Tracking - Edge Cases (Issue #36)', () => {
 
                 try {
                     throw new Error('Enhancer error');
-                } catch (err) {
+                } catch (_err) {
                     // pass
                 }
 
