@@ -782,7 +782,7 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             const responses: any[] = [];
 
             // First batch: all-enhancers endpoint
-            const batch1 = Array(5)
+            const batch1 = Array(batchSize)
                 .fill(0)
                 .map(() => request(app.getHttpServer()).get('/all-enhancers'));
             const responses1 = await Promise.all(batch1);
@@ -791,7 +791,7 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             await new Promise((resolve) => setTimeout(resolve, 50));
 
             // Second batch: middleware-guard endpoint
-            const batch2 = Array(5)
+            const batch2 = Array(batchSize)
                 .fill(0)
                 .map(() =>
                     request(app.getHttpServer()).get('/middleware-guard'),
