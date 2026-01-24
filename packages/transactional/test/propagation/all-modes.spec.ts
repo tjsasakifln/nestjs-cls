@@ -96,10 +96,7 @@ class NestedService {
     }
 
     @Transactional(Propagation.Nested)
-    async createDeepNested(
-        value: string,
-        nestedValue: string,
-    ): Promise<void> {
+    async createDeepNested(value: string, nestedValue: string): Promise<void> {
         await this.txHost.tx.query(value);
         await this.createNested(nestedValue);
     }
@@ -135,10 +132,7 @@ class NotSupportedService {
     }
 
     @Transactional(Propagation.NotSupported)
-    async notSupportedWithNested(
-        value: string,
-        nested: string,
-    ): Promise<void> {
+    async notSupportedWithNested(value: string, nested: string): Promise<void> {
         await this.txHost.tx.query(value);
         await this.notSupported(nested);
     }
@@ -423,7 +417,10 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('1.7: should create 3 independent transactions (parent → child → grandchild)', async () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('Grandparent');
-                    await requiresNewService.createNewWithNested('Parent', 'Child');
+                    await requiresNewService.createNewWithNested(
+                        'Parent',
+                        'Child',
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
@@ -436,39 +433,45 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('1.8: should handle deep nesting (4 levels of RequiresNew)', async () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('L1');
-                    await txHost.withTransaction(Propagation.RequiresNew, async () => {
-                        await txHost.tx.query('L2');
-                        await txHost.withTransaction(Propagation.RequiresNew, async () => {
-                            await txHost.tx.query('L3');
+                    await txHost.withTransaction(
+                        Propagation.RequiresNew,
+                        async () => {
+                            await txHost.tx.query('L2');
                             await txHost.withTransaction(
                                 Propagation.RequiresNew,
                                 async () => {
-                                    await txHost.tx.query('L4');
+                                    await txHost.tx.query('L3');
+                                    await txHost.withTransaction(
+                                        Propagation.RequiresNew,
+                                        async () => {
+                                            await txHost.tx.query('L4');
+                                        },
+                                    );
                                 },
                             );
-                        });
-                    });
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
                 expect(queries.length).toBe(4);
-                expect(queries.map((q) => q.filter((s) => s.startsWith('L')))).toEqual([
-                    ['L1'],
-                    ['L2'],
-                    ['L3'],
-                    ['L4'],
-                ]);
+                expect(
+                    queries.map((q) => q.filter((s) => s.startsWith('L'))),
+                ).toEqual([['L1'], ['L2'], ['L3'], ['L4']]);
             });
 
             it('1.9: should handle 5-level deep RequiresNew nesting', async () => {
                 let depth = 0;
                 const createNested = async (level: number): Promise<void> => {
                     if (level === 5) return;
-                    await txHost.withTransaction(Propagation.RequiresNew, async () => {
-                        await txHost.tx.query(`Level ${level + 1}`);
-                        depth++;
-                        await createNested(level + 1);
-                    });
+                    await txHost.withTransaction(
+                        Propagation.RequiresNew,
+                        async () => {
+                            await txHost.tx.query(`Level ${level + 1}`);
+                            depth++;
+                            await createNested(level + 1);
+                        },
+                    );
                 };
 
                 await createNested(0);
@@ -490,7 +493,11 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
         describe('Multiple RequiresNew in sequence', () => {
             it('1.11: should handle multiple RequiresNew calls sequentially', async () => {
-                await orchestrator.multipleRequiresNew('Parent', 'Child1', 'Child2');
+                await orchestrator.multipleRequiresNew(
+                    'Parent',
+                    'Child1',
+                    'Child2',
+                );
 
                 const queries = mockDbConnection.getClientsQueries();
                 expect(queries.length).toBe(3);
@@ -523,10 +530,18 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
-                expect(queries[0][queries[0].length - 1]).toBe('COMMIT TRANSACTION;');
-                expect(queries[1][queries[1].length - 1]).toBe('COMMIT TRANSACTION;');
-                expect(queries[2][queries[2].length - 1]).toBe('ROLLBACK TRANSACTION;');
-                expect(queries[3][queries[3].length - 1]).toBe('COMMIT TRANSACTION;');
+                expect(queries[0][queries[0].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
+                expect(queries[1][queries[1].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
+                expect(queries[2][queries[2].length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
+                expect(queries[3][queries[3].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
             });
 
             it('1.14: should not propagate child failure to parent', async () => {
@@ -535,7 +550,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('Parent Start');
                     try {
-                        await requiresNewService.createNewWithError('Child Error');
+                        await requiresNewService.createNewWithError(
+                            'Child Error',
+                        );
                     } catch {
                         // Parent continues
                     }
@@ -584,7 +601,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('Parent');
                     try {
-                        await requiresNewService.createNewWithError('Child Error');
+                        await requiresNewService.createNewWithError(
+                            'Child Error',
+                        );
                     } catch {
                         // Expected
                     }
@@ -600,7 +619,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await txHost.withTransaction(async () => {
                     for (let i = 1; i <= 3; i++) {
                         try {
-                            await requiresNewService.createNewWithError(`E${i}`);
+                            await requiresNewService.createNewWithError(
+                                `E${i}`,
+                            );
                         } catch (e) {
                             errors.push(e as Error);
                         }
@@ -618,7 +639,10 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await expect(
                     txHost.withTransaction(async () => {
                         await txHost.tx.query('Parent start');
-                        await requiresNewService.createNewWithNested('L1', 'L2');
+                        await requiresNewService.createNewWithNested(
+                            'L1',
+                            'L2',
+                        );
                         throw new Error('Parent error after nested');
                     }),
                 ).rejects.toThrow('Parent error after nested');
@@ -630,10 +654,16 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 // Parent transaction starts, has query, then rolls back
                 expect(queries[0][0]).toBe('BEGIN TRANSACTION;');
                 expect(queries[0]).toContain('Parent start');
-                expect(queries[0][queries[0].length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[0][queries[0].length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
                 // L1 and L2 should commit
-                expect(queries[1][queries[1].length - 1]).toBe('COMMIT TRANSACTION;');
-                expect(queries[2][queries[2].length - 1]).toBe('COMMIT TRANSACTION;');
+                expect(queries[1][queries[1].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
+                expect(queries[2][queries[2].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
             });
 
             it('1.20: should allow parent to handle child error gracefully', async () => {
@@ -649,7 +679,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 expect(recoveryExecuted.value).toBe(true);
-                expect(mockDbConnection.getClientsQueries()[0]).toContain('Recovery query');
+                expect(mockDbConnection.getClientsQueries()[0]).toContain(
+                    'Recovery query',
+                );
             });
         });
 
@@ -660,11 +692,14 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await txHost.withTransaction(async () => {
                     executionOrder.push('Parent start');
                     await txHost.tx.query('Parent query 1');
-                    await txHost.withTransaction(Propagation.RequiresNew, async () => {
-                        executionOrder.push('Child start');
-                        await txHost.tx.query('Child query');
-                        executionOrder.push('Child end');
-                    });
+                    await txHost.withTransaction(
+                        Propagation.RequiresNew,
+                        async () => {
+                            executionOrder.push('Child start');
+                            await txHost.tx.query('Child query');
+                            executionOrder.push('Child end');
+                        },
+                    );
                     executionOrder.push('Parent resume');
                     await txHost.tx.query('Parent query 2');
                 });
@@ -778,7 +813,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
                 const queries = mockDbConnection.getClientsQueries()[0];
                 expect(queries).toContain('SAVEPOINT nested_transaction;');
-                expect(queries).toContain('RELEASE SAVEPOINT nested_transaction;');
+                expect(queries).toContain(
+                    'RELEASE SAVEPOINT nested_transaction;',
+                );
             });
 
             it('2.4: should share transaction client with parent', async () => {
@@ -796,8 +833,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                const savepoints = queries.filter((q) => q.includes('SAVEPOINT'));
-                const releases = queries.filter((q) => q.includes('RELEASE SAVEPOINT'));
+                const savepoints = queries.filter((q) =>
+                    q.includes('SAVEPOINT'),
+                );
+                const releases = queries.filter((q) =>
+                    q.includes('RELEASE SAVEPOINT'),
+                );
                 // v7.0 creates isolated contexts, resulting in more savepoints
                 expect(savepoints.length).toBeGreaterThanOrEqual(2);
                 expect(releases.length).toBeGreaterThanOrEqual(2);
@@ -812,7 +853,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
                 const queries = mockDbConnection.getClientsQueries()[0];
                 expect(queries).toContain('SAVEPOINT nested_transaction;');
-                expect(queries).toContain('ROLLBACK TO SAVEPOINT nested_transaction;');
+                expect(queries).toContain(
+                    'ROLLBACK TO SAVEPOINT nested_transaction;',
+                );
             });
 
             it('2.7: should rollback parent when nested error propagates', async () => {
@@ -821,14 +864,18 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 ).rejects.toThrow('Intentional nested error');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('2.8: should allow parent to continue after catching nested error', async () => {
                 await orchestrator.callNestedAndRecover('P', 'C', 'Recovery');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries).toContain('ROLLBACK TO SAVEPOINT nested_transaction;');
+                expect(queries).toContain(
+                    'ROLLBACK TO SAVEPOINT nested_transaction;',
+                );
                 expect(queries).toContain('Recovery');
                 expect(queries[queries.length - 1]).toBe('COMMIT TRANSACTION;');
             });
@@ -854,7 +901,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await txHost.withTransaction(async () => {
                     for (let i = 1; i <= 3; i++) {
                         try {
-                            await nestedService.createNestedWithError(`Fail ${i}`);
+                            await nestedService.createNestedWithError(
+                                `Fail ${i}`,
+                            );
                         } catch {
                             // Continue
                         }
@@ -879,7 +928,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                const savepoints = queries.filter((q) => q.includes('SAVEPOINT'));
+                const savepoints = queries.filter((q) =>
+                    q.includes('SAVEPOINT'),
+                );
                 // Should have savepoints for nested transactions
                 expect(savepoints.length).toBeGreaterThanOrEqual(2);
             });
@@ -887,16 +938,24 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('2.12: should handle 3-level nested transactions', async () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('L1');
-                    await txHost.withTransaction(Propagation.Nested, async () => {
-                        await txHost.tx.query('L2');
-                        await txHost.withTransaction(Propagation.Nested, async () => {
-                            await txHost.tx.query('L3');
-                        });
-                    });
+                    await txHost.withTransaction(
+                        Propagation.Nested,
+                        async () => {
+                            await txHost.tx.query('L2');
+                            await txHost.withTransaction(
+                                Propagation.Nested,
+                                async () => {
+                                    await txHost.tx.query('L3');
+                                },
+                            );
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                const savepoints = queries.filter((q) => q.includes('SAVEPOINT'));
+                const savepoints = queries.filter((q) =>
+                    q.includes('SAVEPOINT'),
+                );
                 // Should have savepoints for nested transactions (at least 2)
                 expect(savepoints.length).toBeGreaterThanOrEqual(2);
             });
@@ -907,8 +966,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                const savepointIdx = queries.indexOf('SAVEPOINT nested_transaction;');
-                const releaseIdx = queries.indexOf('RELEASE SAVEPOINT nested_transaction;');
+                const savepointIdx = queries.indexOf(
+                    'SAVEPOINT nested_transaction;',
+                );
+                const releaseIdx = queries.indexOf(
+                    'RELEASE SAVEPOINT nested_transaction;',
+                );
                 // Inner savepoint created after outer, released before outer
                 expect(releaseIdx).toBeGreaterThan(savepointIdx);
             });
@@ -916,18 +979,24 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('2.14: should rollback deepest nested without affecting outer nested', async () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('Parent');
-                    await txHost.withTransaction(Propagation.Nested, async () => {
-                        await txHost.tx.query('Outer nested');
-                        try {
-                            await txHost.withTransaction(Propagation.Nested, async () => {
-                                await txHost.tx.query('Inner nested');
-                                throw new Error('Inner fails');
-                            });
-                        } catch {
-                            // Outer nested recovers
-                        }
-                        await txHost.tx.query('Outer continues');
-                    });
+                    await txHost.withTransaction(
+                        Propagation.Nested,
+                        async () => {
+                            await txHost.tx.query('Outer nested');
+                            try {
+                                await txHost.withTransaction(
+                                    Propagation.Nested,
+                                    async () => {
+                                        await txHost.tx.query('Inner nested');
+                                        throw new Error('Inner fails');
+                                    },
+                                );
+                            } catch {
+                                // Outer nested recovers
+                            }
+                            await txHost.tx.query('Outer continues');
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
@@ -938,21 +1007,30 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('2.15: should handle 5-level deep nesting', async () => {
                 await txHost.withTransaction(async () => {
                     await txHost.tx.query('L1');
-                    await txHost.withTransaction(Propagation.Nested, async () => {
-                        await txHost.tx.query('L2');
-                        await txHost.withTransaction(Propagation.Nested, async () => {
-                            await txHost.tx.query('L3');
-                            await txHost.withTransaction(Propagation.Nested, async () => {
-                                await txHost.tx.query('L4');
-                                await txHost.withTransaction(
-                                    Propagation.Nested,
-                                    async () => {
-                                        await txHost.tx.query('L5');
-                                    },
-                                );
-                            });
-                        });
-                    });
+                    await txHost.withTransaction(
+                        Propagation.Nested,
+                        async () => {
+                            await txHost.tx.query('L2');
+                            await txHost.withTransaction(
+                                Propagation.Nested,
+                                async () => {
+                                    await txHost.tx.query('L3');
+                                    await txHost.withTransaction(
+                                        Propagation.Nested,
+                                        async () => {
+                                            await txHost.tx.query('L4');
+                                            await txHost.withTransaction(
+                                                Propagation.Nested,
+                                                async () => {
+                                                    await txHost.tx.query('L5');
+                                                },
+                                            );
+                                        },
+                                    );
+                                },
+                            );
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
@@ -972,7 +1050,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries).toContain('ROLLBACK TO SAVEPOINT nested_transaction;');
+                expect(queries).toContain(
+                    'ROLLBACK TO SAVEPOINT nested_transaction;',
+                );
                 expect(queries).toContain('Success');
                 expect(queries[queries.length - 1]).toBe('COMMIT TRANSACTION;');
             });
@@ -991,12 +1071,14 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 const queries = mockDbConnection.getClientsQueries()[0];
                 expect(queries).toContain('S1');
                 expect(queries).toContain('S2');
-                expect(queries.filter((q) => q.includes('RELEASE SAVEPOINT')).length).toBe(
-                    2,
-                );
-                expect(queries.filter((q) => q.includes('ROLLBACK TO SAVEPOINT')).length).toBe(
-                    1,
-                );
+                expect(
+                    queries.filter((q) => q.includes('RELEASE SAVEPOINT'))
+                        .length,
+                ).toBe(2);
+                expect(
+                    queries.filter((q) => q.includes('ROLLBACK TO SAVEPOINT'))
+                        .length,
+                ).toBe(1);
             });
 
             it('2.18: should commit parent after multiple nested transactions', async () => {
@@ -1007,9 +1089,10 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries.filter((q) => q.includes('RELEASE SAVEPOINT')).length).toBe(
-                    5,
-                );
+                expect(
+                    queries.filter((q) => q.includes('RELEASE SAVEPOINT'))
+                        .length,
+                ).toBe(5);
                 expect(queries[queries.length - 1]).toBe('COMMIT TRANSACTION;');
             });
 
@@ -1030,12 +1113,14 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 });
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries.filter((q) => q.includes('ROLLBACK TO SAVEPOINT')).length).toBe(
-                    2,
-                );
-                expect(queries.filter((q) => q.includes('RELEASE SAVEPOINT')).length).toBe(
-                    2,
-                );
+                expect(
+                    queries.filter((q) => q.includes('ROLLBACK TO SAVEPOINT'))
+                        .length,
+                ).toBe(2);
+                expect(
+                    queries.filter((q) => q.includes('RELEASE SAVEPOINT'))
+                        .length,
+                ).toBe(2);
             });
 
             it('2.20: should maintain parent transaction integrity despite nested failures', async () => {
@@ -1047,10 +1132,14 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                     for (let i = 0; i < 10; i++) {
                         try {
                             if (i % 2 === 0) {
-                                await nestedService.createNested(`Success ${i}`);
+                                await nestedService.createNested(
+                                    `Success ${i}`,
+                                );
                                 successfulOps++;
                             } else {
-                                await nestedService.createNestedWithError(`Fail ${i}`);
+                                await nestedService.createNestedWithError(
+                                    `Fail ${i}`,
+                                );
                             }
                         } catch {
                             // Continue
@@ -1076,7 +1165,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('3.1: should run without transaction when no parent exists', async () => {
                 await supportsService.supports('Query 1');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Query 1']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Query 1'],
+                ]);
             });
 
             it('3.2: should not create BEGIN/COMMIT when no parent', async () => {
@@ -1090,7 +1181,10 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('3.3: should handle multiple Supports calls without transaction', async () => {
                 await supportsService.supportsWithNested('Q1', 'Q2');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Q1'], ['Q2']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Q1'],
+                    ['Q2'],
+                ]);
             });
 
             it('3.4: should execute queries directly without transaction wrapper', async () => {
@@ -1120,7 +1214,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await orchestrator.callSupports('Parent', 'Child');
 
                 expect(mockDbConnection.getClientsQueries()).toEqual([
-                    ['BEGIN TRANSACTION;', 'Parent', 'Child', 'COMMIT TRANSACTION;'],
+                    [
+                        'BEGIN TRANSACTION;',
+                        'Parent',
+                        'Child',
+                        'COMMIT TRANSACTION;',
+                    ],
                 ]);
             });
 
@@ -1151,7 +1250,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 ).rejects.toThrow('Parent error');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('3.10: should handle multiple Supports in same parent transaction', async () => {
@@ -1188,7 +1289,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 const queries = mockDbConnection.getClientsQueries()[0];
                 expect(queries).toContain('Outer');
                 expect(queries).toContain('Inner');
-                expect(queries.filter((q) => q === 'BEGIN TRANSACTION;').length).toBe(1);
+                expect(
+                    queries.filter((q) => q === 'BEGIN TRANSACTION;').length,
+                ).toBe(1);
             });
 
             it('3.13: should support error propagation in parent transaction', async () => {
@@ -1201,21 +1304,27 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
                 const queries = mockDbConnection.getClientsQueries()[0];
                 expect(queries).toContain('Before error');
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('3.14: should not create savepoints for Supports', async () => {
                 await orchestrator.callSupports('Parent', 'Supports');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries.find((q) => q.includes('SAVEPOINT'))).toBeUndefined();
+                expect(
+                    queries.find((q) => q.includes('SAVEPOINT')),
+                ).toBeUndefined();
             });
 
             it('3.15: should allow Supports to coexist with other propagation modes', async () => {
                 await txHost.withTransaction(async () => {
                     await supportsService.supports('Supports');
                     await nestedService.createNested('Nested');
-                    await requiresNewService.createNewTransaction('RequiresNew');
+                    await requiresNewService.createNewTransaction(
+                        'RequiresNew',
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
@@ -1235,7 +1344,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('4.1: should run without transaction when no parent exists', async () => {
                 await notSupportedService.notSupported('Query 1');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Query 1']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Query 1'],
+                ]);
             });
 
             it('4.2: should not create transaction wrapper', async () => {
@@ -1248,7 +1359,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('4.3: should execute directly without transaction overhead', async () => {
                 await notSupportedService.notSupported('Direct');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Direct']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Direct'],
+                ]);
             });
 
             it('4.4: should handle multiple NotSupported calls sequentially', async () => {
@@ -1305,7 +1418,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await orchestrator.callNotSupported('Parent', 'NotSupported');
 
                 const queries = mockDbConnection.getClientsQueries();
-                expect(queries[0][queries[0].length - 1]).toBe('COMMIT TRANSACTION;');
+                expect(queries[0][queries[0].length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
             });
 
             it('4.10: should handle multiple NotSupported calls within transaction', async () => {
@@ -1331,14 +1446,19 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await expect(
                     txHost.withTransaction(async () => {
                         await txHost.tx.query('Parent');
-                        await txHost.withTransaction(Propagation.NotSupported, async () => {
-                            throw new Error('NotSupported error');
-                        });
+                        await txHost.withTransaction(
+                            Propagation.NotSupported,
+                            async () => {
+                                throw new Error('NotSupported error');
+                            },
+                        );
                     }),
                 ).rejects.toThrow('NotSupported error');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('4.12: should rollback parent when NotSupported throws', async () => {
@@ -1347,22 +1467,30 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await expect(
                     txHost.withTransaction(async () => {
                         await txHost.tx.query('Parent');
-                        await txHost.withTransaction(Propagation.NotSupported, async () => {
-                            throw new Error('Error in NotSupported');
-                        });
+                        await txHost.withTransaction(
+                            Propagation.NotSupported,
+                            async () => {
+                                throw new Error('Error in NotSupported');
+                            },
+                        );
                     }),
                 ).rejects.toThrow('Error in NotSupported');
 
                 const parentQueries = mockDbConnection.getClientsQueries()[0];
-                expect(parentQueries[parentQueries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(parentQueries[parentQueries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('4.13: should allow parent to recover from NotSupported error', async () => {
                 await txHost.withTransaction(async () => {
                     try {
-                        await txHost.withTransaction(Propagation.NotSupported, async () => {
-                            throw new Error('Fail');
-                        });
+                        await txHost.withTransaction(
+                            Propagation.NotSupported,
+                            async () => {
+                                throw new Error('Fail');
+                            },
+                        );
                     } catch {
                         await txHost.tx.query('Recovery');
                     }
@@ -1375,16 +1503,25 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
             it('4.14: should handle nested NotSupported within NotSupported', async () => {
                 await txHost.withTransaction(async () => {
-                    await txHost.withTransaction(Propagation.NotSupported, async () => {
-                        await txHost.tx.query('Outer NotSupported');
-                        await notSupportedService.notSupported('Inner NotSupported');
-                    });
+                    await txHost.withTransaction(
+                        Propagation.NotSupported,
+                        async () => {
+                            await txHost.tx.query('Outer NotSupported');
+                            await notSupportedService.notSupported(
+                                'Inner NotSupported',
+                            );
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
                 // Both NotSupported calls should run without transaction
-                expect(queries.find((q) => q.includes('Outer NotSupported'))).toBeDefined();
-                expect(queries.find((q) => q.includes('Inner NotSupported'))).toBeDefined();
+                expect(
+                    queries.find((q) => q.includes('Outer NotSupported')),
+                ).toBeDefined();
+                expect(
+                    queries.find((q) => q.includes('Inner NotSupported')),
+                ).toBeDefined();
             });
 
             it('4.15: should maintain parent state across multiple suspensions', async () => {
@@ -1416,7 +1553,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('5.1: should run without transaction when no parent exists', async () => {
                 await neverService.never('Query 1');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Query 1']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Query 1'],
+                ]);
             });
 
             it('5.2: should not create transaction wrapper', async () => {
@@ -1429,7 +1568,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('5.3: should execute directly without transaction', async () => {
                 await neverService.never('Direct query');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Direct query']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Direct query'],
+                ]);
             });
 
             it('5.4: should handle multiple Never calls sequentially', async () => {
@@ -1437,28 +1578,39 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                     await neverService.never(`Q${i}`);
                 }
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Q1'], ['Q2'], ['Q3']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Q1'],
+                    ['Q2'],
+                    ['Q3'],
+                ]);
             });
 
             it('5.5: should handle nested Never calls', async () => {
                 await neverService.neverWithNested('Outer', 'Inner');
 
-                expect(mockDbConnection.getClientsQueries()).toEqual([['Outer'], ['Inner']]);
+                expect(mockDbConnection.getClientsQueries()).toEqual([
+                    ['Outer'],
+                    ['Inner'],
+                ]);
             });
         });
 
         describe('Never with parent transaction (error cases)', () => {
             it('5.6: should throw TransactionAlreadyActiveError when parent exists', async () => {
-                await expect(orchestrator.callNever('Parent', 'Child')).rejects.toThrow(
-                    TransactionAlreadyActiveError,
-                );
+                await expect(
+                    orchestrator.callNever('Parent', 'Child'),
+                ).rejects.toThrow(TransactionAlreadyActiveError);
             });
 
             it('5.7: should rollback parent transaction on Never error', async () => {
-                await expect(orchestrator.callNever('P', 'C')).rejects.toThrow();
+                await expect(
+                    orchestrator.callNever('P', 'C'),
+                ).rejects.toThrow();
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('5.8: should throw before executing Never method when transaction active', async () => {
@@ -1466,9 +1618,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
                 try {
                     await txHost.withTransaction(async () => {
-                        await txHost.withTransaction(Propagation.Never, async () => {
-                            executed.value = true;
-                        });
+                        await txHost.withTransaction(
+                            Propagation.Never,
+                            async () => {
+                                executed.value = true;
+                            },
+                        );
                     });
                 } catch (e) {
                     expect(e).toBeInstanceOf(TransactionAlreadyActiveError);
@@ -1493,9 +1648,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
             it('5.10: should prevent execution if any transaction is active in chain', async () => {
                 try {
                     await txHost.withTransaction(async () => {
-                        await txHost.withTransaction(Propagation.RequiresNew, async () => {
-                            await neverService.never('Fail');
-                        });
+                        await txHost.withTransaction(
+                            Propagation.RequiresNew,
+                            async () => {
+                                await neverService.never('Fail');
+                            },
+                        );
                     });
                     fail('Should have thrown error');
                 } catch (e) {
@@ -1548,14 +1706,19 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
 
             it('5.14: should handle Never in NotSupported scope (should succeed)', async () => {
                 await txHost.withTransaction(async () => {
-                    await txHost.withTransaction(Propagation.NotSupported, async () => {
-                        // NotSupported suspends transaction, so Never should work
-                        await neverService.never('Should work');
-                    });
+                    await txHost.withTransaction(
+                        Propagation.NotSupported,
+                        async () => {
+                            // NotSupported suspends transaction, so Never should work
+                            await neverService.never('Should work');
+                        },
+                    );
                 });
 
                 const queries = mockDbConnection.getClientsQueries();
-                expect(queries.find((q) => q.includes('Should work'))).toBeDefined();
+                expect(
+                    queries.find((q) => q.includes('Should work')),
+                ).toBeDefined();
             });
 
             it('5.15: should enforce Never constraint at method boundary', async () => {
@@ -1596,9 +1759,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 const executed = { value: false };
 
                 try {
-                    await txHost.withTransaction(Propagation.Mandatory, async () => {
-                        executed.value = true;
-                    });
+                    await txHost.withTransaction(
+                        Propagation.Mandatory,
+                        async () => {
+                            executed.value = true;
+                        },
+                    );
                     fail('Should have thrown error');
                 } catch (e) {
                     expect(e).toBeInstanceOf(TransactionNotActiveError);
@@ -1613,7 +1779,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                     fail('Should have thrown error');
                 } catch (e) {
                     expect(e).toBeInstanceOf(TransactionNotActiveError);
-                    expect((e as Error).message).toMatch(/no.*existing.*transaction/i);
+                    expect((e as Error).message).toMatch(
+                        /no.*existing.*transaction/i,
+                    );
                 }
             });
 
@@ -1650,7 +1818,12 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 await orchestrator.callMandatory('Parent', 'Child');
 
                 expect(mockDbConnection.getClientsQueries()).toEqual([
-                    ['BEGIN TRANSACTION;', 'Parent', 'Child', 'COMMIT TRANSACTION;'],
+                    [
+                        'BEGIN TRANSACTION;',
+                        'Parent',
+                        'Child',
+                        'COMMIT TRANSACTION;',
+                    ],
                 ]);
             });
 
@@ -1678,7 +1851,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 ).rejects.toThrow('Parent error');
 
                 const queries = mockDbConnection.getClientsQueries()[0];
-                expect(queries[queries.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(queries[queries.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('6.10: should handle multiple Mandatory calls in same transaction', async () => {
@@ -1692,7 +1867,9 @@ describe('Propagation Modes - Comprehensive Test Suite (100 tests)', () => {
                 expect(queries).toContain('M1');
                 expect(queries).toContain('M2');
                 expect(queries).toContain('M3');
-                expect(queries.filter((q) => q === 'BEGIN TRANSACTION;').length).toBe(1);
+                expect(
+                    queries.filter((q) => q === 'BEGIN TRANSACTION;').length,
+                ).toBe(1);
             });
         });
     });
