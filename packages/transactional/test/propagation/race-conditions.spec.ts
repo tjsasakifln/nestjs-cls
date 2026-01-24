@@ -87,7 +87,10 @@ class RaceConditionService {
     }
 
     @Transactional()
-    async siblingsRaceToComplete(delay1: number, delay2: number): Promise<void> {
+    async siblingsRaceToComplete(
+        delay1: number,
+        delay2: number,
+    ): Promise<void> {
         await this.txHost.tx.query('Parent');
         const siblings = [
             this.delayedChild(delay1, 'Sibling 1'),
@@ -339,8 +342,7 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
                     await raceService.parentCompletesBeforeChild();
 
                 // Parent should complete successfully
-                const queriesBeforeChild =
-                    mockDbConnection.getClientsQueries();
+                const queriesBeforeChild = mockDbConnection.getClientsQueries();
                 expect(queriesBeforeChild.length).toBeGreaterThanOrEqual(1);
 
                 // Child should also complete successfully without "Transaction already finished" error
@@ -425,14 +427,18 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
             });
 
             it('1.9: should handle parent with very delayed child (100ms delay)', async () => {
-                const childPromise = raceService.delayedChild(100, 'Very Delayed');
+                const childPromise = raceService.delayedChild(
+                    100,
+                    'Very Delayed',
+                );
                 await new Promise((resolve) => setTimeout(resolve, 10));
                 await expect(childPromise).resolves.not.toThrow();
             });
 
             it('1.10: should not leak transaction state across parent completions', async () => {
                 await raceService.parentCompletesBeforeChild();
-                const initialCount = mockDbConnection.getClientsQueries().length;
+                const initialCount =
+                    mockDbConnection.getClientsQueries().length;
 
                 await raceService.parentCompletesBeforeChild();
                 const finalCount = mockDbConnection.getClientsQueries().length;
@@ -537,11 +543,17 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
                 const queries = mockDbConnection.getClientsQueries();
 
                 // Find parent and child transactions
-                const parentTx = queries.find(q => q.includes('Parent'));
-                const childTx = queries.find(q => q.includes('Child before error'));
+                const parentTx = queries.find((q) => q.includes('Parent'));
+                const childTx = queries.find((q) =>
+                    q.includes('Child before error'),
+                );
 
-                expect(parentTx?.[parentTx.length - 1]).toBe('COMMIT TRANSACTION;');
-                expect(childTx?.[childTx.length - 1]).toBe('ROLLBACK TRANSACTION;');
+                expect(parentTx?.[parentTx.length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
+                expect(childTx?.[childTx.length - 1]).toBe(
+                    'ROLLBACK TRANSACTION;',
+                );
             });
 
             it('1.16: should handle parent completing while 5 children active', async () => {
@@ -768,8 +780,9 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
                 const successful = results.filter(
                     (r) => r.status === 'fulfilled',
                 ).length;
-                const failed = results.filter((r) => r.status === 'rejected')
-                    .length;
+                const failed = results.filter(
+                    (r) => r.status === 'rejected',
+                ).length;
 
                 expect(successful).toBe(16); // 20 - 4 errors
                 expect(failed).toBe(4); // Every 5th sibling
@@ -1523,7 +1536,9 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
 
                 const queries = mockDbConnection.getClientsQueries();
                 const parentTx = queries[0];
-                expect(parentTx[parentTx.length - 1]).toBe('COMMIT TRANSACTION;');
+                expect(parentTx[parentTx.length - 1]).toBe(
+                    'COMMIT TRANSACTION;',
+                );
             });
 
             it('3.9: should rollback child when child throws error', async () => {
@@ -1816,9 +1831,7 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
                 const endTime = Date.now() + 2000;
 
                 while (Date.now() < endTime) {
-                    promises.push(
-                        parallelService.runConcurrentIndependent(10),
-                    );
+                    promises.push(parallelService.runConcurrentIndependent(10));
                     await new Promise((resolve) => setTimeout(resolve, 100));
                 }
 
