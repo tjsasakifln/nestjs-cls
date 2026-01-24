@@ -17,7 +17,6 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClsModule } from 'nestjs-cls';
 import {
     ClsPluginTransactional,
-    Propagation,
     Transactional,
     TransactionHost,
 } from '../../src';
@@ -703,7 +702,7 @@ describe('Race Conditions and Edge Cases - Comprehensive Test Suite (100 tests)'
             });
 
             it('1.26: should handle siblings completing in random order', async () => {
-                const promises = Array.from({ length: 5 }, (_, i) =>
+                const promises = Array.from({ length: 5 }, () =>
                     raceService.siblingsRaceToComplete(
                         Math.random() * 20,
                         Math.random() * 20,
