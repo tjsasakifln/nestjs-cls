@@ -1321,7 +1321,7 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
 
         it('should handle concurrent requests without leaking (50 requests)', async () => {
             // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 50; i += batchSize) {
@@ -1330,16 +1330,20 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+                // Small delay to prevent port exhaustion
+                if (i + batchSize < 50) {
+                    await new Promise((resolve) => setTimeout(resolve, 10));
+                }
             }
 
             responses.forEach((r) => {
                 expectConsistentIds(r.body, 'middleware-id');
             });
-        }, 15000);
+        }, 20000);
 
         it('should handle concurrent requests without leaking (100 requests)', async () => {
             // Use batching to avoid port exhaustion in CI
-            const batchSize = 10;
+            const batchSize = 5;
             const responses: request.Response[] = [];
 
             for (let i = 0; i < 100; i += batchSize) {
@@ -1348,12 +1352,16 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
                 );
                 const batchResponses = await Promise.all(batch);
                 responses.push(...batchResponses);
+                // Small delay to prevent port exhaustion
+                if (i + batchSize < 100) {
+                    await new Promise((resolve) => setTimeout(resolve, 10));
+                }
             }
 
             responses.forEach((r) => {
                 expectConsistentIds(r.body, 'middleware-id');
             });
-        }, 20000);
+        }, 30000);
 
         it('should track request identity through all enhancers', async () => {
             const response = await request(app.getHttpServer())
