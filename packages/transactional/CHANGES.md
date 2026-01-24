@@ -39,6 +39,18 @@
 
 * **core**: add `isolated` mode to `ClsContextOptions` for transaction isolation (#12)
 
+### Tests
+
+* **transactional**: comprehensive test suite for all propagation modes (100 tests) (#39)
+  - RequiresNew: 25 tests covering new transaction creation, nesting, suspension, error handling
+  - Nested: 20 tests covering savepoints, rollback, deep nesting, mixed outcomes
+  - Supports: 15 tests covering optional transaction participation
+  - NotSupported: 15 tests covering transaction suspension
+  - Never: 15 tests covering transaction prohibition
+  - Mandatory: 10 tests covering required transaction enforcement
+  - All tests validate v7.0 isolated context behavior
+  - Completes ROADMAP Ronda 4 Sub-Issue #12 (Part 2/3)
+
 ## [3.1.0](https://github.com/Papooch/nestjs-cls/compare/@nestjs-cls/transactional@3.0.3...@nestjs-cls/transactional@3.1.0) "@nestjs-cls/transactional" (2025-07-10)<a name="3.1.0"></a>
 
 ### Features
