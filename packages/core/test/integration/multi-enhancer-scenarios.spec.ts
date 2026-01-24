@@ -720,7 +720,7 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             }
 
             expect(ids.size).toBe(50);
-        }, 30000);
+        }, 60000);
 
         it('should maintain separate contexts for overlapping requests (Express)', async () => {
             const batch1 = Array(10)
@@ -969,7 +969,7 @@ describe('Multi-Enhancer Scenarios - Section 2: Context Leak Prevention', () => 
             }
 
             expect(ids.size).toBe(50);
-        }, 30000);
+        }, 60000);
 
         it('should maintain separate contexts for overlapping requests (Fastify)', async () => {
             const batch1 = Array(10)

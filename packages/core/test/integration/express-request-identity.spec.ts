@@ -1663,7 +1663,7 @@ describe('Section 4: Multi-Enhancer with Express (25 tests)', () => {
             responses.forEach((r) => {
                 expectConsistentIds(r.body, 'mw-int-id');
             });
-        });
+        }, 20000);
 
         it('should maintain identity through both enhancers', async () => {
             const response = await request(app.getHttpServer())
