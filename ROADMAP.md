@@ -231,7 +231,7 @@ const { ProxyProviderManager } =
 | Issue | Title                                           | Package       | Test Count | Status |
 | ----- | ----------------------------------------------- | ------------- | ---------- | ------ |
 | ✅ #38   | Propagation.Required isolation scenarios        | transactional | 100        | **COMPLETED** (commit eda1250, 2026-01-23) - 100% passing (100/100), Issue #196 regression tests ✅ |
-| ✅ #39   | Propagation.RequiresNew and other modes         | transactional | 100        | **COMPLETED** (2026-01-23) - 100% passing (100/100), all 6 propagation modes validated ✅ |
+| ✅ #39   | Propagation.RequiresNew and other modes         | transactional | 100        | **COMPLETED** (PR #54, 2026-01-24) - 100% passing (100/100), all 6 propagation modes validated ✅ |
 | #40   | Race conditions and edge cases                  | transactional | 100        | OPEN   |
 
 **Exit Criteria:**
@@ -443,8 +443,8 @@ This roadmap is considered **COMPLETE** when:
 
 ### Recent Progress
 
-- ✅ **2026-01-23**: Issue #39 completed - **Propagation.RequiresNew and other modes (100/100 tests passing ✅)** 🎉
-    - Created comprehensive test suite for all 6 propagation modes
+- ✅ **2026-01-24**: Issue #39 completed - **Propagation.RequiresNew and other modes (100/100 tests passing ✅)** 🎉
+    - PR #54 merged - Comprehensive test suite for all 6 propagation modes
     - All 100 tests passing: RequiresNew (25), Nested (20), Supports (15), NotSupported (15), Never (15), Mandatory (10)
     - **Section 1: RequiresNew (25 tests)** - New transaction creation, nesting, suspension, error handling
     - **Section 2: Nested (20 tests)** - Savepoints, rollback, deep nesting, mixed outcomes
